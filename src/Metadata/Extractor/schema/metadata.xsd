@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<xsd:schema
+        xmlns="https://api-platform.com/schema/metadata"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="https://api-platform.com/schema/metadata"
+        elementFormDefault="qualified">
+
+    <xsd:element name="locastic_loggable_classes" type="locastic_loggable_classes"/>
+
+    <xsd:complexType name="locastic_loggable_classes">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="loggable_class" type="loggable_class"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="loggable_class" mixed="true">
+        <xsd:sequence>
+            <xsd:element name="group" maxOccurs="unbounded" type="group"/>
+        </xsd:sequence>
+        <xsd:attribute type="xsd:string" name="class"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="group">
+        <xsd:attribute type="xsd:string" name="name"/>
+    </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,11 @@
+services:
+    Locastic\ActivityLog\Bridge\Elasticsearch\ElasticsearchClient:
+        arguments:
+            $activityLogElasticHost: '%locastic_activity_log.elasticsearch_host%'
+
+    Locastic\ActivityLog\Bridge\Elasticsearch\Index\ElasticsearchIndexConfiguration:
+        arguments:
+            $dateDetection: '%locastic_activity_log.elastic_date_detection%'
+            $dateFormats: '%locastic_activity_log.elastic_dynamic_date_formats%'
+            $activityLogProperties: '%locastic_activity_log.activity_log.elastic_properties%'
+            $currentDataTrackerProperties: '%locastic_activity_log.current_data_tracker.elastic_properties%'

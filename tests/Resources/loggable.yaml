@@ -1,0 +1,3 @@
+locastic_loggable:
+    - {class: 'Locastic\ActivityLog\Tests\Fixtures\DummyPhoto', groups: ['dummy_photo_log']}
+
