@@ -49,5 +49,10 @@
   },
   "conflict": {
     "symfony/translations-contracts": "<2.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/runtime": true
+    }
   }
 }
