@@ -1,0 +1,10 @@
+services:
+    Locastic\ActivityLogs\Serializer\ActivityLogCollectionNormalizerInterface:
+        alias: 'Locastic\ActivityLogs\Serializer\ActivityLogCollectionNormalizer'
+        
+    Locastic\ActivityLogs\Serializer\ActivityLogCollectionNormalizer:
+        arguments:
+            - '@serializer.normalizer.object'
+            - '@Locastic\ActivityLogs\Identifier\LogIdentifierExtractorInterface'
+        tags:
+            - { name: serializer.normalizer }

@@ -1,0 +1,30 @@
+services:
+    Locastic\ActivityLogs\Logger\ActivityLoggerInterface:
+        alias: 'Locastic\ActivityLogs\Logger\ActivityLogger'
+
+    Locastic\ActivityLogs\Logger\ActivityLogger:
+        arguments:
+            - '@Locastic\ActivityLogs\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
+            - '@serializer.normalizer.object'
+            - '@Locastic\ActivityLogs\Bridge\Elasticsearch\ElasticsearchService'
+            - '@Locastic\ActivityLogs\Factory\ActivityLogFactoryInterface'
+            - '@Locastic\ActivityLogs\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
+        
+    Locastic\ActivityLogs\Factory\ActivityLogFactoryInterface:
+        alias: 'Locastic\ActivityLogs\Factory\ActivityLogFactory'
+        
+    Locastic\ActivityLogs\Factory\ActivityLogFactory:
+        autowire: true
+
+#   Data providers
+    Locastic\ActivityLogs\DataProvider\CurrentDataTrackerProviderInterface:
+        alias: 'Locastic\ActivityLogs\DataProvider\CurrentDataTrackerProvider'
+        
+    Locastic\ActivityLogs\DataProvider\CurrentDataTrackerProvider:
+        autowire: true
+
+    Locastic\ActivityLogs\DataProvider\ActivityLogProviderInterface:
+        alias: 'Locastic\ActivityLogs\DataProvider\ActivityLogProvider'
+
+    Locastic\ActivityLogs\DataProvider\ActivityLogProvider:
+        autowire: true
