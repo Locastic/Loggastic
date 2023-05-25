@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -66,6 +66,4 @@ class DummyUser implements UserInterface
     {
         $this->password = null;
     }
-
-
 }

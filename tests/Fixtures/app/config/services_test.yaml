@@ -1,0 +1,4 @@
+when@test:
+    services:
+        _defaults:
+            public: true

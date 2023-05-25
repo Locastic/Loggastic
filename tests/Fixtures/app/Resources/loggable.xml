@@ -4,7 +4,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <loggable_class class="Locastic\ActivityLog\Tests\Fixtures\DummyCategory">
+    <loggable_class class="Locastic\Loggastic\Tests\Fixtures\DummyCategory">
             <group name="dummy_category_log" />
             <group name="dummy_photo_log" />
     </loggable_class>

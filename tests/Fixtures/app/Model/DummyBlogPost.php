@@ -1,8 +1,8 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures;
 
-use Locastic\ActivityLog\Annotation\Loggable;
+use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
