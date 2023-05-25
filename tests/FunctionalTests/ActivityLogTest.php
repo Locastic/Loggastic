@@ -1,27 +1,27 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\FunctionalTests;
+namespace Locastic\Loggastic\Tests\FunctionalTests;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
-use Locastic\ActivityLog\DataProvider\ActivityLogProviderInterface;
-use Locastic\ActivityLog\Enum\ActivityLogAction;
-use Locastic\ActivityLog\Message\CreateActivityLogMessage;
-use Locastic\ActivityLog\Message\DeleteActivityLogMessage;
-use Locastic\ActivityLog\Message\UpdateActivityLogMessage;
-use Locastic\ActivityLog\Model\ActivityLogInterface;
-use Locastic\ActivityLog\Tests\Fixtures\DummyBlogPost;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
+use Locastic\Loggastic\DataProvider\ActivityLogProviderInterface;
+use Locastic\Loggastic\Enum\ActivityLogAction;
+use Locastic\Loggastic\Message\CreateActivityLogMessage;
+use Locastic\Loggastic\Message\DeleteActivityLogMessage;
+use Locastic\Loggastic\Message\UpdateActivityLogMessage;
+use Locastic\Loggastic\Model\ActivityLogInterface;
+use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class ActivityLogTest extends WebTestCase
+class ActivityLogTest extends KernelTestCase
 {
     private MessageBusInterface $bus;
     private ActivityLogProviderInterface $activityLogProvider;
     private DummyBlogPost $blogPost;
 
-    public function __construct()
+    public function __construct(string $name)
     {
-        parent::__construct();
+        parent::__construct($name);
 
         $container = self::getContainer()->get('test.service_container');
 
@@ -45,7 +45,7 @@ class ActivityLogTest extends WebTestCase
         $editedLog = $activityLogs[0];
         self::assertCount(1, $activityLogs);
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
-        self::assertEquals(ActivityLogAction::$CREATED, $editedLog->getAction());
+        self::assertEquals(ActivityLogAction::CREATED, $editedLog->getAction());
         self::assertEquals(15, $editedLog->getObjectId());
     }
 
@@ -62,31 +62,31 @@ class ActivityLogTest extends WebTestCase
         $editedLog = $activityLogs[1];
         self::assertCount(2, $activityLogs);
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
-        self::assertEquals(ActivityLogAction::$EDITED, $editedLog->getAction());
+        self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
         self::assertEquals(15, $editedLog->getObjectId());
 
         self::assertEquals([
             'previousValues' => [
                 'title' => 'Activity logs in Elasticsearch',
                 'tags' => [1 => '#elasticsearch'],
-                'enabled' => false
+                'enabled' => false,
             ],
             'currentValues' => [
                 'title' => 'Activity Logs using Elasticsearch',
                 'tags' => [1 => '#elasticSearch'],
-                'enabled' => true
+                'enabled' => true,
             ],
-        ], $editedLog->getData());
+        ], $editedLog->getDataChangesArray());
     }
 
     public function testLogDelete(): void
     {
-        $this->bus->dispatch(new DeleteActivityLogMessage(DummyBlogPost::class, 15));
+        $this->bus->dispatch(new DeleteActivityLogMessage($this->blogPost->getId(), DummyBlogPost::class));
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
         self::assertCount(3, $activityLogs);
         self::assertInstanceOf(ActivityLogInterface::class, $activityLogs[2]);
-        self::assertEquals(ActivityLogAction::$DELETED, $activityLogs[2]->getAction());
+        self::assertEquals(ActivityLogAction::DELETED, $activityLogs[2]->getAction());
     }
 
     private function createDummyBlogPost(): DummyBlogPost

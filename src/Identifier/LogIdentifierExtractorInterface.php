@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Identifier;
+namespace Locastic\Loggastic\Identifier;
 
 interface LogIdentifierExtractorInterface
 {

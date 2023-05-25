@@ -1,8 +1,7 @@
 <?php
 
-namespace Locastic\ActivityLog\Logger;
+namespace Locastic\Loggastic\Logger;
 
 interface ActivityLoggerInterface
 {
-
 }

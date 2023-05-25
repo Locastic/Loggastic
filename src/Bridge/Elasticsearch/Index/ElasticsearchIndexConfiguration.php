@@ -1,8 +1,8 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Index;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextInterface;
 
 class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfigurationInterface
 {
@@ -12,12 +12,11 @@ class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfiguration
     private array $currentDataTrackerProperties;
 
     public function __construct(
-        bool   $dateDetection,
+        bool $dateDetection,
         string $dateFormats,
-        array  $activityLogProperties,
-        array  $currentDataTrackerProperties
-    )
-    {
+        array $activityLogProperties,
+        array $currentDataTrackerProperties
+    ) {
         $this->dateDetection = $dateDetection;
         $this->dateFormats = $dateFormats;
         $this->activityLogProperties = $activityLogProperties;
@@ -33,8 +32,8 @@ class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfiguration
                     'date_detection' => $this->dateDetection,
                     'dynamic_date_formats' => [$this->dateFormats],
                     'properties' => $this->activityLogProperties,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -46,9 +45,9 @@ class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfiguration
                 'mappings' => [
                     'date_detection' => $this->dateDetection,
                     'dynamic_date_formats' => [$this->dateFormats],
-                    'properties' => $this->currentDataTrackerProperties
+                    'properties' => $this->currentDataTrackerProperties,
                 ],
-            ]
+            ],
         ];
     }
 }

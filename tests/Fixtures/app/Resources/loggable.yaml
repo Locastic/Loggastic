@@ -1,3 +1,2 @@
 locastic_loggable:
-    - {class: 'Locastic\Loggastic\Tests\Fixtures\DummyPhoto', groups: ['dummy_photo_log']}
-
+    - {class: 'Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto', groups: ['dummy_photo_log']}

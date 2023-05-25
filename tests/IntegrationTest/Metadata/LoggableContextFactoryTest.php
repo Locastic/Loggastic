@@ -1,12 +1,12 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\IntegrationTest\Metadata;
+namespace Locastic\Loggastic\Tests\IntegrationTest\Metadata;
 
-use Locastic\ActivityLog\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
-use Locastic\ActivityLog\Tests\Fixtures\DummyCategory;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
+use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyCategory;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class LoggableContextFactoryTest extends WebTestCase
+class LoggableContextFactoryTest extends KernelTestCase
 {
     public function testCreate(): void
     {
@@ -18,7 +18,7 @@ class LoggableContextFactoryTest extends WebTestCase
             'groups' => [
                 'dummy_category_log',
                 'dummy_photo_log',
-                ]
+                ],
         ], $loggableContext);
     }
 }

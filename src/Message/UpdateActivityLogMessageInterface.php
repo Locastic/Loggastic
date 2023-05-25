@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Message;
+namespace Locastic\Loggastic\Message;
 
 interface UpdateActivityLogMessageInterface extends ActivityLogMessageInterface
 {

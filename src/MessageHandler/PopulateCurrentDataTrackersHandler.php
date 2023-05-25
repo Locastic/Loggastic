@@ -1,13 +1,13 @@
 <?php
 
-namespace Locastic\ActivityLogs\MessageHandler;
+namespace Locastic\Loggastic\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Locastic\ActivityLogs\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\ActivityLogs\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\ActivityLogs\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\ActivityLogs\Factory\ActivityLogFactory;
-use Locastic\ActivityLogs\Message\PopulateCurrentDataTrackersMessage;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Factory\ActivityLogFactory;
+use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

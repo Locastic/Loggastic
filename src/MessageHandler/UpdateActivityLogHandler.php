@@ -1,38 +1,50 @@
 <?php
 
-namespace Locastic\ActivityLog\MessageHandler;
+namespace Locastic\Loggastic\MessageHandler;
 
-use Locastic\ActivityLog\DataProvider\CurrentDataTrackerProviderInterface;
-use Locastic\ActivityLog\Logger\ActivityLoggerInterface;
-use Locastic\ActivityLog\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
-use Locastic\ActivityLog\Model\CurrentDataTracker;
-use Locastic\ActivityLog\Message\UpdateActivityLogMessage;
-
-use Locastic\ActivityLog\Util\ClassUtils;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
+use Locastic\Loggastic\Logger\ActivityLoggerInterface;
+use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactory;
+use Locastic\Loggastic\Model\CurrentDataTracker;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
+#[AsMessageHandler]
 class UpdateActivityLogHandler implements MessageHandlerInterface
 {
+    use ElasticNormalizationContextTrait;
+
     private ActivityLoggerInterface $activityLogger;
     private CurrentDataTrackerProviderInterface $currentDataTrackerProvider;
+    private LoggableContextFactory $loggableContextFactory;
 
-    public function __construct(ActivityLoggerInterface $activityLogger, CurrentDataTrackerProviderInterface $currentDataTrackerProvider)
-    {
+    public function __construct(
+        ActivityLoggerInterface $activityLogger,
+        CurrentDataTrackerProviderInterface $currentDataTrackerProvider,
+        LoggableContextFactory $loggableContextFactory
+    ) {
         $this->activityLogger = $activityLogger;
         $this->currentDataTrackerProvider = $currentDataTrackerProvider;
+        $this->loggableContextFactory = $loggableContextFactory;
     }
 
-    public function __invoke(UpdateActivityLogMessage $message)
+    public function __invoke(UpdateActivityLogMessageInterface $message)
     {
         $updatedItem = $message->getUpdatedItem();
-        $resourceClass = ClassUtils::getClass($updatedItem);
 
-        $currentDataTracker = $this->currentDataTrackerProvider->getCurrentDataTrackerByClassAndId($resourceClass, $updatedItem->getId());
-
-        if(!$currentDataTracker instanceof CurrentDataTracker) {
+        $loggableContext = $this->loggableContextFactory->create($message->getClassName());
+        if (!is_array($loggableContext)) {
             return;
         }
 
-        $this->activityLogger->logUpdatedItem($updatedItem, $currentDataTracker, $message->getActionName());
+        $currentDataTracker = $this->currentDataTrackerProvider->getCurrentDataTrackerByClassAndId($message->getClassName(), $updatedItem->getId());
+
+        if (!$currentDataTracker instanceof CurrentDataTracker) {
+            return;
+        }
+
+        $this->activityLogger->logUpdatedItem($message, $currentDataTracker);
     }
 }

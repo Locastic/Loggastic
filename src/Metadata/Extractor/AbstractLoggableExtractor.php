@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\Extractor;
+namespace Locastic\Loggastic\Metadata\Extractor;
 
 abstract class AbstractLoggableExtractor implements LoggableExtractorInterface
 {

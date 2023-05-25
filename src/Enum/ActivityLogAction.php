@@ -1,10 +1,10 @@
 <?php
 
-namespace Locastic\ActivityLog\Enum;
+namespace Locastic\Loggastic\Enum;
 
 class ActivityLogAction
 {
-    public static string $CREATED = 'Created';
-    public static string $EDITED = 'Edited';
-    public static string $DELETED = 'Deleted';
+    public const CREATED = 'Created';
+    public const EDITED = 'Edited';
+    public const DELETED = 'Deleted';
 }

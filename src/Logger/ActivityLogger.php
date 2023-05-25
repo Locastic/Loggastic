@@ -1,22 +1,26 @@
 <?php
 
-namespace Locastic\ActivityLog\Logger;
+namespace Locastic\Loggastic\Logger;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\ActivityLog\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\ActivityLog\Factory\ActivityLogFactory;
-use Locastic\ActivityLog\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
-use Locastic\ActivityLog\Model\CurrentDataTracker;
-use Locastic\ActivityLog\Util\ArrayDiff;
-use Locastic\ActivityLog\Util\ClassUtils;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Factory\ActivityLogFactoryInterface;
+use Locastic\Loggastic\Message\CreateActivityLogMessageInterface;
+use Locastic\Loggastic\Message\DeleteActivityLogMessageInterface;
+use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
+use Locastic\Loggastic\Model\CurrentDataTracker;
+use Locastic\Loggastic\Util\ArraysComparer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ActivityLogger implements ActivityLoggerInterface
 {
+    use ElasticNormalizationContextTrait;
+
     private NormalizerInterface $objectNormalizer;
     private ElasticsearchService $elasticService;
-    private ActivityLogFactory $activityLogFactory;
+    private ActivityLogFactoryInterface $activityLogFactory;
     private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
     private LoggableContextFactoryInterface $loggableContextFactory;
 
@@ -24,10 +28,9 @@ class ActivityLogger implements ActivityLoggerInterface
         ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
         NormalizerInterface $objectNormalizer,
         ElasticsearchService $elasticService,
-        ActivityLogFactory $activityLogFactory,
+        ActivityLogFactoryInterface $activityLogFactory,
         LoggableContextFactoryInterface $loggableContextFactory
-    )
-    {
+    ) {
         $this->objectNormalizer = $objectNormalizer;
         $this->elasticService = $elasticService;
         $this->activityLogFactory = $activityLogFactory;
@@ -35,81 +38,71 @@ class ActivityLogger implements ActivityLoggerInterface
         $this->loggableContextFactory = $loggableContextFactory;
     }
 
-    public function logCreatedItem($item, string $actionName): void
+    public function logCreatedItem(CreateActivityLogMessageInterface $message): void
     {
-        $loggableClass = ClassUtils::getClass($item);
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
+        $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
-        if(!$loggableContext) {
+        if (!$loggableContext) {
             return;
         }
 
-        $normalizedItem = $this->objectNormalizer->normalize($item,'array', $this->getNormalizationContext($loggableContext));
+        $normalizedItem = $this->objectNormalizer->normalize($message->getItem(), 'activityLog', $this->getNormalizationContext($loggableContext));
 
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
+        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
 
         // create log to save full item data for later comparison
-        $currentDataTracker = $this->activityLogFactory->createCurrentDataTracker($item, $normalizedItem);
-        $this->elasticService->createItem($currentDataTracker, $elasticContext->getCurrentDataTrackerIndex());
+        $currentDataTracker = $this->activityLogFactory->createCurrentDataTracker($message->getItem(), $normalizedItem);
+        $this->elasticService->createItem($currentDataTracker, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
 
         // create log for item creation
-        $activityLog = $this->activityLogFactory->createActivityLog($item->getId(), $loggableClass, $actionName);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
+        $activityLog = $this->activityLogFactory->createFromActivityLogMessage($message);
+        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
     }
 
-    public function logUpdatedItem($updatedItem, CurrentDataTracker $currentDataTracker, string $actionName): void
+    public function logUpdatedItem(UpdateActivityLogMessageInterface $message, CurrentDataTracker $currentDataTracker): void
     {
-        $loggableClass = ClassUtils::getClass($updatedItem);
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
+        $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
-        if(!$loggableContext) {
+        if (!$loggableContext) {
             return;
         }
 
-        $updatedData = $this->objectNormalizer->normalize($updatedItem,'array', $this->getNormalizationContext($loggableContext));
+        $updatedData = $message->getNormalizedItem();
 
         // no loggable fields were updated
-        if(!$updatedData) {
+        if (!$updatedData && !$message->isCreateLogWithoutChanges()) {
             return;
         }
 
-        $changes = ArrayDiff::arrayDiffRecursive($currentDataTracker->getDataAsArray(), $updatedData);
-        $changes2 = ArrayDiff::arrayDiffRecursive($updatedData, $currentDataTracker->getDataAsArray());
+        $changes = ArraysComparer::getCompared($updatedData, $currentDataTracker->getDataAsArray());
 
-        if(!$changes || !$changes2) {
+        if (!$changes && !$message->isCreateLogWithoutChanges()) {
             return;
         }
 
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
+        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
 
         // create log
-        $activityLog = $this->activityLogFactory->createActivityLog($updatedItem->getId(), $loggableClass, $actionName, ['previousValues' => $changes, 'currentValues' => $changes2]);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
+        $activityLog = $this->activityLogFactory->createFromActivityLogMessage($message, $changes);
+
+        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
 
         //update full data log
         $currentDataTracker->setDataFromArray($updatedData);
-        $this->elasticService->updateItem($currentDataTracker->getId(), $currentDataTracker, $elasticContext->getCurrentDataTrackerIndex());
+        $this->elasticService->updateItem($currentDataTracker->getId(), $currentDataTracker, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
     }
 
-    public function logDeletedItem($itemId, string $loggableClass, string $actionName): void
+    public function logDeletedItem(DeleteActivityLogMessageInterface $message): void
     {
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
+        $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
-        if(!$loggableContext) {
+        if (!$loggableContext) {
             return;
         }
 
-        $activityLog = $this->activityLogFactory->createActivityLog($itemId, $loggableClass, $actionName);
+        $activityLog = $this->activityLogFactory->createFromActivityLogMessage($message);
 
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
-    }
-
-     private function getNormalizationContext(array $loggableContext): array
-    {
-        return [
-            'groups' => $loggableContext['groups'],
-            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s',
-        ];
+        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
+        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
     }
 }

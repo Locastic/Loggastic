@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\DependencyInjection;
+namespace Locastic\Loggastic\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('elastic_dynamic_date_formats')
                     ->cannotBeEmpty()
-                    ->defaultValue("strict_date_optional_time||epoch_millis||strict_time")
+                    ->defaultValue('strict_date_optional_time||epoch_millis||strict_time')
                 ->end()
                 ->arrayNode('activity_log')
                     ->addDefaultsIfNotSet()
@@ -71,22 +71,22 @@ class Configuration implements ConfigurationInterface
             ;
 
         return $treeBuilder;
-
     }
 
     private function getActivityLogProperties(): array
     {
         return [
-            'action' => ['type' => "text"],
-            'loggedAt' => ['type' => "date"],
-            'objectId' => ['type' => "text"],
-            'objectType' => ['type' => "text"],
-            'objectClass' => ['type' => "text"],
-            'data' => ['type' => "nested"],
+            'id' => ['type' => 'keyword'],
+            'action' => ['type' => 'text'],
+            'loggedAt' => ['type' => 'date'],
+            'objectId' => ['type' => 'text'],
+            'objectType' => ['type' => 'text'],
+            'objectClass' => ['type' => 'text'],
+            'dataChanges' => ['type' => 'text'],
             'user' => [
                 'type' => 'object',
                 'properties' => [
-                    'username' => ["type" => "text"],
+                    'username' => ['type' => 'text'],
                 ],
             ],
         ];
@@ -95,11 +95,11 @@ class Configuration implements ConfigurationInterface
     public function getCurrentDataTrackerProperties(): array
     {
         return [
-            'dateTime' => ['type' => "date"],
-            'objectId' => ['type' => "text"],
-            'objectType' => ['type' => "text"],
-            'objectClass' => ['type' => "text"],
-            'jsonData' => ['type' => "text"],
+            'dateTime' => ['type' => 'date'],
+            'objectId' => ['type' => 'text'],
+            'objectType' => ['type' => 'text'],
+            'objectClass' => ['type' => 'text'],
+            'jsonData' => ['type' => 'text'],
         ];
     }
 }

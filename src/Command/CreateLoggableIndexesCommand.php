@@ -1,9 +1,10 @@
 <?php
 
-namespace Locastic\ActivityLog\Command;
+namespace Locastic\Loggastic\Command;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
-use Locastic\ActivityLog\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CreateLoggableIndexesCommand extends Command
 {
-    protected static $defaultName = 'locastic:create-loggable-indexes';
+    protected static $defaultName = 'locastic:activity-logs:create-loggable-indexes';
 
     private LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory;
     private ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory;
@@ -28,7 +29,7 @@ class CreateLoggableIndexesCommand extends Command
         $this->elasticsearchIndexFactory = $elasticsearchIndexFactory;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
 
@@ -36,24 +37,33 @@ class CreateLoggableIndexesCommand extends Command
         $loggableContextCollection = $this->loggableContextCollectionFactory->create();
 
         foreach ($loggableContextCollection->getIterator() as $loggableClass => $config) {
-            $this->io->writeln('Creating ' . $loggableClass . ' activity_log index');
+            $this->io->writeln('Creating '.$loggableClass.' activity_log index');
 
             try {
                 $this->elasticsearchIndexFactory->createActivityLogIndex($loggableClass);
             } catch (\Exception $e) {
-                $this->io->error($e->getMessage());
+                if (strpos($e->getMessage(), 'resource_already_exists_exception')) {
+                    $output->writeln('Index already exists, skipping.');
+                } else {
+                    throw $e;
+                }
             }
 
-            $this->io->writeln('Creating ' . $loggableClass . ' current_data_tracker index');
+            $this->io->writeln('Creating '.$loggableClass.' current_data_tracker index');
 
             try {
                 $this->elasticsearchIndexFactory->createCurrentDataTrackerLogIndex($loggableClass);
-            } catch (\Exception $e) {
-                $this->io->error($e->getMessage());
+            } catch (BadRequest400Exception $e) {
+                if (strpos($e->getMessage(), 'resource_already_exists_exception')) {
+                    $output->writeln('Index already exists, skipping.');
+                } else {
+                    throw $e;
+                }
             }
         }
 
         $this->io->success('Done!');
-        return 0;
+
+        return Command::SUCCESS;
     }
 }

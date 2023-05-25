@@ -1,9 +1,9 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
 /**
- * Creates loggable context for a single loggable class
+ * Creates loggable context for a single loggable class.
  */
 interface LoggableContextFactoryInterface
 {

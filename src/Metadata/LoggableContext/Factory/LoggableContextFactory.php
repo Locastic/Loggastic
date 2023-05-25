@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
 class LoggableContextFactory implements LoggableContextFactoryInterface
 {

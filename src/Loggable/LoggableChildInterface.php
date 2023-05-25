@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Loggable;
+namespace Locastic\Loggastic\Loggable;
 
 interface LoggableChildInterface
 {

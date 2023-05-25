@@ -1,6 +1,6 @@
 services:
-    Locastic\ActivityLogs\Identifier\LogIdentifierExtractorInterface:
-        alias: 'Locastic\ActivityLogs\Identifier\LogIdentifierExtractor'
-        
-    Locastic\ActivityLogs\Identifier\LogIdentifierExtractor:
+    Locastic\Loggastic\Identifier\LogIdentifierExtractorInterface:
+        alias: 'Locastic\Loggastic\Identifier\LogIdentifierExtractor'
+
+    Locastic\Loggastic\Identifier\LogIdentifierExtractor:
         autowire: true

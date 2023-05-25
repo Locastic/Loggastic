@@ -1,11 +1,8 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use ApiPlatform\Core\Util\ReflectionClassRecursiveIterator;
-use Locastic\ActivityLog\Annotation\Loggable;
-use Locastic\ActivityLog\Metadata\LoggableContext\LoggableContextCollection;
-use Doctrine\Common\Annotations\Reader;
+use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CachedLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface

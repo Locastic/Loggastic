@@ -1,11 +1,11 @@
 <?php
 
-namespace Locastic\ActivityLogs\Command;
+namespace Locastic\Loggastic\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Locastic\ActivityLogs\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
-use Locastic\ActivityLogs\Message\PopulateCurrentDataTrackersMessage;
-use Locastic\ActivityLogs\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
+use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

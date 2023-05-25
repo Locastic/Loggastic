@@ -1,9 +1,9 @@
 <?php
 
-namespace Locastic\ActivityLogs\Serializer;
+namespace Locastic\Loggastic\Serializer;
 
 use Doctrine\Common\Collections\Collection;
-use Locastic\ActivityLogs\Identifier\LogIdentifierExtractorInterface;
+use Locastic\Loggastic\Identifier\LogIdentifierExtractorInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

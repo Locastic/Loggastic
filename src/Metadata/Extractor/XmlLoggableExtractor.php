@@ -1,13 +1,13 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\Extractor;
+namespace Locastic\Loggastic\Metadata\Extractor;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Config\Util\XmlUtils;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class XmlLoggableExtractor extends AbstractLoggableExtractor
 {
-    public const RESOURCE_SCHEMA = __DIR__ . '/schema/metadata.xsd';
+    public const RESOURCE_SCHEMA = __DIR__.'/schema/metadata.xsd';
 
     protected function extractPath(string $path): void
     {
@@ -19,11 +19,11 @@ class XmlLoggableExtractor extends AbstractLoggableExtractor
         }
 
         foreach ($xml->loggable_class as $loggableClassConfig) {
-            $loggableClass = (string)$loggableClassConfig['class'];
+            $loggableClass = (string) $loggableClassConfig['class'];
 
             $groups = [];
             foreach ($loggableClassConfig->group as $group) {
-                $groups[] = (string)$group['name'];
+                $groups[] = (string) $group['name'];
             }
 
             $this->loggableClasses[$loggableClass] = ['groups' => $groups];

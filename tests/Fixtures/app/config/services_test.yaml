@@ -1,4 +1,7 @@
-when@test:
-    services:
-        _defaults:
-            public: true
+services:
+    Locastic\Loggastic\DataProvider\ActivityLogProviderInterface:
+        alias: 'Locastic\Loggastic\DataProvider\ActivityLogProvider'
+
+    Locastic\Loggastic\DataProvider\ActivityLogProvider:
+        autowire: true
+        public: true

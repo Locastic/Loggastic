@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Util;
+namespace Locastic\Loggastic\Util;
 
 class ArraysComparer
 {

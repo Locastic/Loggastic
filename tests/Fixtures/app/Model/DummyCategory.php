@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\Loggastic\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Locastic\ActivityLogs\EventListener;
+namespace Locastic\Loggastic\EventListener;
 
-use Locastic\ActivityLogs\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\ActivityLogs\Loggable\LoggableChildInterface;
-use Locastic\ActivityLogs\Message\UpdateActivityLogMessage;
-use Locastic\ActivityLogs\Message\UpdateActivityLogMessageInterface;
-use Locastic\ActivityLogs\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Loggable\LoggableChildInterface;
+use Locastic\Loggastic\Message\UpdateActivityLogMessage;
+use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

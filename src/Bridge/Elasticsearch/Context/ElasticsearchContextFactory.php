@@ -1,19 +1,19 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Context;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Context;
 
-use Locastic\ActivityLog\Model\ActivityLog;
-use Locastic\ActivityLog\Model\CurrentDataTracker;
-use Locastic\ActivityLog\Util\StringConverter;
+use Locastic\Loggastic\Model\ActivityLog;
+use Locastic\Loggastic\Model\CurrentDataTracker;
+use Locastic\Loggastic\Util\StringConverter;
 
 class ElasticsearchContextFactory implements ElasticsearchContextFactoryInterface
 {
-    public function createFromClassName(string $className): ElasticsearchContext
+    public function create(string $className): ElasticsearchContext
     {
         $reflectionClass = new \ReflectionClass($className);
 
-        $activityLogIndex = $this->getIndexName($className). '_' . $this->getIndexName(ActivityLog::class);
-        $currentDataTrackerIndex = $this->getIndexName($className). '_' . $this->getIndexName(CurrentDataTracker::class);
+        $activityLogIndex = $this->getIndexName($className).'_'.$this->getIndexName(ActivityLog::class);
+        $currentDataTrackerIndex = $this->getIndexName($className).'_'.$this->getIndexName(CurrentDataTracker::class);
 
         return new ElasticsearchContext($className, $reflectionClass->getShortName(), $activityLogIndex, $currentDataTrackerIndex);
     }

@@ -1,12 +1,10 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Context;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Context;
 
-use Locastic\ActivityLog\Exception\IndexNotFoundException;
-use Locastic\ActivityLog\Model\ActivityLogInterface;
-use Locastic\ActivityLog\Model\CurrentDataTrackerInterface;
-use Locastic\ActivityLog\Model\LogInterface;
-use Locastic\ActivityLog\Util\ClassUtils;
+use Locastic\Loggastic\Exception\IndexNotFoundException;
+use Locastic\Loggastic\Model\ActivityLogInterface;
+use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
 
 class ElasticsearchContext implements ElasticsearchContextInterface
 {
@@ -25,11 +23,11 @@ class ElasticsearchContext implements ElasticsearchContextInterface
 
     public function getIndexByClass(string $className): string
     {
-        if($className instanceof ActivityLogInterface) {
+        if ($className instanceof ActivityLogInterface) {
             return $this->activityLogIndex;
         }
 
-        if($className instanceof CurrentDataTrackerInterface) {
+        if ($className instanceof CurrentDataTrackerInterface) {
             return $this->currentDataTrackerIndex;
         }
 

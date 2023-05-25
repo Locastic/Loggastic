@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Serializer;
+namespace Locastic\Loggastic\Serializer;
 
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

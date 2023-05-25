@@ -1,55 +1,72 @@
 <?php
 
-namespace Locastic\ActivityLog\Model;
+namespace Locastic\Loggastic\Model;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Locastic\Loggastic\Util\StringConverter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 class ActivityLog implements ActivityLogInterface
 {
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
+     */
+    private ?string $id = null;
+
+    /**
+     * @Groups({"activity_log"})
      */
     protected ?string $action = null;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
      */
     protected ?\DateTime $loggedAt = null;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
      */
     protected $objectId;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
      */
     protected ?string $objectClass = null;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
      */
-    protected array $data = [];
+    protected ?string $dataChanges = null;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @deprecated
+     */
+    protected ?array $data = null;
+
+    /**
+     * @Groups({"activity_log"})
      */
     protected ?string $requestUrl = null;
 
     /**
-     * @Groups({"activity_log_elastic", "activity_log"})
+     * @Groups({"activity_log"})
      */
-    protected ?UserInterface $user = null;
+    protected ?array $user = null;
+
+    protected ?string $shortName = null;
 
     public function __construct()
     {
         $this->loggedAt = new \DateTime();
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
-        return sha1($this->getLoggedAt()->getTimestamp().'-'.$this->getObjectId().'-'.random_int(1000,9999));
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
     }
 
     public function getAction(): ?string
@@ -74,12 +91,12 @@ class ActivityLog implements ActivityLogInterface
 
     public function getObjectId(): string
     {
-        return (string)$this->objectId;
+        return (string) $this->objectId;
     }
 
     public function setObjectId($objectId): void
     {
-        $this->objectId = (string)$objectId;
+        $this->objectId = (string) $objectId;
     }
 
     public function getObjectClass(): ?string
@@ -102,23 +119,59 @@ class ActivityLog implements ActivityLogInterface
         $this->requestUrl = $requestUrl;
     }
 
-    public function getData(): array
+    public function getData(): ?array
     {
         return $this->data;
     }
 
-    public function setData(array $data): void
+    public function setData(?array $data): void
     {
         $this->data = $data;
     }
 
-    public function getUser(): ?UserInterface
+    public function getDataChanges(): string
+    {
+        return $this->dataChanges;
+    }
+
+    public function setDataChanges(string $dataChanges): void
+    {
+        $this->dataChanges = $dataChanges;
+    }
+
+    public function setDataChangesFromArray(?array $dataChanges = null): void
+    {
+        $this->dataChanges = json_encode($dataChanges);
+    }
+
+    public function getDataChangesArray(): ?array
+    {
+        return json_decode($this->dataChanges, true);
+    }
+
+    public function getUser(): ?array
     {
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): void
+    public function setUser(?array $user): void
     {
         $this->user = $user;
+    }
+
+    public function setShortName(?string $shortName): void
+    {
+        $this->shortName = $shortName;
+    }
+
+    public function getShortName(): ?string
+    {
+        if(null === $this->getObjectClass()) {
+            return 'activity_log';
+        }
+
+        $reflectionClass = new \ReflectionClass($this->getObjectClass());
+
+        return StringConverter::tableize($reflectionClass->getShortName()).'_activity_log';
     }
 }

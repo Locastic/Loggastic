@@ -1,9 +1,9 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use Locastic\ActivityLog\Metadata\Extractor\LoggableExtractorInterface;
-use Locastic\ActivityLog\Metadata\LoggableContext\LoggableContextCollection;
+use Locastic\Loggastic\Metadata\Extractor\LoggableExtractorInterface;
+use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 
 final class ExtractorLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLogs\Bridge\Elasticsearch\Context\Traits;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits;
 
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 

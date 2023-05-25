@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\Loggastic\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -65,5 +65,10 @@ class DummyUser implements UserInterface
     public function eraseCredentials()
     {
         $this->password = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }

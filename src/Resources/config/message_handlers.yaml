@@ -1,25 +1,25 @@
 services:
-    Locastic\ActivityLogs\MessageHandler\CreateActivityLogHandler:
+    Locastic\Loggastic\MessageHandler\CreateActivityLogHandler:
         autowire: true
         tags:
             - { name: messenger.message_handler }
 
-    Locastic\ActivityLogs\MessageHandler\UpdateActivityLogHandler:
+    Locastic\Loggastic\MessageHandler\UpdateActivityLogHandler:
         autowire: true
         tags:
             - { name: messenger.message_handler }
 
-    Locastic\ActivityLogs\MessageHandler\DeleteActivityLogHandler:
+    Locastic\Loggastic\MessageHandler\DeleteActivityLogHandler:
         autowire: true
         tags:
             - { name: messenger.message_handler }
 
-    Locastic\ActivityLogs\MessageHandler\PopulateCurrentDataTrackersHandler:
+    Locastic\Loggastic\MessageHandler\PopulateCurrentDataTrackersHandler:
         arguments:
             - '@Doctrine\Persistence\ManagerRegistry'
-            - '@Locastic\ActivityLogs\Factory\ActivityLogFactoryInterface'
+            - '@Locastic\Loggastic\Factory\ActivityLogFactoryInterface'
             - '@serializer.normalizer.object'
-            - '@Locastic\ActivityLogs\Bridge\Elasticsearch\ElasticsearchService'
-            - '@Locastic\ActivityLogs\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
         tags:
             - { name: messenger.message_handler }

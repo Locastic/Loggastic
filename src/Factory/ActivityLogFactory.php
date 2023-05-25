@@ -1,58 +1,42 @@
 <?php
 
-namespace Locastic\ActivityLog\Factory;
+namespace Locastic\Loggastic\Factory;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\ActivityLog\Model\ActivityLog;
-use Locastic\ActivityLog\Model\ActivityLogInterface;
-use Locastic\ActivityLog\Model\CurrentDataTracker;
-use Locastic\ActivityLog\Model\CurrentDataTrackerInterface;
-use Locastic\ActivityLog\Util\ClassUtils;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
+use Locastic\Loggastic\Message\ActivityLogMessageInterface;
+use Locastic\Loggastic\Model\ActivityLog;
+use Locastic\Loggastic\Model\ActivityLogInterface;
+use Locastic\Loggastic\Model\CurrentDataTracker;
+use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Util\ClassUtils;
 
-class ActivityLogFactory implements ActivityLogFactoryInterface
+final class ActivityLogFactory implements ActivityLogFactoryInterface
 {
-    private RequestStack $requestStack;
-    private Security $security;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-
-    public function __construct(Security $security, RequestStack $requestStack, ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
+    public function create(): ActivityLogInterface
     {
-        $this->requestStack = $requestStack;
-        $this->security = $security;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
+        return new ActivityLog();
     }
 
-    public function createActivityLog($id, string $resourceClass, string $action, array $data = []): ActivityLogInterface
+    public function createFromActivityLogMessage(ActivityLogMessageInterface $activityLogMessage, ?array $data = []): ActivityLogInterface
     {
-        $activityLog = new ActivityLog();
+        $activityLog = $this->create();
 
-        $activityLog->setData($data);
-        $activityLog->setAction($action);
-        $activityLog->setObjectClass($resourceClass);
-        $activityLog->setObjectId($id);
-        $activityLog->setUser($this->security->getUser());
-
-        $request  = $this->requestStack->getCurrentRequest();
-        if($request) {
-            $activityLog->setRequestUrl($request->getMethod().' '.$request->getRequestUri());
-        }
+        $activityLog->setDataChangesFromArray($data);
+        $activityLog->setAction($activityLogMessage->getActionName());
+        $activityLog->setObjectClass($activityLogMessage->getClassName());
+        $activityLog->setObjectId($activityLogMessage->getObjectId());
+        $activityLog->setRequestUrl($activityLogMessage->getRequestUrl());
+        $activityLog->setUser($activityLogMessage->getUser());
 
         return $activityLog;
     }
 
     public function createCurrentDataTracker($item, $normalizedData): CurrentDataTrackerInterface
     {
-        $resourceClass = ClassUtils::getClass($item);
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($resourceClass);
-
         $currentDataTracker = new CurrentDataTracker();
 
-        $currentDataTracker->setId($item->getId().'-'.$elasticContext->getShortName());
         $currentDataTracker->setObjectId($item->getId());
         $currentDataTracker->setDataFromArray($normalizedData);
-        $currentDataTracker->setObjectClass($resourceClass);
+        $currentDataTracker->setObjectClass(ClassUtils::getClass($item));
 
         return $currentDataTracker;
     }

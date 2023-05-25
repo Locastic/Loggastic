@@ -1,11 +1,9 @@
 <?php
 
-namespace Locastic\Loggastic\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
-use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[Loggable(groups: ['dummy_photo_log'])]
 class DummyPhoto
 {
     #[Groups(groups: ['dummy_photo_log'])]

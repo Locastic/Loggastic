@@ -1,11 +1,11 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use Locastic\ActivityLog\Metadata\LoggableContext\LoggableContextCollection;
+use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 
 /**
- * Creates loggable context collection for all loggable class
+ * Creates loggable context collection for all loggable class.
  */
 interface LoggableContextCollectionFactoryInterface
 {
