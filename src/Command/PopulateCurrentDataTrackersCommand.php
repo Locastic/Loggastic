@@ -70,9 +70,9 @@ class PopulateCurrentDataTrackersCommand extends Command
 
         $limit = $helper->ask($input, $output, $question);
 
-        $this->io = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($input, $output);
 
-        $this->io->title('Creating current data log trackers ...');
+        $io->title('Creating current data log trackers ...');
 
         if ('ALL' !== $loggableClass) {
             $loggableClasses = [$loggableClass];
@@ -86,7 +86,7 @@ class PopulateCurrentDataTrackersCommand extends Command
             try {
                 $this->elasticsearchIndexFactory->recreateCurrentDataTrackerLogIndex($loggableClass);
             } catch (\Exception $e) {
-                $this->io->error($e->getMessage());
+                $io->error($e->getMessage());
 
                 return Command::FAILURE;
             }
@@ -99,7 +99,7 @@ class PopulateCurrentDataTrackersCommand extends Command
                 continue;
             }
 
-            $this->io->title('Processing '.$loggableClass);
+            $io->title('Processing '.$loggableClass);
             $repository = $manager->getRepository($loggableClass);
 
             $batchSize = 250;
@@ -115,7 +115,7 @@ class PopulateCurrentDataTrackersCommand extends Command
                 ++$messagesCount;
             }
 
-            $this->io->success('Dispatched '.$messagesCount.' messages for populating '.$loggableClass.' data trackers');
+            $io->success('Dispatched '.$messagesCount.' messages for populating '.$loggableClass.' data trackers');
         }
 
         return Command::SUCCESS;

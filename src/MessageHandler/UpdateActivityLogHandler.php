@@ -4,33 +4,25 @@ namespace Locastic\Loggastic\MessageHandler;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
 use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
-use Locastic\Loggastic\Logger\ActivityLoggerInterface;
+use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactory;
 use Locastic\Loggastic\Model\CurrentDataTracker;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 #[AsMessageHandler]
-class UpdateActivityLogHandler implements MessageHandlerInterface
+class UpdateActivityLogHandler
 {
     use ElasticNormalizationContextTrait;
 
-    private ActivityLoggerInterface $activityLogger;
-    private CurrentDataTrackerProviderInterface $currentDataTrackerProvider;
-    private LoggableContextFactory $loggableContextFactory;
-
     public function __construct(
-        ActivityLoggerInterface $activityLogger,
-        CurrentDataTrackerProviderInterface $currentDataTrackerProvider,
-        LoggableContextFactory $loggableContextFactory
+        private readonly ActivityLogProcessorInterface $activityLogProcessor,
+        private readonly CurrentDataTrackerProviderInterface $currentDataTrackerProvider,
+        private readonly LoggableContextFactory $loggableContextFactory
     ) {
-        $this->activityLogger = $activityLogger;
-        $this->currentDataTrackerProvider = $currentDataTrackerProvider;
-        $this->loggableContextFactory = $loggableContextFactory;
     }
 
-    public function __invoke(UpdateActivityLogMessageInterface $message)
+    public function __invoke(UpdateActivityLogMessageInterface $message): void
     {
         $updatedItem = $message->getUpdatedItem();
 
@@ -45,6 +37,6 @@ class UpdateActivityLogHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->activityLogger->logUpdatedItem($message, $currentDataTracker);
+        $this->activityLogProcessor->processUpdatedItem($message, $currentDataTracker);
     }
 }

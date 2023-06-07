@@ -8,10 +8,11 @@ use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationC
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
 use Locastic\Loggastic\Factory\ActivityLogFactory;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PopulateCurrentDataTrackersHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class PopulateCurrentDataTrackersHandler
 {
     use ElasticNormalizationContextTrait;
 
@@ -35,7 +36,7 @@ class PopulateCurrentDataTrackersHandler implements MessageHandlerInterface
         $this->elasticsearchContextFactory = $elasticsearchContextFactory;
     }
 
-    public function __invoke(PopulateCurrentDataTrackersMessage $message)
+    public function __invoke(PopulateCurrentDataTrackersMessage $message): void
     {
         $loggableContext = $message->getLoggableContext();
 
@@ -50,9 +51,9 @@ class PopulateCurrentDataTrackersHandler implements MessageHandlerInterface
         //todo move order to config or command
         $data = $repository->findBy([], $args, $message->getBatchSize(), $message->getOffset());
 
-        echo ''."\r\n";
+        echo "\r\n";
         echo 'Creating '.$message->getBatchSize().' current data trackers for '.$message->getLoggableClass().' ...'."\r\n";
-        echo ''."\r\n";
+        echo "\r\n";
 
         $currentDataTrackers = [];
         foreach ($data as $item) {

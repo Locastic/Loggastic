@@ -21,19 +21,6 @@ class ElasticsearchContext implements ElasticsearchContextInterface
         $this->shortName = $shortName;
     }
 
-    public function getIndexByClass(string $className): string
-    {
-        if ($className instanceof ActivityLogInterface) {
-            return $this->activityLogIndex;
-        }
-
-        if ($className instanceof CurrentDataTrackerInterface) {
-            return $this->currentDataTrackerIndex;
-        }
-
-        throw new IndexNotFoundException();
-    }
-
     public function getActivityLogIndex(): string
     {
         return $this->activityLogIndex;

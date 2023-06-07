@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Command;
 
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
 use Symfony\Component\Console\Command\Command;
@@ -31,13 +31,13 @@ class CreateLoggableIndexesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->io = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($input, $output);
 
-        $this->io->title('Creating activity log indexes ...');
+        $io->title('Creating activity log indexes ...');
         $loggableContextCollection = $this->loggableContextCollectionFactory->create();
 
         foreach ($loggableContextCollection->getIterator() as $loggableClass => $config) {
-            $this->io->writeln('Creating '.$loggableClass.' activity_log index');
+            $io->writeln('Creating '.$loggableClass.' activity_log index');
 
             try {
                 $this->elasticsearchIndexFactory->createActivityLogIndex($loggableClass);
@@ -49,11 +49,11 @@ class CreateLoggableIndexesCommand extends Command
                 }
             }
 
-            $this->io->writeln('Creating '.$loggableClass.' current_data_tracker index');
+            $io->writeln('Creating '.$loggableClass.' current_data_tracker index');
 
             try {
                 $this->elasticsearchIndexFactory->createCurrentDataTrackerLogIndex($loggableClass);
-            } catch (BadRequest400Exception $e) {
+            } catch (ClientResponseException $e) {
                 if (strpos($e->getMessage(), 'resource_already_exists_exception')) {
                     $output->writeln('Index already exists, skipping.');
                 } else {
@@ -62,7 +62,7 @@ class CreateLoggableIndexesCommand extends Command
             }
         }
 
-        $this->io->success('Done!');
+        $io->success('Done!');
 
         return Command::SUCCESS;
     }

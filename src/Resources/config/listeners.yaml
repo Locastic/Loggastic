@@ -1,10 +1,5 @@
 services:
-    Locastic\Loggastic\EventListener\SendActivityLogMessageToTransportListener:
+    Locastic\Loggastic\EventListener\PreDispatchActivityLogMessageListener:
         autowire: true
         tags:
-            - { name: kernel.event_listener, event: Symfony\Component\Messenger\Event\SendMessageToTransportsEvent }
-
-    Locastic\Loggastic\EventListener\SendUpdateActivityLogMessageToTransportListener:
-        autowire: true
-        tags:
-            - { name: kernel.event_listener, event: Symfony\Component\Messenger\Event\SendMessageToTransportsEvent }
+            - { name: kernel.event_listener }

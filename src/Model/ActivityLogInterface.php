@@ -26,7 +26,13 @@ interface ActivityLogInterface extends LogInterface
 
     public function getDataChangesArray(): ?array;
 
+    public function setDataChangesFromArray(?array $dataChanges = null): void;
+
     public function setDataChanges(string $dataChanges): void;
+
+    public function setRequestUrl(?string $requestUrl): void;
+
+    public function getRequestUrl(): ?string;
 
     public function getUser(): ?array;
 

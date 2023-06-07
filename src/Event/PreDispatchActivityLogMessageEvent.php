@@ -2,22 +2,23 @@
 
 namespace Locastic\Loggastic\Event;
 
+use Locastic\Loggastic\Message\ActivityLogMessageInterface;
 use Locastic\Loggastic\Model\ActivityLogInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class PreDispatchActivityLogEvent extends Event
+class PreDispatchActivityLogMessageEvent extends Event
 {
-    public function __construct(private readonly ActivityLogInterface $activityLog)
+    public function __construct(private readonly ActivityLogMessageInterface $activityLogMessage)
     {
     }
 
-    public static function create(ActivityLogInterface $activityLog): self
+    public static function create(ActivityLogMessageInterface $activityLogMessage): self
     {
-        return new self($activityLog);
+        return new self($activityLogMessage);
     }
-    
-    public function getActivityLog(): ActivityLogInterface
+
+    public function getActivityLogMessage(): ActivityLogMessageInterface
     {
-        return $this->activityLog;
+        return $this->activityLogMessage;
     }
 }

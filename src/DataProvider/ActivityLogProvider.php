@@ -46,7 +46,8 @@ class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getItemByQuery(
             $elasticContext->getCurrentDataTrackerIndex(),
             CurrentDataTracker::class,
-            $body);
+            $body
+        );
     }
 
     public function getActivityLogsByClassAndId(string $className, mixed $objectId, array $sort = []): array
@@ -64,7 +65,8 @@ class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getCollection(
             $elasticContext->getActivityLogIndex(),
             ActivityLog::class,
-            $body);
+            $body
+        );
     }
 
     public function getActivityLogsByIndexAndId(string $index, $objectId, array $sort = []): array
@@ -80,6 +82,7 @@ class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getCollection(
             $index,
             ActivityLog::class,
-            $body);
+            $body
+        );
     }
 }

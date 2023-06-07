@@ -30,6 +30,7 @@ class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInterface
         return $this->elasticsearchService->getItemByQuery(
             $elasticContext->getCurrentDataTrackerIndex(),
             CurrentDataTracker::class,
-            $body);
+            $body
+        );
     }
 }

@@ -2,22 +2,16 @@
 
 namespace Locastic\Loggastic\MessageHandler;
 
-use Locastic\Loggastic\Logger\ActivityLoggerInterface;
+use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
 use Locastic\Loggastic\Message\DeleteActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class DeleteActivityLogHandler implements MessageHandlerInterface
+class DeleteActivityLogHandler
 {
-    private ActivityLoggerInterface $activityLogger;
-    private LoggableContextFactoryInterface $loggableContextFactory;
-
     public function __construct(
-        ActivityLoggerInterface $activityLogger,
-        LoggableContextFactoryInterface $loggableContextFactory
+        private readonly ActivityLogProcessorInterface $activityLogProcessor,
+        private readonly LoggableContextFactoryInterface $loggableContextFactory
     ) {
-        $this->activityLogger = $activityLogger;
-        $this->loggableContextFactory = $loggableContextFactory;
     }
 
     public function __invoke(DeleteActivityLogMessageInterface $message)
@@ -27,6 +21,6 @@ class DeleteActivityLogHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->activityLogger->logDeletedItem($message);
+        $this->activityLogProcessor->processDeletedItem($message);
     }
 }

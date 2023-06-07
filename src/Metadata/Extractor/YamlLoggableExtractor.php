@@ -43,11 +43,11 @@ class YamlLoggableExtractor extends AbstractLoggableExtractor
         }
 
         if (!is_array($loggableClassConfig['groups'])) {
-            throw new \InvalidArgumentException(sprintf('Invalid configuration for "locastic_loggable": "groups" must be an array, %s given in "%s".', \gettype($loggableClass['groups']), $path));
+            throw new \InvalidArgumentException(sprintf('Invalid configuration for "locastic_loggable": "groups" must be an array, %s given in "%s".', \gettype($loggableClassConfig['groups']), $path));
         }
 
         if (!class_exists($loggableClassConfig['class'])) {
-            throw new \InvalidArgumentException(sprintf('Invalid configuration for "locastic_loggable" in "%s": class "%s" does not exist.', $path, $loggableClass['class']));
+            throw new \InvalidArgumentException(sprintf('Invalid configuration for "locastic_loggable" in "%s": class "%s" does not exist.', $path, $loggableClassConfig['class']));
         }
     }
 }

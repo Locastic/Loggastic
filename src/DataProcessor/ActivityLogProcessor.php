@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\Loggastic\Logger;
+namespace Locastic\Loggastic\DataProcessor;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
@@ -14,7 +14,7 @@ use Locastic\Loggastic\Model\CurrentDataTracker;
 use Locastic\Loggastic\Util\ArraysComparer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ActivityLogger implements ActivityLoggerInterface
+final class ActivityLogProcessor implements ActivityLogProcessorInterface
 {
     use ElasticNormalizationContextTrait;
 
@@ -38,7 +38,7 @@ class ActivityLogger implements ActivityLoggerInterface
         $this->loggableContextFactory = $loggableContextFactory;
     }
 
-    public function logCreatedItem(CreateActivityLogMessageInterface $message): void
+    public function processCreatedItem(CreateActivityLogMessageInterface $message): void
     {
         $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
@@ -59,7 +59,7 @@ class ActivityLogger implements ActivityLoggerInterface
         $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
     }
 
-    public function logUpdatedItem(UpdateActivityLogMessageInterface $message, CurrentDataTracker $currentDataTracker): void
+    public function processUpdatedItem(UpdateActivityLogMessageInterface $message, CurrentDataTracker $currentDataTracker): void
     {
         $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
@@ -77,6 +77,7 @@ class ActivityLogger implements ActivityLoggerInterface
         $changes = ArraysComparer::getCompared($updatedData, $currentDataTracker->getDataAsArray());
 
         if (!$changes && !$message->isCreateLogWithoutChanges()) {
+            dd('no changes');
             return;
         }
 
@@ -92,7 +93,7 @@ class ActivityLogger implements ActivityLoggerInterface
         $this->elasticService->updateItem($currentDataTracker->getId(), $currentDataTracker, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
     }
 
-    public function logDeletedItem(DeleteActivityLogMessageInterface $message): void
+    public function processDeletedItem(DeleteActivityLogMessageInterface $message): void
     {
         $loggableContext = $this->loggableContextFactory->create($message->getClassName());
 
