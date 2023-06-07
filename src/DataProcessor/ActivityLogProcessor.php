@@ -77,7 +77,6 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
         $changes = ArraysComparer::getCompared($updatedData, $currentDataTracker->getDataAsArray());
 
         if (!$changes && !$message->isCreateLogWithoutChanges()) {
-            dd('no changes');
             return;
         }
 
