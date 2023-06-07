@@ -4,5 +4,4 @@ namespace Locastic\Loggastic\Logger;
 
 interface ActivityLoggerInterface
 {
-
 }
