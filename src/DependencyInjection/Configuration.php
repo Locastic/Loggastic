@@ -20,6 +20,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->booleanNode('default_doctrine_subscriber')
+                    ->defaultTrue()
+                ->end()
                 ->arrayNode('loggable_classes')
                     ->arrayPrototype()
                         ->children()

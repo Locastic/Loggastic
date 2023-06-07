@@ -49,6 +49,10 @@ class LocasticLoggasticExtension extends Extension
         $loader->load('metadata.yaml');
         $container->getDefinition(XmlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['xml']);
         $container->getDefinition(YamlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['yml']);
+
+        if($config['default_doctrine_subscriber']) {
+            $loader->load('activity_log_doctrine_subscriber.yaml');
+        }
     }
 
     private function getLoggablePaths(ContainerBuilder $container, array $config): array
