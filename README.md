@@ -1,49 +1,46 @@
-[WIP]
-# Locastic Activity Logs
+<h1 align="center">
+[WIP]Loggastic
+</h1>
 
-Locastic Activity Logs is made for tracking changes to your objects and their relations.
+Loggastic is made for tracking changes to your objects and their relations.
 Built on top of the **Symfony framework**, this library makes it easy to implement activity logs and store them on **Elasticsearch** for fast logs browsing.
 
 Each tracked entity will have two indexes in the ElasticSearch:
 1. `entity_name_activity_log` -> saving all CRUD actions made on an object. And additionally saving before and after values for Edit actions.
 2. `entity_name_current_data_tracker` -> saving the latest object values used for comparing the changes made on Edit actions. This enables us to only store before and after values for modified fields in the `activity_log` index
 
-## System requirements
+System requirements
+-------------------
+
 Elasticsearch version 7.17
 
-## Installation
+Installation
+------------
 
-`composer require locastic/activity-logs`
+`composer require locastic/loggastic`
 
-(Not yet publicly available)
+Making your entity loggable
+---------------------------
 
-## Making your entity loggable
-### 1. Add Loggable annotation to your entity
+To make your entity loggable you need to do the following steps:
+### 1. Add Loggable attribute to your entity
 
 Add `Locastic\Loggastic\Annotation\Loggable` annotation to your entity and define serialization group name:
 ```
 <?php
 
-namespace Locastic\Loggastic\Tests\Fixtures;
+namespace App\Entity;
 
 use Locastic\Loggastic\Annotation\Loggable;
 
-/**
- * @Loggable(groups={"blog_post_log"})
- */
+#[Loggable(groups: ['blog_post_log'])]
 class BlogPost
-{
-    private int $id;
-
-    private ?string $title;
-
-    private array $tags = [];
-    
+{    
     // ...
 }
 ```
-### 2. Add serialization group to the fields you want to log
-Use the serialization group defined in the Loggable annotation on the fields you want to track.
+### 2. Add serialization groups to the fields you want to log
+Use the serialization group defined in the Loggable attribute config on the fields you want to track.
 You can add them to the relations and their fields too.
 ```
 <?php
@@ -53,22 +50,46 @@ namespace App\Entity;
 use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @Loggable(groups={"blog_post_log"})
- */
+#[Loggable(groups: ['blog_post_log'])]
 class BlogPost
 {
     private int $id;
 
-    /** @Groups({"blog_post_log"}) */
-    private ?string $title;
+    #[Groups(groups: ['blog_post_log'])]
+    private string $title;
 
-    /** @Groups({"blog_post_log"}) */
-    private array $tags = [];
+    #[Groups(groups: ['blog_post_log'])]
+    private ArrayCollection $tags;
     
     // ...
 }
 ```
+
+Example for logging fields from relations:
+
+```
+<?php
+
+namespace App\Entity;
+
+use Locastic\Loggastic\Annotation\Loggable;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+class Tag
+{
+    private int $id;
+
+    #[Groups(groups: ['blog_post_log'])]
+    private string $name;
+
+    #[Groups(groups: ['blog_post_log'])]
+    private DateTimeImmutable $createdAt;
+    
+    // ...
+}
+```
+
+Note: You can also use **annotations, xml and yaml**! Examples coming soon.
 
 ### 3. Run commands for creating indexes in ElasticSearch
 
@@ -78,99 +99,7 @@ If you already have some data in the database, make sure to populate current dat
 
     bin/console locastic:activity-logs:populate-current-data-trackers
 
-### 4. Add an event listener for dispatching logs messages on CRUD actions
-Depending on you application logic, you need to find the most fitting place to trigger logs saving. In most cases that can be ***Doctrine event listener*** which is triggered on each database change.
-
-If you are using ***ApiPlatform***, one of the good options would be to use its POST_WRITE event: https://api-platform.com/docs/core/events/#custom-event-listeners
-
-And for the ***Sylius projects*** you can use the Resource bundle events: https://sylius-try.readthedocs.io/en/latest/bundles/general/events.html
-
-Here is an example for the Doctrine listener implementation:
-```
-<?php
-
-namespace App\EventSubscriber;
-
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Locastic\Loggastic\Message\DeleteActivityLogMessage;
-use Locastic\Loggastic\Util\ClassUtils;
-use Symfony\Component\Messenger\MessageBusInterface;
-
-class ActivityLogDoctrineSubscriber implements EventSubscriber
-{
-    private MessageBusInterface $bus;
-
-    private array $persistedEntities = [];
-    
-    public function __construct(MessageBusInterface $bus)
-    {
-        $this->bus = $bus;
-    }
-
-    public function getSubscribedEvents()
-    {
-        return [
-            'prePersist',
-            'postFlush',
-            'postRemove',
-            'preRemove',
-            'postUpdate',
-            'postSoftDelete',
-        ];
-    }
-    
-    public function prePersist(LifecycleEventArgs $args): void
-    {
-        $this->persistedEntities[] = $args->getObject();
-    }
-    
-    public function postFlush(PostFlushEventArgs $args): void
-    {
-        if (empty($this->persistedEntities)) {
-            return;
-        }
-        
-        foreach ($this->persistedEntities as $key => $item) {
-            $args->getEntityManager()->refresh($item);
-            $this->bus->dispatch(new CreateActivityLogMessage($item));
-        }   
-        
-        $this->persistedEntities = [];
-    }
-    
-    public function postUpdate(LifecycleEventArgs $args): void
-    {
-        $item = $args->getObject();
-        
-        $this->bus->dispatch(new UpdateActivityLogMessage($item));
-    }
-
-    public function preRemove(LifecycleEventArgs $args): void
-    {
-        $item = $args->getObject();
-        $item->objectId = $item->getId();
-    }
-
-    public function postRemove(LifecycleEventArgs $args): void
-    {
-        $item = $args->getObject();
-
-        $this->bus->dispatch(new DeleteActivityLogMessage($item->objectId, ClassUtils::getClass($item)));
-    }
-
-    public function postSoftDelete(LifecycleEventArgs $args): void
-    {
-        $item = $args->getObject();
-
-        $this->bus->dispatch(new DeleteActivityLogMessage($item->getId(), ClassUtils::getClass($item)));
-    }
-}
-```
-
-If you have any custom actions which are not covered by the listener you made, make sure to trigger logs saving manually.
-
-### 5. Displaying activity logs
+### 4. Displaying activity logs
 `Locastic\Loggastic\DataProvider\ActivityLogProvider` comes with a few useful methods for getting the activity logs data:
 
     public function getActivityLogsByClass(string $className): array;
@@ -181,25 +110,91 @@ If you have any custom actions which are not covered by the listener you made, m
 
 You can use them or add your own. It's up to you to create the actual views. Or if you are using ApiPlatform to create GET endpoints and return data using the provider.
 
+That's it!
+----------
+Now you have the basic activity logs setup. 
+Each time some change happens in the database for loggable entities, the activity log will be saved to the Elasticsearch.
 
-## Saving logs async
-Activity logs are using Symfony messenger component and are made to work in the async way.
+## Customization guide
+Now that you have the basic setup, you can add some additional options and customize the library to your needs.
+
+## Configuration reference
+Default configuration:
+```yaml
+# config/packages/loggastic.yaml
+loggastic:
+    # directory paths containing loggable classes or xml/yaml files
+    loggable_paths: [ ]
+
+    # Turn on/off the default Doctrine subscriber
+    default_doctrine_subscriber: true,
+
+    # ElasticSearch config
+    elastic_host: 'localhost:9200'
+    elastic_date_detection: true    #https://www.elastic.co/guide/en/elasticsearch/reference/current/date-detection.html
+    elastic_dynamic_date_formats: "strict_date_optional_time||epoch_millis||strict_time"
+
+    # ElasticSearch index config for ActivityLog
+    activity_log:
+        elastic_properties:
+            id:
+                type: keyword
+            action:
+                type: text
+            loggedAt:
+                type: date
+            objectId:
+                type: text
+            objectType:
+                type: text
+            objectClass:
+                type: text
+            dataChanges:
+                type: text
+            user:
+                type: object
+                properties:
+                    username:
+                        type: text
+
+    # ElasticSearch index config for CurrentDataTracker
+    current_data_tracker:
+        elastic_properties:
+            dateTime:
+                type: date
+            objectId:
+                type: text
+            objectType:
+                type: text
+            objectClass:
+                type: text
+            jsonData:
+                type: text
+
+```
+
+
+### Saving logs async
+Activity logs are using Symfony messenger component and are made to work in the async way too.
 If you want to make them async add the following messages to the messenger config:
-
+```
+framework:
+    messenger:
         routing:
             'Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage': async
             'Locastic\Loggastic\Message\CreateActivityLogMessage': async
             'Locastic\Loggastic\Message\DeleteActivityLogMessage': async
             'Locastic\Loggastic\Message\UpdateActivityLogMessage': async
+```
 
 ***Important note!***
 
-Only one consumer should be used per entity in order to not corrupt the data.
+Only one consumer should be used per loggable entity in order to not corrupt the data.
 
-## Handling relations
-Sometimes you want to log changes on some entity to some related entity. For example if you are using the Doctrine listener, you will only get the entity that actually had changes.
+### Handling relations
+Sometimes you want to log changes made on some entity to some related entity. For example if you are using the Doctrine listener, you will only get the entity that actually had changes.
 Let's say you want to log `Product` changes which has a relation to the `ProductVariant`. On the edit form only fields from the `ProductVariant` were changed.
-Even if you run `persist()` method on `Product`, in this case only ProductVariant will be shown in the Doctrine listener.
+Even if you run `persist()` method on `Product`, in this case only `ProductVariant` will be shown in the Doctrine listener.
 For this case you can use the `Locastic\Loggastic\Loggable\LoggableChildInterface` on `ProductVariant`:
 ```
 <?php
@@ -228,11 +223,31 @@ class ProductVariant implements LoggableChildInterface
 
 Now each change made on `ProductVariant` will be logged to the `Product`.
 
-## Customizing guide
-TODO
+### Custom event listeners for saving activity logs
+You can use `Locastic\Loggastic\Logger\ActivityLogger` service to save item changes to the Elasticsearch.
+Depending on you application logic, you need to find the most fitting place to trigger logs saving.
 
-## Configuration
-TODO : annotations, attributes, xml, yaml
+In most cases that can be the ***Doctrine event listener*** which is triggered on each database change. Loggastic comes with a built-in Doctrine listener which is used by default.
+If you want to turn it off, you can do it by setting the `loggastic.doctrine_listener_enabled` config parameter to `false`:
+```
+# config/packages/loggastic.yaml
 
-## Optimising messenger for large amount of data
-TODO
+loggastic:
+    doctrine_listener_enabled: false
+```
+
+If you are using ***ApiPlatform***, one of the good options would be to use its POST_WRITE event: https://api-platform.com/docs/core/events/#custom-event-listeners
+
+And for the ***Sylius projects*** you can use the Resource bundle events: https://docs.sylius.com/en/1.12/book/architecture/events.html
+
+### Optimising messenger for large amount of data
+Coming soon...
+
+
+## Contribution
+
+If you have idea on how to improve this bundle, feel free to contribute. If you have problems or you found some bugs, please open an issue.
+
+## Support
+
+Want us to help you with this bundle or any ApiPlatform/Symfony project? Write us an email on info@locastic.com
