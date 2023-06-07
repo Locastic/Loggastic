@@ -24,9 +24,11 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
     public function normalize($object, string $format = null, array $context = []): array
     {
         $data = [];
-        foreach ($object as $item) {
-            $logId = $this->logIdentifierExtractor->getIdentifierValue($item);
-            $data[$logId] = $this->decorated->normalize($item, 'array', $context);
+        foreach ($object as $index => $item) {
+            $normalizedItem = $this->decorated->normalize($item, 'array', $context);
+            $logId = $this->logIdentifierExtractor->getIdentifierValue($item) ?: $index;
+
+            $data[$logId] = $normalizedItem;
         }
 
         return $data;

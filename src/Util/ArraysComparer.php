@@ -9,7 +9,7 @@ class ArraysComparer
         $previousValues = ArrayDiff::arrayDiffRecursive($previousData, $currentData);
         $currentValues = ArrayDiff::arrayDiffRecursive($currentData, $previousData);
 
-        if (!$previousValues || !$currentValues) {
+        if (!$previousValues && !$currentValues) {
             return null;
         }
 
