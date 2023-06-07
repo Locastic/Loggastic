@@ -6,10 +6,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class DummyPhoto
 {
-    #[Groups(groups: ['dummy_photo_log'])]
+    #[Groups(groups: ['dummy_photo_log', 'dummy_blog_post_log'])]
     private $id;
 
-    #[Groups(groups: ['dummy_photo_log'])]
+    #[Groups(groups: ['dummy_photo_log', 'dummy_blog_post_log'])]
     private $path;
 
     public function getId()

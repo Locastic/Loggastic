@@ -2,8 +2,11 @@
 
 namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
 
 /**
  * @Loggable(groups={"dummy_blog_post_log"})
@@ -26,6 +29,14 @@ class DummyBlogPost
 
     /** @Groups({"dummy_blog_post_log"}) */
     private bool $enabled;
+
+    /** @Groups({"dummy_blog_post_log"}) */
+    private Collection $photos;
+
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -86,4 +97,32 @@ class DummyBlogPost
     {
         $this->enabled = $enabled;
     }
+
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function setPhotos(Collection $photos): void
+    {
+        $this->photos = $photos;
+    }
+
+//    public function addPhoto(DummyPhoto $photo): void
+//    {
+//        if($this->photos->contains($photo)) {
+//            return;
+//        }
+//
+//        $this->photos->add($photo);
+//    }
+//
+//    public function removePhoto(DummyPhoto $photo): void
+//    {
+//        if(!$this->photos->contains($photo)) {
+//            return;
+//        }
+//
+//        $this->photos->removeElement($photo);
+//    }
 }
