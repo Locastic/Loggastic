@@ -5,19 +5,16 @@ namespace Locastic\Loggastic\Tests\FunctionalTests;
 use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\DataProvider\ActivityLogProviderInterface;
 use Locastic\Loggastic\Enum\ActivityLogAction;
-use Locastic\Loggastic\Message\CreateActivityLogMessage;
-use Locastic\Loggastic\Message\DeleteActivityLogMessage;
-use Locastic\Loggastic\Message\UpdateActivityLogMessage;
+use Locastic\Loggastic\Logger\ActivityLoggerInterface;
 use Locastic\Loggastic\Model\ActivityLogInterface;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class ActivityLogTest extends KernelTestCase
 {
-    private MessageBusInterface $bus;
     private ActivityLogProviderInterface $activityLogProvider;
     private DummyBlogPost $blogPost;
+    private ActivityLoggerInterface $activityLogger;
 
     public function __construct(string $name)
     {
@@ -25,8 +22,8 @@ class ActivityLogTest extends KernelTestCase
 
         $container = self::getContainer()->get('test.service_container');
 
-        $this->bus = $container->get(MessageBusInterface::class);
         $this->activityLogProvider = $container->get(ActivityLogProviderInterface::class);
+        $this->activityLogger = $container->get(ActivityLoggerInterface::class);
 
         // prepare elastic index
         $elasticsearchIndexFactory = $container->get(ElasticsearchIndexFactoryInterface::class);
@@ -38,7 +35,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testLogCreate(): void
     {
-        $this->bus->dispatch(new CreateActivityLogMessage($this->blogPost));
+        $this->activityLogger->logCreatedItem($this->blogPost);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
 
@@ -55,7 +52,7 @@ class ActivityLogTest extends KernelTestCase
         $this->blogPost->setTags(['#php', '#elasticSearch']);
         $this->blogPost->setEnabled(true);
 
-        $this->bus->dispatch(new UpdateActivityLogMessage($this->blogPost));
+        $this->activityLogger->logUpdatedItem($this->blogPost);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
 
@@ -81,7 +78,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testLogDelete(): void
     {
-        $this->bus->dispatch(new DeleteActivityLogMessage($this->blogPost->getId(), DummyBlogPost::class));
+        $this->activityLogger->logDeletedItem($this->blogPost->getId(), DummyBlogPost::class);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
         self::assertCount(3, $activityLogs);
