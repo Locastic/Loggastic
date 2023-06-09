@@ -100,15 +100,61 @@ If you already have some data in the database, make sure to populate current dat
     bin/console locastic:activity-logs:populate-current-data-trackers
 
 ### 4. Displaying activity logs
-`Locastic\Loggastic\DataProvider\ActivityLogProvider` comes with a few useful methods for getting the activity logs data:
+Here are the examples for displaying activity logs in twig or as Api endpoints:
 
+**a) Displaying logs in Twig**
+`Locastic\Loggastic\DataProvider\ActivityLogProviderInterface` service comes with a few useful methods for getting the activity logs data:
+```php
     public function getActivityLogsByClass(string $className): array;
 
     public function getActivityLogsByClassAndId(string $className, $objectId): array;
 
     public function getActivityLogsByIndexAndId(string $index, $objectId, array $sort = []): array;
+```
+Use them to fetch data from the Elasticsearch and display it in your views. Example for displaying results in Twig:
+```twig
+Activity logs for Blog Posts:
+<br>
+{% for log in activityLogs %}
+    {{ log.action }} {{ log.objectType }} with {{ log.objectId }} ID at {{ log.loggedAt|date('d.m.Y H:i:s') }} by {{ log.user.username }}
+{% endfor %}
+```
+The output would look something like this:
+```text
+Activity logs for Blog Posts:
 
-You can use them or add your own. It's up to you to create the actual views. Or if you are using ApiPlatform to create GET endpoints and return data using the provider.
+Created BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
+Updated BlogPost with 1 ID at 02.01.2023 08:30:00 by admin
+Deleted BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
+```
+
+**b) Displaying logs in the api endpoint using ApiPlatform**
+In order to display Loggastic activity logs in an ApiPlatform endpoint, you can use ApiPlatforms ElasticSearch integration: https://api-platform.com/docs/core/elasticsearch/
+
+Example for displaying activity logs in the ApiPlatform endpoint:
+```yaml
+# config/packages/api_platform.yaml
+api_platform:
+    elasticsearch:
+        hosts: ['%env(ACTIVITY_LOGS_ELASTIC_URL)%']
+        mapping:
+            Locastic\Loggastic\Model\ActivityLog:
+                index: '*_activity_log'
+                type: _doc
+                
+    resources:
+        - Locastic\Loggastic\Model\ActivityLog:
+            collection_operations:
+                get: ~
+            item_operations:
+                get: ~
+            attributes:
+                normalization_context:
+                    groups: ['activity_log']
+```
+
+You can easily filter the results using the existing ApiPlatform filters: https://api-platform.com/docs/core/filters/
+
 
 That's it!
 ----------
@@ -125,7 +171,7 @@ Default configuration:
 loggastic:
     # directory paths containing loggable classes or xml/yaml files
     loggable_paths:
-        - '%kernel.project_dir%/config/Resources/config/loggastic'
+        - '%kernel.project_dir%/Resources/config/loggastic'
         - '%kernel.project_dir%/src/Entity'
 
     # Turn on/off the default Doctrine subscriber
@@ -136,7 +182,7 @@ loggastic:
     elastic_date_detection: true    #https://www.elastic.co/guide/en/elasticsearch/reference/current/date-detection.html
     elastic_dynamic_date_formats: "strict_date_optional_time||epoch_millis||strict_time"
 
-    # ElasticSearch index config for ActivityLog
+    # ElasticSearch index mapping for ActivityLog. https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html#mappings
     activity_log:
         elastic_properties:
             id:
@@ -159,7 +205,7 @@ loggastic:
                     username:
                         type: text
 
-    # ElasticSearch index config for CurrentDataTracker
+    # ElasticSearch index mapping for CurrentDataTracker
     current_data_tracker:
         elastic_properties:
             dateTime:
