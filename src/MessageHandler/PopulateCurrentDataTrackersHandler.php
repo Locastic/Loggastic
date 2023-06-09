@@ -16,24 +16,8 @@ class PopulateCurrentDataTrackersHandler
 {
     use ElasticNormalizationContextTrait;
 
-    private ManagerRegistry $managerRegistry;
-    private ActivityLogFactory $activityLogFactory;
-    private NormalizerInterface $objectNormalizer;
-    private ElasticsearchService $elasticService;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        ActivityLogFactory $activityLogFactory,
-        NormalizerInterface $objectNormalizer,
-        ElasticsearchService $elasticService,
-        ElasticsearchContextFactoryInterface $elasticsearchContextFactory
-    ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->objectNormalizer = $objectNormalizer;
-        $this->activityLogFactory = $activityLogFactory;
-        $this->elasticService = $elasticService;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
+    public function __construct(private readonly ManagerRegistry $managerRegistry, private readonly ActivityLogFactory $activityLogFactory, private readonly NormalizerInterface $objectNormalizer, private readonly ElasticsearchService $elasticService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
+    {
     }
 
     public function __invoke(PopulateCurrentDataTrackersMessage $message): void

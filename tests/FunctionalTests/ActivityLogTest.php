@@ -14,9 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ActivityLogTest extends KernelTestCase
 {
-    private ActivityLogProviderInterface $activityLogProvider;
-    private DummyBlogPost $blogPost;
-    private ActivityLoggerInterface $activityLogger;
+    private readonly ActivityLogProviderInterface $activityLogProvider;
+    private readonly DummyBlogPost $blogPost;
+    private readonly ActivityLoggerInterface $activityLogger;
 
     public function __construct(string $name)
     {

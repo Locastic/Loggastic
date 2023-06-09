@@ -4,7 +4,7 @@ namespace Locastic\Loggastic\Enum;
 
 class ActivityLogAction
 {
-    public const CREATED = 'Created';
-    public const EDITED = 'Edited';
-    public const DELETED = 'Deleted';
+    final public const CREATED = 'Created';
+    final public const EDITED = 'Edited';
+    final public const DELETED = 'Deleted';
 }

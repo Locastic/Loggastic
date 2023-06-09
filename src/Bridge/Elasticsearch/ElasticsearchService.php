@@ -11,15 +11,8 @@ class ElasticsearchService
 {
     use ElasticNormalizationContextTrait;
 
-    private ElasticsearchClient $elasticsearchClient;
-    private NormalizerInterface $normalizer;
-    private DenormalizerInterface $denormalizer;
-
-    public function __construct(ElasticsearchClient $elasticsearchClient, NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
+    public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly NormalizerInterface $normalizer, private readonly DenormalizerInterface $denormalizer)
     {
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->normalizer = $normalizer;
-        $this->denormalizer = $denormalizer;
     }
 
     public function createItem($item, string $index, array $groups = [])

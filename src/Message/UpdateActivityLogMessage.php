@@ -8,19 +8,15 @@ use Locastic\Loggastic\Util\ClassUtils;
 class UpdateActivityLogMessage implements UpdateActivityLogMessageInterface
 {
     private \DateTime $dateTime;
-    private object $updatedItem;
-    private string $actionName;
-    private bool $createLogWithoutChanges;
+    private readonly string $actionName;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
     private array $normalizedItem = [];
 
-    public function __construct(object $updatedItem, ?string $actionName = null, bool $createLogWithoutChanges = false)
+    public function __construct(private object $updatedItem, ?string $actionName = null, private readonly bool $createLogWithoutChanges = false)
     {
         $this->dateTime = new \DateTime();
-        $this->updatedItem = $updatedItem;
         $this->actionName = $actionName ?? ActivityLogAction::EDITED;
-        $this->createLogWithoutChanges = $createLogWithoutChanges;
     }
 
     public function getDateTime(): \DateTime

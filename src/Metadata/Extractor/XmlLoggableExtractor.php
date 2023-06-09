@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class XmlLoggableExtractor extends AbstractLoggableExtractor
 {
-    public const RESOURCE_SCHEMA = __DIR__.'/schema/metadata.xsd';
+    final public const RESOURCE_SCHEMA = __DIR__.'/schema/metadata.xsd';
 
     protected function extractPath(string $path): void
     {

@@ -8,7 +8,7 @@ class ClassUtils
 {
     public static function getClass($object): string
     {
-        $className = get_class($object);
+        $className = $object::class;
 
         $pos = strrpos($className, '\\'.Proxy::MARKER.'\\');
 

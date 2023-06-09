@@ -7,15 +7,10 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class CachedLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
-    public const CACHE_KEY = 'loggable_name_collection';
+    final public const CACHE_KEY = 'loggable_name_collection';
 
-    private CacheInterface $cache;
-    private LoggableContextCollectionFactoryInterface $decorated;
-
-    public function __construct(LoggableContextCollectionFactoryInterface $decorated, CacheInterface $cache)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $decorated, private readonly CacheInterface $cache)
     {
-        $this->cache = $cache;
-        $this->decorated = $decorated;
     }
 
     /**
@@ -23,8 +18,6 @@ class CachedLoggableContextCollectionFactory implements LoggableContextCollectio
      */
     public function create(): LoggableContextCollection
     {
-        return $this->cache->get(self::CACHE_KEY, function () {
-            return $this->decorated->create();
-        });
+        return $this->cache->get(self::CACHE_KEY, fn() => $this->decorated->create());
     }
 }

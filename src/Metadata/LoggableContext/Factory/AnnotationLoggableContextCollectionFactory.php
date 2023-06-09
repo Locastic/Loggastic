@@ -9,18 +9,11 @@ use Locastic\Loggastic\Util\RecursiveClassIterator;
 
 class AnnotationLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
-    private Reader $reader;
-    private array $loggablePaths;
-    private LoggableContextCollectionFactoryInterface $decorated;
-
     /**
      * @param string[] $loggablePaths
      */
-    public function __construct(LoggableContextCollectionFactoryInterface $decorated, Reader $reader, array $loggablePaths)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $decorated, private readonly Reader $reader, private readonly array $loggablePaths)
     {
-        $this->reader = $reader;
-        $this->loggablePaths = $loggablePaths;
-        $this->decorated = $decorated;
     }
 
     /**

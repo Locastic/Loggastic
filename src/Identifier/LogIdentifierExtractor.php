@@ -10,11 +10,8 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 // Used for setting collection keys in activity logs data
 final class LogIdentifierExtractor implements LogIdentifierExtractorInterface
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function getIdentifierValue(object $object): int|string|null
@@ -24,7 +21,7 @@ final class LogIdentifierExtractor implements LogIdentifierExtractorInterface
             $identifierGetter = 'get' . $identifier;
 
             return $object->$identifierGetter();
-        } catch (MappingException|HandlerFailedException $e) {
+        } catch (MappingException|HandlerFailedException) {
             // object not mapped to doctrine, try with getId method or return null
             return method_exists($object, 'getId') ? $object->getId() : null;
         }

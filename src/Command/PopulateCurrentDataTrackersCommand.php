@@ -18,15 +18,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * Recreate CurrentDataTracker index
  * Pull all loggable objects from DB and populate currentTracker data to elastic.
  */
+#[\Symfony\Component\Console\Attribute\AsCommand('locastic:activity-logs:populate-current-data-trackers')]
 class PopulateCurrentDataTrackersCommand extends Command
 {
-    protected static $defaultName = 'locastic:activity-logs:populate-current-data-trackers';
-
-    private ManagerRegistry $managerRegistry;
-    private MessageBusInterface $bus;
-    private LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory;
-    private ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory;
-
     protected function configure(): void
     {
         $this
@@ -34,13 +28,9 @@ class PopulateCurrentDataTrackersCommand extends Command
         ;
     }
 
-    public function __construct(ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory, LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, ManagerRegistry $managerRegistry, MessageBusInterface $bus)
+    public function __construct(private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory, private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ManagerRegistry $managerRegistry, private readonly MessageBusInterface $bus)
     {
         parent::__construct();
-        $this->managerRegistry = $managerRegistry;
-        $this->bus = $bus;
-        $this->loggableContextCollectionFactory = $loggableContextCollectionFactory;
-        $this->elasticsearchIndexFactory = $elasticsearchIndexFactory;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

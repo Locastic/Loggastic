@@ -6,21 +6,8 @@ use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextInterfac
 
 class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfigurationInterface
 {
-    private bool $dateDetection;
-    private string $dateFormats;
-    private array $activityLogProperties;
-    private array $currentDataTrackerProperties;
-
-    public function __construct(
-        bool $dateDetection,
-        string $dateFormats,
-        array $activityLogProperties,
-        array $currentDataTrackerProperties
-    ) {
-        $this->dateDetection = $dateDetection;
-        $this->dateFormats = $dateFormats;
-        $this->activityLogProperties = $activityLogProperties;
-        $this->currentDataTrackerProperties = $currentDataTrackerProperties;
+    public function __construct(private readonly bool $dateDetection, private readonly string $dateFormats, private readonly array $activityLogProperties, private readonly array $currentDataTrackerProperties)
+    {
     }
 
     public function getActivityLogIndexConfig(ElasticsearchContextInterface $elasticsearchContext): array

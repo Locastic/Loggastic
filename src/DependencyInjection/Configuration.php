@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->getRootNode();
         } else {
             // BC for symfony/config < 4.2
-            $rootNode = $treeBuilder->root('locastic_activity_log');
+            $rootNode = $treeBuilder->getRootNode();
         }
 
         $rootNode

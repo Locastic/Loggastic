@@ -7,15 +7,8 @@ use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient;
 
 class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 {
-    private ElasticsearchClient $elasticsearchClient;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-    private ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration;
-
-    public function __construct(ElasticsearchClient $elasticsearchClient, ElasticsearchContextFactoryInterface $elasticsearchContextFactory, ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
+    public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory, private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
     {
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
-        $this->elasticsearchIndexConfiguration = $elasticsearchIndexConfiguration;
     }
 
     public function recreateActivityLogIndex(string $className): void

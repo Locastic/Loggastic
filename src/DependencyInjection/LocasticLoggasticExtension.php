@@ -91,7 +91,7 @@ class LocasticLoggasticExtension extends Extension
             }
 
             if ($container->fileExists($path, false)) {
-                if (!preg_match('/\.(xml|ya?ml)$/', $path, $matches)) {
+                if (!preg_match('/\.(xml|ya?ml)$/', (string) $path, $matches)) {
                     throw new RuntimeException(sprintf('Unsupported mapping type in "%s", supported types are XML & YAML.', $path));
                 }
 

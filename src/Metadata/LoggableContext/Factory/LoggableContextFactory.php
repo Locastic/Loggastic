@@ -4,11 +4,8 @@ namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
 class LoggableContextFactory implements LoggableContextFactoryInterface
 {
-    private LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory;
-
-    public function __construct(LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory)
     {
-        $this->loggableContextCollectionFactory = $loggableContextCollectionFactory;
     }
 
     public function create(string $loggableClass): ?array

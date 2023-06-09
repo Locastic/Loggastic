@@ -12,13 +12,8 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
 {
     public const FORMAT = 'activityLog';
 
-    private NormalizerInterface $decorated;
-    private LogIdentifierExtractorInterface $logIdentifierExtractor;
-
-    public function __construct(NormalizerInterface $decorated, LogIdentifierExtractorInterface $logIdentifierExtractor)
+    public function __construct(private readonly NormalizerInterface $decorated, private readonly LogIdentifierExtractorInterface $logIdentifierExtractor)
     {
-        $this->decorated = $decorated;
-        $this->logIdentifierExtractor = $logIdentifierExtractor;
     }
 
     public function normalize($object, string $format = null, array $context = []): array

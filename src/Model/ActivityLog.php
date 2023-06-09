@@ -7,49 +7,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class ActivityLog implements ActivityLogInterface
 {
-    /**
-     * @Groups({"activity_log"})
-     */
     private ?string $id = null;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?string $action = null;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?\DateTime $loggedAt = null;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected $objectId;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?string $objectClass = null;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?string $dataChanges = null;
 
-    /**
-     * @deprecated
-     */
-    protected ?array $data = null;
-
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?string $requestUrl = null;
 
-    /**
-     * @Groups({"activity_log"})
-     */
+    #[Groups(["activity_log"])]
     protected ?array $user = null;
 
     protected ?string $shortName = null;
@@ -119,16 +97,6 @@ class ActivityLog implements ActivityLogInterface
         $this->requestUrl = $requestUrl;
     }
 
-    public function getData(): ?array
-    {
-        return $this->data;
-    }
-
-    public function setData(?array $data): void
-    {
-        $this->data = $data;
-    }
-
     public function getDataChanges(): string
     {
         return $this->dataChanges;
@@ -141,12 +109,12 @@ class ActivityLog implements ActivityLogInterface
 
     public function setDataChangesFromArray(?array $dataChanges = null): void
     {
-        $this->dataChanges = json_encode($dataChanges);
+        $this->dataChanges = json_encode($dataChanges, JSON_THROW_ON_ERROR);
     }
 
     public function getDataChangesArray(): ?array
     {
-        return json_decode($this->dataChanges, true);
+        return json_decode($this->dataChanges, true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function getUser(): ?array
@@ -157,11 +125,6 @@ class ActivityLog implements ActivityLogInterface
     public function setUser(?array $user): void
     {
         $this->user = $user;
-    }
-
-    public function setShortName(?string $shortName): void
-    {
-        $this->shortName = $shortName;
     }
 
     public function getShortName(): ?string

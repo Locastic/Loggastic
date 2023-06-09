@@ -16,12 +16,6 @@ interface ActivityLogInterface extends LogInterface
 
     public function setAction(string $action): void;
 
-    /** @deprecated  */
-    public function getData(): ?array;
-
-    /** @deprecated  */
-    public function setData(?array $data): void;
-
     public function getDataChanges(): string;
 
     public function getDataChangesArray(): ?array;

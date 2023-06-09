@@ -4,17 +4,8 @@ namespace Locastic\Loggastic\Message;
 
 class PopulateCurrentDataTrackersMessage
 {
-    private int $offset;
-    private int $batchSize;
-    private string $loggableClass;
-    private array $loggableContext;
-
-    public function __construct(int $offset, int $batchSize, string $loggableClass, array $loggableContext)
+    public function __construct(private readonly int $offset, private readonly int $batchSize, private readonly string $loggableClass, private readonly array $loggableContext)
     {
-        $this->offset = $offset;
-        $this->batchSize = $batchSize;
-        $this->loggableClass = $loggableClass;
-        $this->loggableContext = $loggableContext;
     }
 
     public function getOffset(): int

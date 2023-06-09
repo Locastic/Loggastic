@@ -7,16 +7,14 @@ use Locastic\Loggastic\Util\ClassUtils;
 
 class CreateActivityLogMessage implements CreateActivityLogMessageInterface
 {
-    private object $item;
-    private string $actionName;
-    private \DateTime $dateTime;
+    private readonly string $actionName;
+    private readonly \DateTime $dateTime;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
 
-    public function __construct(object $item, ?string $actionName = null)
+    public function __construct(private readonly object $item, ?string $actionName = null)
     {
         $this->dateTime = new \DateTime();
-        $this->item = $item;
         $this->actionName = $actionName ?? ActivityLogAction::CREATED;
     }
 

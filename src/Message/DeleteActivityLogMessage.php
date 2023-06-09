@@ -6,19 +6,15 @@ use Locastic\Loggastic\Enum\ActivityLogAction;
 
 class DeleteActivityLogMessage implements DeleteActivityLogMessageInterface
 {
-    private $objectId;
-    private \DateTime $dateTime;
-    private string $actionName;
-    private string $className;
+    private readonly \DateTime $dateTime;
+    private readonly string $actionName;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
 
-    public function __construct($objectId, string $className, ?string $actionName = null)
+    public function __construct(private $objectId, private readonly string $className, ?string $actionName = null)
     {
-        $this->objectId = $objectId;
         $this->dateTime = new \DateTime();
         $this->actionName = $actionName ?? ActivityLogAction::DELETED;
-        $this->className = $className;
     }
 
     public function getObjectId(): string

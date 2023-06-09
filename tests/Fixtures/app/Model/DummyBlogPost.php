@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
 
 /**
  * @Loggable(groups={"dummy_blog_post_log"})
@@ -107,22 +106,4 @@ class DummyBlogPost
     {
         $this->photos = $photos;
     }
-
-//    public function addPhoto(DummyPhoto $photo): void
-//    {
-//        if($this->photos->contains($photo)) {
-//            return;
-//        }
-//
-//        $this->photos->add($photo);
-//    }
-//
-//    public function removePhoto(DummyPhoto $photo): void
-//    {
-//        if(!$this->photos->contains($photo)) {
-//            return;
-//        }
-//
-//        $this->photos->removeElement($photo);
-//    }
 }

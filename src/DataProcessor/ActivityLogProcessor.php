@@ -18,24 +18,8 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
 {
     use ElasticNormalizationContextTrait;
 
-    private NormalizerInterface $objectNormalizer;
-    private ElasticsearchService $elasticService;
-    private ActivityLogFactoryInterface $activityLogFactory;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-    private LoggableContextFactoryInterface $loggableContextFactory;
-
-    public function __construct(
-        ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
-        NormalizerInterface $objectNormalizer,
-        ElasticsearchService $elasticService,
-        ActivityLogFactoryInterface $activityLogFactory,
-        LoggableContextFactoryInterface $loggableContextFactory
-    ) {
-        $this->objectNormalizer = $objectNormalizer;
-        $this->elasticService = $elasticService;
-        $this->activityLogFactory = $activityLogFactory;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
-        $this->loggableContextFactory = $loggableContextFactory;
+    public function __construct(private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory, private readonly NormalizerInterface $objectNormalizer, private readonly ElasticsearchService $elasticService, private readonly ActivityLogFactoryInterface $activityLogFactory, private readonly LoggableContextFactoryInterface $loggableContextFactory)
+    {
     }
 
     public function processCreatedItem(CreateActivityLogMessageInterface $message): void

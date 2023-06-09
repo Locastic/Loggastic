@@ -9,13 +9,8 @@ use Locastic\Loggastic\Model\CurrentDataTracker;
 
 class ActivityLogProvider implements ActivityLogProviderInterface
 {
-    private ElasticsearchService $elasticsearchService;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-
-    public function __construct(ElasticsearchService $elasticsearchService, ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
+    public function __construct(private readonly ElasticsearchService $elasticsearchService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
     {
-        $this->elasticsearchService = $elasticsearchService;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
     }
 
     public function getActivityLogsByClass(string $className, array $sort = []): array

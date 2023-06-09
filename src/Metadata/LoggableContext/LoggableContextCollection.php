@@ -4,11 +4,8 @@ namespace Locastic\Loggastic\Metadata\LoggableContext;
 
 class LoggableContextCollection implements \IteratorAggregate, \Countable
 {
-    private array $loggableContextCollection;
-
-    public function __construct(array $loggableContextCollection = [])
+    public function __construct(private readonly array $loggableContextCollection = [])
     {
-        $this->loggableContextCollection = $loggableContextCollection;
     }
 
     public function getByClass(string $loggableClass): ?array

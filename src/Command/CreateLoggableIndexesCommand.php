@@ -10,23 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[\Symfony\Component\Console\Attribute\AsCommand('locastic:activity-logs:create-loggable-indexes')]
 class CreateLoggableIndexesCommand extends Command
 {
-    protected static $defaultName = 'locastic:activity-logs:create-loggable-indexes';
-
-    private LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory;
-    private ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory;
-
     protected function configure(): void
     {
         $this->setName(self::$defaultName);
     }
 
-    public function __construct(LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory)
     {
         parent::__construct();
-        $this->loggableContextCollectionFactory = $loggableContextCollectionFactory;
-        $this->elasticsearchIndexFactory = $elasticsearchIndexFactory;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

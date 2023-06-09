@@ -8,17 +8,8 @@ use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
 
 class ElasticsearchContext implements ElasticsearchContextInterface
 {
-    private string $activityLogIndex;
-    private string $currentDataTrackerIndex;
-    private string $className;
-    private string $shortName;
-
-    public function __construct(string $className, string $shortName, string $activityLogIndex, string $currentDataTrackerIndex)
+    public function __construct(private readonly string $className, private readonly string $shortName, private readonly string $activityLogIndex, private readonly string $currentDataTrackerIndex)
     {
-        $this->activityLogIndex = $activityLogIndex;
-        $this->currentDataTrackerIndex = $currentDataTrackerIndex;
-        $this->className = $className;
-        $this->shortName = $shortName;
     }
 
     public function getActivityLogIndex(): string
