@@ -65,6 +65,19 @@ class LocasticLoggasticExtension extends Extension
 
         $loggablePaths = $config['loggable_paths'];
 
+        // add default paths
+        $kernelRoot = $container->getParameter('kernel.project_dir');
+
+        if(is_dir($dir = $kernelRoot.'/Resources/config/loggastic')) {
+            $loggablePaths[] = $dir;
+        }
+
+        if(is_dir($dir = $kernelRoot.'/src/Entity')) {
+            $loggablePaths[] = $dir;
+        }
+
+        $loggablePaths = array_unique($loggablePaths);
+
         foreach ($loggablePaths as $path) {
             if (is_dir($path)) {
                 foreach (Finder::create()->followLinks()->files()->in($path)->name('/\.(xml|ya?ml)$/')->sortByName() as $file) {

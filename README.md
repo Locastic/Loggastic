@@ -26,7 +26,7 @@ To make your entity loggable you need to do the following steps:
 ### 1. Add Loggable attribute to your entity
 
 Add `Locastic\Loggastic\Annotation\Loggable` annotation to your entity and define serialization group name:
-```
+```php
 <?php
 
 namespace App\Entity;
@@ -42,7 +42,7 @@ class BlogPost
 ### 2. Add serialization groups to the fields you want to log
 Use the serialization group defined in the Loggable attribute config on the fields you want to track.
 You can add them to the relations and their fields too.
-```
+```php
 <?php
 
 namespace App\Entity;
@@ -67,7 +67,7 @@ class BlogPost
 
 Example for logging fields from relations:
 
-```
+```php
 <?php
 
 namespace App\Entity;
@@ -124,10 +124,12 @@ Default configuration:
 # config/packages/loggastic.yaml
 loggastic:
     # directory paths containing loggable classes or xml/yaml files
-    loggable_paths: [ ]
+    loggable_paths:
+        - '%kernel.project_dir%/config/Resources/config/loggastic'
+        - '%kernel.project_dir%/src/Entity'
 
     # Turn on/off the default Doctrine subscriber
-    default_doctrine_subscriber: true,
+    default_doctrine_subscriber: true
 
     # ElasticSearch config
     elastic_host: 'localhost:9200'
@@ -177,7 +179,7 @@ loggastic:
 ### Saving logs async
 Activity logs are using Symfony messenger component and are made to work in the async way too.
 If you want to make them async add the following messages to the messenger config:
-```
+```yaml
 framework:
     messenger:
         routing:
@@ -196,7 +198,7 @@ Sometimes you want to log changes made on some entity to some related entity. Fo
 Let's say you want to log `Product` changes which has a relation to the `ProductVariant`. On the edit form only fields from the `ProductVariant` were changed.
 Even if you run `persist()` method on `Product`, in this case only `ProductVariant` will be shown in the Doctrine listener.
 For this case you can use the `Locastic\Loggastic\Loggable\LoggableChildInterface` on `ProductVariant`:
-```
+```php
 <?php
 
 namespace App\Entity;
@@ -224,12 +226,30 @@ class ProductVariant implements LoggableChildInterface
 Now each change made on `ProductVariant` will be logged to the `Product`.
 
 ### Custom event listeners for saving activity logs
-You can use `Locastic\Loggastic\Logger\ActivityLogger` service to save item changes to the Elasticsearch.
+You can use `Locastic\Loggastic\Logger\ActivityLoggerInterface` service to save item changes to the Elasticsearch:
+```php
+<?php
+namespace App\Service;
+
+class SomeService
+{
+    public function __construct(private readonly ActivityLoggerInterface $activityLogger)
+    {
+    }
+    
+    public function logItem($item): void
+    {
+        $this->activityLogger->logCreatedItem($item, 'custom_action_name');
+        $this->activityLogger->logDeletedItem($item->getId(), get_class($item), 'custom_action_name');
+        $this->activityLogger->logUpdatedItem($item, 'custom_action_name');
+    }
+}
+```
 Depending on you application logic, you need to find the most fitting place to trigger logs saving.
 
 In most cases that can be the ***Doctrine event listener*** which is triggered on each database change. Loggastic comes with a built-in Doctrine listener which is used by default.
 If you want to turn it off, you can do it by setting the `loggastic.doctrine_listener_enabled` config parameter to `false`:
-```
+```yaml
 # config/packages/loggastic.yaml
 
 loggastic:
