@@ -1,17 +1,15 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
-use Locastic\ActivityLog\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[Loggable(groups: ['dummy_photo_log'])]
 class DummyPhoto
 {
-    #[Groups(groups: ['dummy_photo_log'])]
+    #[Groups(groups: ['dummy_photo_log', 'dummy_blog_post_log'])]
     private $id;
 
-    #[Groups(groups: ['dummy_photo_log'])]
+    #[Groups(groups: ['dummy_photo_log', 'dummy_blog_post_log'])]
     private $path;
 
     public function getId()

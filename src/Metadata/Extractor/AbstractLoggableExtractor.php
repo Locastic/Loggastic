@@ -1,15 +1,13 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\Extractor;
+namespace Locastic\Loggastic\Metadata\Extractor;
 
 abstract class AbstractLoggableExtractor implements LoggableExtractorInterface
 {
     protected ?array $loggableClasses = null;
-    private array $loggablePaths;
 
-    public function __construct(array $loggablePaths)
+    public function __construct(private readonly array $loggablePaths)
     {
-        $this->loggablePaths = $loggablePaths;
     }
 
     abstract protected function extractPath(string $path);

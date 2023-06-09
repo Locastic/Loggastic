@@ -1,8 +1,10 @@
 <?php
 
-namespace Locastic\ActivityLog\Tests\Fixtures;
+namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
-use Locastic\ActivityLog\Annotation\Loggable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -26,6 +28,14 @@ class DummyBlogPost
 
     /** @Groups({"dummy_blog_post_log"}) */
     private bool $enabled;
+
+    /** @Groups({"dummy_blog_post_log"}) */
+    private Collection $photos;
+
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -85,5 +95,15 @@ class DummyBlogPost
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function setPhotos(Collection $photos): void
+    {
+        $this->photos = $photos;
     }
 }

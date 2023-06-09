@@ -1,8 +1,7 @@
 <?php
 
-namespace Locastic\ActivityLog\Model;
+namespace Locastic\Loggastic\Model;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -13,24 +12,16 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
 {
     protected $id;
 
-    /**
-     * @Groups({"current_data_tracker_elastic", "current_data_tracker"})
-     */
+    #[Groups(["current_data_tracker"])]
     protected $objectId;
 
-    /**
-     * @Groups({"current_data_tracker_elastic", "current_data_tracker"})
-     */
+    #[Groups(["current_data_tracker"])]
     protected \DateTime $dateTime;
 
-    /**
-     * @Groups({"current_data_tracker_elastic", "current_data_tracker"})
-     */
+    #[Groups(["current_data_tracker"])]
     protected ?string $objectClass = null;
 
-    /**
-     * @Groups({"current_data_tracker_elastic", "current_data_tracker"})
-     */
+    #[Groups(["current_data_tracker"])]
     protected ?string $data = null;
 
     public function __construct()
@@ -50,7 +41,7 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
 
     public function getObjectId(): string
     {
-        return (string)$this->objectId;
+        return (string) $this->objectId;
     }
 
     public function setObjectId(string $objectId): void
@@ -78,13 +69,23 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
         $this->data = $data;
     }
 
+    public function getDateTime(): \DateTime
+    {
+        return $this->dateTime;
+    }
+
+    public function setDateTime(\DateTime $dateTime): void
+    {
+        $this->dateTime = $dateTime;
+    }
+
     public function setDataFromArray(array $data): void
     {
-        $this->data = json_encode($data);
+        $this->data = json_encode($data, JSON_THROW_ON_ERROR);
     }
 
     public function getDataAsArray(): array
     {
-        return json_decode($this->data, true);
+        return json_decode($this->data, true, 512, JSON_THROW_ON_ERROR);
     }
 }

@@ -1,0 +1,5 @@
+services:
+    Locastic\Loggastic\EventSubscriber\ActivityLogDoctrineSubscriber:
+        autowire: true
+        tags:
+            - name: 'doctrine.event_subscriber'

@@ -1,8 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\Annotation;
-
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+namespace Locastic\Loggastic\Annotation;
 
 /**
  * @Annotation
@@ -21,13 +19,5 @@ class Loggable
     public function getGroups(): array
     {
         return $this->groups;
-    }
-
-    public function getNormalizationContext(): array
-    {
-        return [
-            'groups' => $this->getGroups(),
-            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s' // todo add to normalizer and config
-        ];
     }
 }

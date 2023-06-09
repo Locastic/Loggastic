@@ -1,0 +1,42 @@
+services:
+    Locastic\Loggastic\Logger\ActivityLoggerInterface:
+        alias: 'Locastic\Loggastic\Logger\ActivityLogger'
+
+    Locastic\Loggastic\Logger\ActivityLogger:
+        autoconfigure: true
+        arguments:
+            - '@message_bus'
+            - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
+            - '@serializer.normalizer.object'
+            - '@event_dispatcher'
+
+    Locastic\Loggastic\Factory\ActivityLogFactoryInterface:
+        alias: 'Locastic\Loggastic\Factory\ActivityLogFactory'
+
+    Locastic\Loggastic\Factory\ActivityLogFactory:
+        autowire: true
+
+#   Data processors
+    Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface:
+        alias: 'Locastic\Loggastic\DataProcessor\ActivityLogProcessor'
+
+    Locastic\Loggastic\DataProcessor\ActivityLogProcessor:
+        arguments:
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
+            - '@serializer.normalizer.object'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
+            - '@Locastic\Loggastic\Factory\ActivityLogFactoryInterface'
+            - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
+
+#   Data providers
+    Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface:
+        alias: 'Locastic\Loggastic\DataProvider\CurrentDataTrackerProvider'
+
+    Locastic\Loggastic\DataProvider\CurrentDataTrackerProvider:
+        autowire: true
+
+    Locastic\Loggastic\DataProvider\ActivityLogProviderInterface:
+        alias: 'Locastic\Loggastic\DataProvider\ActivityLogProvider'
+
+    Locastic\Loggastic\DataProvider\ActivityLogProvider:
+        autowire: true

@@ -1,11 +1,36 @@
 services:
-    Locastic\ActivityLog\Bridge\Elasticsearch\ElasticsearchClient:
+    Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient:
         arguments:
             $activityLogElasticHost: '%locastic_activity_log.elasticsearch_host%'
 
-    Locastic\ActivityLog\Bridge\Elasticsearch\Index\ElasticsearchIndexConfiguration:
+    Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService:
+        arguments:
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient'
+            - '@serializer.normalizer.object'
+            - '@serializer'
+
+#   Context
+    Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactory'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactory:
+        autowire: true
+
+#   Index
+    Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexConfigurationInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexConfiguration'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexConfiguration:
         arguments:
             $dateDetection: '%locastic_activity_log.elastic_date_detection%'
             $dateFormats: '%locastic_activity_log.elastic_dynamic_date_formats%'
             $activityLogProperties: '%locastic_activity_log.activity_log.elastic_properties%'
             $currentDataTrackerProperties: '%locastic_activity_log.current_data_tracker.elastic_properties%'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactory'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactory:
+        autowire: true
+
+

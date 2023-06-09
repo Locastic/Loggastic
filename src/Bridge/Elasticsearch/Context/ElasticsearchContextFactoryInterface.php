@@ -1,9 +1,8 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Context;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Context;
 
 interface ElasticsearchContextFactoryInterface
 {
-    public function createFromClassName(string $className): ElasticsearchContext;
+    public function create(string $className): ElasticsearchContext;
 }
-

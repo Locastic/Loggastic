@@ -1,0 +1,14 @@
+services:
+    Locastic\Loggastic\DataProvider\ActivityLogProviderInterface:
+        alias: 'Locastic\Loggastic\DataProvider\ActivityLogProvider'
+
+    Locastic\Loggastic\Logger\ActivityLoggerInterface:
+        alias: 'Locastic\Loggastic\Logger\ActivityLogger'
+
+    Locastic\Loggastic\Logger\ActivityLogger:
+        autowire: true
+        public: true
+
+    Locastic\Loggastic\DataProvider\ActivityLogProvider:
+        autowire: true
+        public: true

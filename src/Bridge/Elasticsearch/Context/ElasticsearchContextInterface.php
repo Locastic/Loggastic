@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Context;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Context;
 
 interface ElasticsearchContextInterface
 {

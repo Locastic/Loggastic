@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\ActivityLog\DependencyInjection;
+namespace Locastic\Loggastic\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -15,11 +15,14 @@ class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->getRootNode();
         } else {
             // BC for symfony/config < 4.2
-            $rootNode = $treeBuilder->root('locastic_activity_log');
+            $rootNode = $treeBuilder->getRootNode();
         }
 
         $rootNode
             ->children()
+                ->booleanNode('default_doctrine_subscriber')
+                    ->defaultTrue()
+                ->end()
                 ->arrayNode('loggable_classes')
                     ->arrayPrototype()
                         ->children()
@@ -42,16 +45,13 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('elastic_dynamic_date_formats')
                     ->cannotBeEmpty()
-                    ->defaultValue("strict_date_optional_time||epoch_millis||strict_time")
+                    ->defaultValue('strict_date_optional_time||epoch_millis||strict_time')
                 ->end()
                 ->arrayNode('activity_log')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('elastic_properties')
                             ->defaultValue($this->getActivityLogProperties())
-                        ->end()
-                        ->scalarNode('elastic_settings')
-                            ->defaultValue([])
                         ->end()
                     ->end()
                 ->end()
@@ -62,31 +62,28 @@ class Configuration implements ConfigurationInterface
                             ->cannotBeEmpty()
                             ->defaultValue($this->getCurrentDataTrackerProperties())
                          ->end()
-                        ->scalarNode('elastic_settings')
-                            ->defaultValue([])
-                        ->end()
                     ->end()
                 ->end()
             ->end()
-            ;
+        ;
 
         return $treeBuilder;
-
     }
 
     private function getActivityLogProperties(): array
     {
         return [
-            'action' => ['type' => "text"],
-            'loggedAt' => ['type' => "date"],
-            'objectId' => ['type' => "text"],
-            'objectType' => ['type' => "text"],
-            'objectClass' => ['type' => "text"],
-            'data' => ['type' => "nested"],
+            'id' => ['type' => 'keyword'],
+            'action' => ['type' => 'text'],
+            'loggedAt' => ['type' => 'date'],
+            'objectId' => ['type' => 'text'],
+            'objectType' => ['type' => 'text'],
+            'objectClass' => ['type' => 'text'],
+            'dataChanges' => ['type' => 'text'],
             'user' => [
                 'type' => 'object',
                 'properties' => [
-                    'username' => ["type" => "text"],
+                    'username' => ['type' => 'text'],
                 ],
             ],
         ];
@@ -95,11 +92,11 @@ class Configuration implements ConfigurationInterface
     public function getCurrentDataTrackerProperties(): array
     {
         return [
-            'dateTime' => ['type' => "date"],
-            'objectId' => ['type' => "text"],
-            'objectType' => ['type' => "text"],
-            'objectClass' => ['type' => "text"],
-            'jsonData' => ['type' => "text"],
+            'dateTime' => ['type' => 'date'],
+            'objectId' => ['type' => 'text'],
+            'objectType' => ['type' => 'text'],
+            'objectClass' => ['type' => 'text'],
+            'jsonData' => ['type' => 'text'],
         ];
     }
 }

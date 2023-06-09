@@ -1,20 +1,22 @@
 <?php
 
-namespace Locastic\ActivityLog\Message;
+namespace Locastic\Loggastic\Message;
 
-use Locastic\ActivityLog\Enum\ActivityLogAction;
+use Locastic\Loggastic\Enum\ActivityLogAction;
+use Locastic\Loggastic\Util\ClassUtils;
 
-class UpdateActivityLogMessage
+class UpdateActivityLogMessage implements UpdateActivityLogMessageInterface
 {
     private \DateTime $dateTime;
-    private $updatedItem;
-    private string $actionName;
+    private readonly string $actionName;
+    private ?array $userInfo = null;
+    private ?string $requestUrl = null;
+    private array $normalizedItem = [];
 
-    public function __construct($updatedItem, ?string $actionName = null)
+    public function __construct(private object $updatedItem, ?string $actionName = null, private readonly bool $createLogWithoutChanges = false)
     {
         $this->dateTime = new \DateTime();
-        $this->updatedItem = $updatedItem;
-        $this->actionName = $actionName ?? ActivityLogAction::$EDITED;
+        $this->actionName = $actionName ?? ActivityLogAction::EDITED;
     }
 
     public function getDateTime(): \DateTime
@@ -27,7 +29,7 @@ class UpdateActivityLogMessage
         $this->dateTime = $dateTime;
     }
 
-    public function getUpdatedItem()
+    public function getUpdatedItem(): object
     {
         return $this->updatedItem;
     }
@@ -40,5 +42,50 @@ class UpdateActivityLogMessage
     public function getActionName(): string
     {
         return $this->actionName;
+    }
+
+    public function isCreateLogWithoutChanges(): bool
+    {
+        return $this->createLogWithoutChanges;
+    }
+
+    public function getUser(): ?array
+    {
+        return $this->userInfo;
+    }
+
+    public function setUser(?array $userInfo): void
+    {
+        $this->userInfo = $userInfo;
+    }
+
+    public function getRequestUrl(): ?string
+    {
+        return $this->requestUrl;
+    }
+
+    public function setRequestUrl(?string $requestUrl): void
+    {
+        $this->requestUrl = $requestUrl;
+    }
+
+    public function getNormalizedItem(): array
+    {
+        return $this->normalizedItem;
+    }
+
+    public function setNormalizedItem(array $normalizedItem): void
+    {
+        $this->normalizedItem = $normalizedItem;
+    }
+
+    public function getObjectId()
+    {
+        return $this->getUpdatedItem()->getId();
+    }
+
+    public function getClassName(): string
+    {
+        return ClassUtils::getClass($this->getUpdatedItem());
     }
 }

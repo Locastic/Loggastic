@@ -1,8 +1,8 @@
 <?php
 
-namespace Locastic\ActivityLog\DataProvider;
+namespace Locastic\Loggastic\DataProvider;
 
-use Locastic\ActivityLog\Model\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
 
 interface CurrentDataTrackerProviderInterface
 {

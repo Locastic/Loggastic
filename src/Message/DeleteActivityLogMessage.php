@@ -1,32 +1,25 @@
 <?php
 
-namespace Locastic\ActivityLog\Message;
+namespace Locastic\Loggastic\Message;
 
-use Locastic\ActivityLog\Enum\ActivityLogAction;
+use Locastic\Loggastic\Enum\ActivityLogAction;
 
-class DeleteActivityLogMessage
+class DeleteActivityLogMessage implements DeleteActivityLogMessageInterface
 {
-    private string $resourceClass;
-    private $itemId;
-    private \DateTime $dateTime;
-    private string $actionName;
+    private readonly \DateTime $dateTime;
+    private readonly string $actionName;
+    private ?array $userInfo = null;
+    private ?string $requestUrl = null;
 
-    public function __construct($resourceClass, $itemId, ?string $actionName = null)
+    public function __construct(private $objectId, private readonly string $className, ?string $actionName = null)
     {
-        $this->resourceClass = $resourceClass;
-        $this->itemId = $itemId;
         $this->dateTime = new \DateTime();
-        $this->actionName = $actionName ?? ActivityLogAction::$DELETED;
+        $this->actionName = $actionName ?? ActivityLogAction::DELETED;
     }
 
-    public function getResourceClass(): string
+    public function getObjectId(): string
     {
-        return $this->resourceClass;
-    }
-
-    public function getItemId()
-    {
-        return $this->itemId;
+        return $this->objectId;
     }
 
     public function getDateTime(): \DateTime
@@ -37,5 +30,30 @@ class DeleteActivityLogMessage
     public function getActionName(): string
     {
         return $this->actionName;
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    public function getUser(): ?array
+    {
+        return $this->userInfo;
+    }
+
+    public function setUser(?array $userInfo): void
+    {
+        $this->userInfo = $userInfo;
+    }
+
+    public function getRequestUrl(): ?string
+    {
+        return $this->requestUrl;
+    }
+
+    public function setRequestUrl(?string $requestUrl): void
+    {
+        $this->requestUrl = $requestUrl;
     }
 }

@@ -1,10 +1,8 @@
 services:
-    locastic_activity_logs.metadata.loggable_class_extractor.yaml:
-        class: Locastic\ActivityLog\Metadata\Extractor\YamlLoggableExtractor
+    Locastic\Loggastic\Metadata\Extractor\YamlLoggableExtractor:
         arguments:
             - type: collection
 
-    locastic_activity_logs.metadata.loggable_class_extractor.xml:
-        class: Locastic\ActivityLog\Metadata\Extractor\XmlLoggableExtractor
+    Locastic\Loggastic\Metadata\Extractor\XmlLoggableExtractor:
         arguments:
             -   type: collection

@@ -1,36 +1,35 @@
 <?php
 
-namespace Locastic\ActivityLog\DependencyInjection;
+namespace Locastic\Loggastic\DependencyInjection;
 
+use Locastic\Loggastic\Metadata\Extractor\XmlLoggableExtractor;
+use Locastic\Loggastic\Metadata\Extractor\YamlLoggableExtractor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 
-class LocasticActivityLogExtension extends Extension
+class LocasticLoggasticExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-//        $container->setParameter('locastic_activity_log.elasticsearch_config', [
-//            'elasticsearch_host' => $config['elastic_host'],
-//            'elastic_date_detection' => $config['elastic_date_detection'],
-//            'elastic_dynamic_date_formats' => $config['elastic_dynamic_date_formats'],
-//            'activity_log' => $config['activity_log'],
-//            'current_data_tracker' => $config['current_data_tracker'],
-//        ]);
+        $loader->load('commands.yaml');
+        $loader->load('identifier.yaml');
+        $loader->load('listeners.yaml');
+        $loader->load('logger.yaml');
+        $loader->load('message_handlers.yaml');
+        $loader->load('serializer.yaml');
 
         $container->setParameter('locastic_activity_log.elasticsearch_host', $config['elastic_host']);
         $container->setParameter('locastic_activity_log.elastic_date_detection', $config['elastic_date_detection']);
@@ -44,23 +43,40 @@ class LocasticActivityLogExtension extends Extension
         // load loggable resources
         $loggableClasses = $this->getLoggablePaths($container, $config);
 
-        $loader->load('context.yaml');
+        $loader->load('loggable_context.yaml');
         $container->setParameter('locastic_activity_log.dir.loggable_classes', $loggableClasses['dir']);
 
         $loader->load('metadata.yaml');
-        $container->getDefinition('locastic_activity_logs.metadata.loggable_class_extractor.xml')->replaceArgument(0, $loggableClasses['xml']);
-        $container->getDefinition('locastic_activity_logs.metadata.loggable_class_extractor.yaml')->replaceArgument(0, $loggableClasses['yml']);
+        $container->getDefinition(XmlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['xml']);
+        $container->getDefinition(YamlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['yml']);
+
+        if($config['default_doctrine_subscriber']) {
+            $loader->load('activity_log_doctrine_subscriber.yaml');
+        }
     }
 
     private function getLoggablePaths(ContainerBuilder $container, array $config): array
     {
         $loggableClasses = ['yml' => [], 'xml' => [], 'dir' => []];
 
-        if(!array_key_exists('loggable_paths', $config)) {
+        if (!array_key_exists('loggable_paths', $config)) {
             return $loggableClasses;
         }
 
         $loggablePaths = $config['loggable_paths'];
+
+        // add default paths
+        $kernelRoot = $container->getParameter('kernel.project_dir');
+
+        if(is_dir($dir = $kernelRoot.'/Resources/config/loggastic')) {
+            $loggablePaths[] = $dir;
+        }
+
+        if(is_dir($dir = $kernelRoot.'/src/Entity')) {
+            $loggablePaths[] = $dir;
+        }
+
+        $loggablePaths = array_unique($loggablePaths);
 
         foreach ($loggablePaths as $path) {
             if (is_dir($path)) {
@@ -75,7 +91,7 @@ class LocasticActivityLogExtension extends Extension
             }
 
             if ($container->fileExists($path, false)) {
-                if (!preg_match('/\.(xml|ya?ml)$/', $path, $matches)) {
+                if (!preg_match('/\.(xml|ya?ml)$/', (string) $path, $matches)) {
                     throw new RuntimeException(sprintf('Unsupported mapping type in "%s", supported types are XML & YAML.', $path));
                 }
 
@@ -90,13 +106,5 @@ class LocasticActivityLogExtension extends Extension
         $container->setParameter('locastic_activity_logs.loggable_class_class_directories', $loggableClasses['dir']);
 
         return $loggableClasses;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlias(): string
-    {
-        return 'locastic_activity_log';
     }
 }

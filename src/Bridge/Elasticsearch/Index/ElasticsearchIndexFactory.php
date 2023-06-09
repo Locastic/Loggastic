@@ -1,27 +1,19 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Index;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\ActivityLog\Bridge\Elasticsearch\ElasticsearchClient;
-use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient;
 
 class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 {
-    private ElasticsearchClient $elasticsearchClient;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-    private ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration;
-
-    public function __construct(ElasticsearchClient $elasticsearchClient, ElasticsearchContextFactoryInterface $elasticsearchContextFactory, ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
+    public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory, private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
     {
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
-        $this->elasticsearchIndexConfiguration = $elasticsearchIndexConfiguration;
     }
 
     public function recreateActivityLogIndex(string $className): void
     {
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($className);
+        $elasticContext = $this->elasticsearchContextFactory->create($className);
         $params = $this->elasticsearchIndexConfiguration->getActivityLogIndexConfig($elasticContext);
 
         $this->deleteIndex($elasticContext->getActivityLogIndex());
@@ -30,7 +22,7 @@ class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 
     public function recreateCurrentDataTrackerLogIndex(string $className): void
     {
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($className);
+        $elasticContext = $this->elasticsearchContextFactory->create($className);
         $params = $this->elasticsearchIndexConfiguration->getCurrentDataTrackerIndexConfig($elasticContext);
 
         $this->deleteIndex($elasticContext->getCurrentDataTrackerIndex());
@@ -39,7 +31,7 @@ class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 
     public function createActivityLogIndex(string $className): void
     {
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($className);
+        $elasticContext = $this->elasticsearchContextFactory->create($className);
 
         $params = $this->elasticsearchIndexConfiguration->getActivityLogIndexConfig($elasticContext);
 
@@ -48,7 +40,7 @@ class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 
     public function createCurrentDataTrackerLogIndex(string $className): void
     {
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($className);
+        $elasticContext = $this->elasticsearchContextFactory->create($className);
 
         $params = $this->elasticsearchIndexConfiguration->getCurrentDataTrackerIndexConfig($elasticContext);
 
@@ -59,9 +51,9 @@ class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
     {
         try {
             $this->elasticsearchClient->getClient()->indices()->delete(['index' => $index]);
-        } catch (ClientResponseException $e) {
+        } catch (\Exception $e) {
             // don't throw exception if index doesn't exist
-            if ($e->getCode() !== 404) {
+            if (404 !== $e->getCode()) {
                 throw $e;
             }
         }

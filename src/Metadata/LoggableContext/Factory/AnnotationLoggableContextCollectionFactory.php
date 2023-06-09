@@ -1,26 +1,19 @@
 <?php
 
-namespace Locastic\ActivityLog\Metadata\LoggableContext\Factory;
+namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use ApiPlatform\Core\Util\ReflectionClassRecursiveIterator;
-use Locastic\ActivityLog\Annotation\Loggable;
-use Locastic\ActivityLog\Metadata\LoggableContext\LoggableContextCollection;
 use Doctrine\Common\Annotations\Reader;
+use Locastic\Loggastic\Annotation\Loggable;
+use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
+use Locastic\Loggastic\Util\RecursiveClassIterator;
 
 class AnnotationLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
-    private Reader $reader;
-    private array $loggablePaths;
-    private LoggableContextCollectionFactoryInterface $decorated;
-
     /**
      * @param string[] $loggablePaths
      */
-    public function __construct(LoggableContextCollectionFactoryInterface $decorated, Reader $reader, array $loggablePaths)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $decorated, private readonly Reader $reader, private readonly array $loggablePaths)
     {
-        $this->reader = $reader;
-        $this->loggablePaths = $loggablePaths;
-        $this->decorated = $decorated;
     }
 
     /**
@@ -28,6 +21,10 @@ class AnnotationLoggableContextCollectionFactory implements LoggableContextColle
      */
     public function create(): LoggableContextCollection
     {
+        if(count($this->loggablePaths) === 0) {
+            return new LoggableContextCollection([]);
+        }
+
         $classes = [];
 
         if ($this->decorated) {
@@ -36,7 +33,7 @@ class AnnotationLoggableContextCollectionFactory implements LoggableContextColle
             }
         }
 
-        foreach (ReflectionClassRecursiveIterator::getReflectionClassesFromDirectories($this->loggablePaths) as $className => $reflectionClass) {
+        foreach (RecursiveClassIterator::getReflectionClasses($this->loggablePaths) as $className => $reflectionClass) {
             if (
                 (\PHP_VERSION_ID >= 80000 && $reflectionClass->getAttributes(Loggable::class)) ||
                 (null !== $this->reader && $loggable = $this->reader->getClassAnnotation($reflectionClass, Loggable::class))

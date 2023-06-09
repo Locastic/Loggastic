@@ -1,27 +1,13 @@
 <?php
 
-namespace Locastic\ActivityLog\Bridge\Elasticsearch\Index;
+namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextInterface;
 
 class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfigurationInterface
 {
-    private bool $dateDetection;
-    private string $dateFormats;
-    private array $activityLogProperties;
-    private array $currentDataTrackerProperties;
-
-    public function __construct(
-        bool   $dateDetection,
-        string $dateFormats,
-        array  $activityLogProperties,
-        array  $currentDataTrackerProperties
-    )
+    public function __construct(private readonly bool $dateDetection, private readonly string $dateFormats, private readonly array $activityLogProperties, private readonly array $currentDataTrackerProperties)
     {
-        $this->dateDetection = $dateDetection;
-        $this->dateFormats = $dateFormats;
-        $this->activityLogProperties = $activityLogProperties;
-        $this->currentDataTrackerProperties = $currentDataTrackerProperties;
     }
 
     public function getActivityLogIndexConfig(ElasticsearchContextInterface $elasticsearchContext): array
@@ -33,8 +19,8 @@ class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfiguration
                     'date_detection' => $this->dateDetection,
                     'dynamic_date_formats' => [$this->dateFormats],
                     'properties' => $this->activityLogProperties,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -46,9 +32,9 @@ class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfiguration
                 'mappings' => [
                     'date_detection' => $this->dateDetection,
                     'dynamic_date_formats' => [$this->dateFormats],
-                    'properties' => $this->currentDataTrackerProperties
+                    'properties' => $this->currentDataTrackerProperties,
                 ],
-            ]
+            ],
         ];
     }
 }

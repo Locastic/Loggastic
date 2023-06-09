@@ -1,8 +1,7 @@
 <?php
 
-namespace Locastic\ActivityLog\Exception;
+namespace Locastic\Loggastic\Exception;
 
 class IndexNotFoundException extends \Exception
 {
-
 }

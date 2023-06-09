@@ -1,115 +1,66 @@
 <?php
 
-namespace Locastic\ActivityLog\Logger;
+namespace Locastic\Loggastic\Logger;
 
-use Locastic\ActivityLog\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\ActivityLog\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\ActivityLog\Factory\ActivityLogFactory;
-use Locastic\ActivityLog\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
-use Locastic\ActivityLog\Model\CurrentDataTracker;
-use Locastic\ActivityLog\Util\ArrayDiff;
-use Locastic\ActivityLog\Util\ClassUtils;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Event\PreDispatchActivityLogMessageEvent;
+use Locastic\Loggastic\Loggable\LoggableChildInterface;
+use Locastic\Loggastic\Message\CreateActivityLogMessage;
+use Locastic\Loggastic\Message\DeleteActivityLogMessage;
+use Locastic\Loggastic\Message\UpdateActivityLogMessage;
+use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ActivityLogger implements ActivityLoggerInterface
 {
-    private NormalizerInterface $objectNormalizer;
-    private ElasticsearchService $elasticService;
-    private ActivityLogFactory $activityLogFactory;
-    private ElasticsearchContextFactoryInterface $elasticsearchContextFactory;
-    private LoggableContextFactoryInterface $loggableContextFactory;
+    use ElasticNormalizationContextTrait;
 
     public function __construct(
-        ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
-        NormalizerInterface $objectNormalizer,
-        ElasticsearchService $elasticService,
-        ActivityLogFactory $activityLogFactory,
-        LoggableContextFactoryInterface $loggableContextFactory
-    )
+        private readonly MessageBusInterface $bus,
+        private readonly LoggableContextFactoryInterface $loggableContextFactory,
+        private readonly NormalizerInterface $normalizer,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
+    public function logCreatedItem(object $item, ?string $actionName = null): void
     {
-        $this->objectNormalizer = $objectNormalizer;
-        $this->elasticService = $elasticService;
-        $this->activityLogFactory = $activityLogFactory;
-        $this->elasticsearchContextFactory = $elasticsearchContextFactory;
-        $this->loggableContextFactory = $loggableContextFactory;
+        $message = new CreateActivityLogMessage($item, $actionName);
+
+        $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
+
+        $this->bus->dispatch($message);
     }
 
-    public function logCreatedItem($item, string $actionName): void
+    public function logDeletedItem($objectId, string $className, ?string $actionName = null): void
     {
-        $loggableClass = ClassUtils::getClass($item);
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
+        $message = new DeleteActivityLogMessage($objectId, $className, $actionName);
 
-        if(!$loggableContext) {
-            return;
-        }
+        $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $normalizedItem = $this->objectNormalizer->normalize($item,'array', $this->getNormalizationContext($loggableContext));
-
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
-
-        // create log to save full item data for later comparison
-        $currentDataTracker = $this->activityLogFactory->createCurrentDataTracker($item, $normalizedItem);
-        $this->elasticService->createItem($currentDataTracker, $elasticContext->getCurrentDataTrackerIndex());
-
-        // create log for item creation
-        $activityLog = $this->activityLogFactory->createActivityLog($item->getId(), $loggableClass, $actionName);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
+        $this->bus->dispatch($message);
     }
 
-    public function logUpdatedItem($updatedItem, CurrentDataTracker $currentDataTracker, string $actionName): void
+    public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false)
     {
-        $loggableClass = ClassUtils::getClass($updatedItem);
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
+        $message = new UpdateActivityLogMessage($item, $actionName, $createLogWithoutChanges);
 
-        if(!$loggableContext) {
+        if ($message->getUpdatedItem() instanceof LoggableChildInterface && is_object($message->getUpdatedItem()->logTo())) {
+            $this->bus->dispatch(new UpdateActivityLogMessage($message->getUpdatedItem()->logTo(), $message->getActionName(), $message->isCreateLogWithoutChanges()));
+        }
+
+        $context = $this->loggableContextFactory->create($message->getClassName());
+        if (null === $context) {
             return;
         }
 
-        $updatedData = $this->objectNormalizer->normalize($updatedItem,'array', $this->getNormalizationContext($loggableContext));
+        $normalizedItem = $this->normalizer->normalize($message->getUpdatedItem(), 'activityLog', $this->getNormalizationContext($context));
 
-        // no loggable fields were updated
-        if(!$updatedData) {
-            return;
-        }
+        $message->setNormalizedItem($normalizedItem);
 
-        $changes = ArrayDiff::arrayDiffRecursive($currentDataTracker->getDataAsArray(), $updatedData);
-        $changes2 = ArrayDiff::arrayDiffRecursive($updatedData, $currentDataTracker->getDataAsArray());
+        $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        if(!$changes || !$changes2) {
-            return;
-        }
-
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
-
-        // create log
-        $activityLog = $this->activityLogFactory->createActivityLog($updatedItem->getId(), $loggableClass, $actionName, ['previousValues' => $changes, 'currentValues' => $changes2]);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
-
-        //update full data log
-        $currentDataTracker->setDataFromArray($updatedData);
-        $this->elasticService->updateItem($currentDataTracker->getId(), $currentDataTracker, $elasticContext->getCurrentDataTrackerIndex());
-    }
-
-    public function logDeletedItem($itemId, string $loggableClass, string $actionName): void
-    {
-        $loggableContext = $this->loggableContextFactory->create($loggableClass);
-
-        if(!$loggableContext) {
-            return;
-        }
-
-        $activityLog = $this->activityLogFactory->createActivityLog($itemId, $loggableClass, $actionName);
-
-        $elasticContext = $this->elasticsearchContextFactory->createFromClassName($loggableClass);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex());
-    }
-
-     private function getNormalizationContext(array $loggableContext): array
-    {
-        return [
-            'groups' => $loggableContext['groups'],
-            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s',
-        ];
+        $this->bus->dispatch($message);
     }
 }

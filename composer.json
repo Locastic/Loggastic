@@ -11,35 +11,36 @@
   ],
   "require": {
       "php": ">=8.0",
-      "doctrine/annotations": "^1.0",
-      "doctrine/doctrine-bundle": "^2.7",
-      "doctrine/doctrine-migrations-bundle": "^3.2",
-      "doctrine/orm": "^2.13",
+      "doctrine/annotations": "^1.14",
+      "doctrine/doctrine-bundle": "^2.8",
+      "doctrine/orm": "^2.14",
       "elasticsearch/elasticsearch": "^8.0",
-      "symfony/console": "5.4.*",
-      "symfony/dotenv": "5.4.*",
-      "symfony/expression-language": "5.4.*",
-      "symfony/framework-bundle": "5.4.*",
-      "symfony/messenger": "5.4.*",
-      "symfony/property-access": "5.4.*",
-      "symfony/property-info": "5.4.*",
-      "symfony/runtime": "5.4.*",
-      "symfony/serializer": "5.4.*",
-      "symfony/validator": "5.4.*",
-      "symfony/yaml": "5.4.*",
-      "ext-simplexml": "*"
+      "symfony/dotenv": "6.2.*",
+      "symfony/expression-language": "6.2.*",
+      "symfony/framework-bundle": "^6.2",
+      "symfony/messenger": "6.2.*",
+      "symfony/property-info": "6.2.*",
+      "symfony/runtime": "6.2.*",
+      "symfony/serializer": "6.2.*",
+      "symfony/validator": "6.2.*",
+      "symfony/yaml": "6.2.*",
+      "ext-simplexml": "*",
+      "symfony/security-bundle": "^6.2",
+    "symfony/finder": "^6.2"
   },
   "require-dev": {
-      "phpunit/phpunit": "^9.5",
-      "symfony/browser-kit": "5.4.*",
-      "symfony/css-selector": "5.4.*",
-      "symfony/phpunit-bridge": "^6.1"
+      "symfony/browser-kit": "6.2.*",
+      "symfony/css-selector": "6.2.*",
+      "symfony/console": "6.2.*",
+      "symfony/phpunit-bridge": "^6.2",
+      "phpunit/phpunit": "^10.1"
   },
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Locastic\\ActivityLog\\": "src/",
-      "Locastic\\ActivityLog\\Tests\\": "tests/"
+      "Locastic\\Loggastic\\": "src/",
+      "Locastic\\Loggastic\\Tests\\": "tests/",
+      "Locastic\\Loggastic\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/"
     }
   },
   "extra": {
@@ -52,7 +53,8 @@
   },
   "config": {
     "allow-plugins": {
-      "symfony/runtime": true
+      "symfony/runtime": true,
+      "php-http/discovery": true
     }
   }
 }

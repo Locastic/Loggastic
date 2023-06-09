@@ -1,0 +1,5 @@
+services:
+    Locastic\Loggastic\EventListener\PreDispatchActivityLogMessageListener:
+        autowire: true
+        tags:
+            - { name: kernel.event_listener }

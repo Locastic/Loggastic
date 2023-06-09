@@ -1,0 +1,8 @@
+services:
+    Locastic\Loggastic\Command\PopulateCurrentDataTrackersCommand:
+        autowire: true
+        tags: ['console.command']
+
+    Locastic\Loggastic\Command\CreateLoggableIndexesCommand:
+        autowire: true
+        tags: ['console.command']
