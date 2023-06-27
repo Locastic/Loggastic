@@ -18,6 +18,6 @@ class CachedLoggableContextCollectionFactory implements LoggableContextCollectio
      */
     public function create(): LoggableContextCollection
     {
-        return $this->cache->get(self::CACHE_KEY, fn() => $this->decorated->create());
+        return $this->cache->get(self::CACHE_KEY, fn () => $this->decorated->create());
     }
 }
