@@ -1,5 +1,5 @@
 {
-  "name": "locastic/activity-logs",
+  "name": "locastic/loggastic",
   "description": "ElasticSearch activity logs for Symfony",
   "license": "MIT",
   "type": "symfony-bundle",
