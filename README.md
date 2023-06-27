@@ -1,5 +1,5 @@
 <h1 align="center">
-[WIP]Loggastic
+Loggastic
 </h1>
 
 Loggastic is made for tracking changes to your objects and their relations.
