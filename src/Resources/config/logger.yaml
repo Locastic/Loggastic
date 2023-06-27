@@ -5,7 +5,7 @@ services:
     Locastic\Loggastic\Logger\ActivityLogger:
         autoconfigure: true
         arguments:
-            - '@message_bus'
+            - '@messenger.routable_message_bus'
             - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
             - '@serializer.normalizer.object'
             - '@event_dispatcher'
