@@ -14,7 +14,7 @@
       "doctrine/annotations": "^1.14",
       "doctrine/doctrine-bundle": "^2.8",
       "doctrine/orm": "^2.14",
-      "elasticsearch/elasticsearch": "^8.0",
+      "elasticsearch/elasticsearch": "^7.1",
       "symfony/dotenv": "6.2.*",
       "symfony/expression-language": "6.2.*",
       "symfony/framework-bundle": "^6.2",

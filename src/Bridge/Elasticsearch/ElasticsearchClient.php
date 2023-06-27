@@ -2,8 +2,8 @@
 
 namespace Locastic\Loggastic\Bridge\Elasticsearch;
 
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\ClientBuilder;
+use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
 
 class ElasticsearchClient
 {
