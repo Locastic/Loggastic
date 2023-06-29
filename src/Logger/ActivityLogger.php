@@ -10,6 +10,7 @@ use Locastic\Loggastic\Message\DeleteActivityLogMessage;
 use Locastic\Loggastic\Message\UpdateActivityLogMessage;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,7 +31,7 @@ class ActivityLogger implements ActivityLoggerInterface
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $this->bus->dispatch($message);
+        $this->bus->dispatch(new Envelope($message));
     }
 
     public function logDeletedItem($objectId, string $className, ?string $actionName = null): void
@@ -39,7 +40,7 @@ class ActivityLogger implements ActivityLoggerInterface
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $this->bus->dispatch($message);
+        $this->bus->dispatch(new Envelope($message));
     }
 
     public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false)
@@ -47,7 +48,8 @@ class ActivityLogger implements ActivityLoggerInterface
         $message = new UpdateActivityLogMessage($item, $actionName, $createLogWithoutChanges);
 
         if ($message->getUpdatedItem() instanceof LoggableChildInterface && is_object($message->getUpdatedItem()->logTo())) {
-            $this->bus->dispatch(new UpdateActivityLogMessage($message->getUpdatedItem()->logTo(), $message->getActionName(), $message->isCreateLogWithoutChanges()));
+            $childLoggableMessage = new UpdateActivityLogMessage($message->getUpdatedItem()->logTo(), $message->getActionName(), $message->isCreateLogWithoutChanges());
+            $this->bus->dispatch(new Envelope($childLoggableMessage));
         }
 
         $context = $this->loggableContextFactory->create($message->getClassName());
@@ -61,6 +63,6 @@ class ActivityLogger implements ActivityLoggerInterface
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $this->bus->dispatch($message);
+        $this->bus->dispatch(new Envelope($message));
     }
 }
