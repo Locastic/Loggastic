@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,16 +19,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * Recreate CurrentDataTracker index
  * Pull all loggable objects from DB and populate currentTracker data to elastic.
  */
-#[\Symfony\Component\Console\Attribute\AsCommand('locastic:activity-logs:populate-current-data-trackers')]
+#[AsCommand('locastic:activity-logs:populate-current-data-trackers')]
 class PopulateCurrentDataTrackersCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->setName(self::$defaultName)
-        ;
-    }
-
     public function __construct(private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory, private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ManagerRegistry $managerRegistry, private readonly MessageBusInterface $bus)
     {
         parent::__construct();
