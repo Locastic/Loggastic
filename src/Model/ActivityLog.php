@@ -114,6 +114,10 @@ class ActivityLog implements ActivityLogInterface
 
     public function getDataChangesArray(): ?array
     {
+        if(null === $this->dataChanges) {
+            return null;
+        }
+
         return json_decode($this->dataChanges, true, 512, JSON_THROW_ON_ERROR);
     }
 

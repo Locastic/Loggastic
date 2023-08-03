@@ -15,10 +15,9 @@ class ElasticsearchService
     {
     }
 
-    public function createItem($item, string $index, array $groups = [])
+    public function createItem($item, string $index, array $groups = []): void
     {
         $body = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
-        $body['id'] = $item->getId();
 
         $request = [
             'index' => $index,
@@ -38,7 +37,6 @@ class ElasticsearchService
             }
 
             $normalizedItem = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
-            $normalizedItem['id'] = $item->getId();
 
             $params[] = [
                 'index' => [
@@ -57,7 +55,7 @@ class ElasticsearchService
         $this->elasticsearchClient->getClient()->bulk($request);
     }
 
-    public function getItemById($id, string $index, string $denormalizeToClass)
+    public function getItemById($id, string $index, string $denormalizeToClass): mixed
     {
         $documents = $this->elasticsearchClient->getClient()->search([
             'index' => $index,
@@ -74,7 +72,7 @@ class ElasticsearchService
         return $this->denormalizer->denormalize($data, $denormalizeToClass);
     }
 
-    public function getItemByQuery(string $index, string $denormalizeToClass, array $body = [])
+    public function getItemByQuery(string $index, string $denormalizeToClass, array $body = []): mixed
     {
         $documents = $this->elasticsearchClient->getClient()->search([
             'index' => $index,
@@ -104,34 +102,6 @@ class ElasticsearchService
         ];
 
         $this->elasticsearchClient->getClient()->update($request);
-    }
-
-    public function bulkUpdate(array $items, string $index, array $groups = []): void
-    {
-        $params = [];
-        foreach ($items as $i => $item) {
-            if (0 === $i % 2) {
-                echo '.';
-            }
-
-            $normalizedItem = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
-            $normalizedItem['id'] = $item->getId();
-
-            $params[] = [
-                'update' => [
-                    '_index' => $index,
-                    '_id' => $item->getId(),
-                ],
-            ];
-            $params[] = ['doc' => $normalizedItem];
-        }
-
-        $request = [
-            'index' => $index,
-            'body' => $params,
-        ];
-
-        $this->elasticsearchClient->getClient()->bulk($request);
     }
 
     public function getCollection(string $index, ?string $denormalizeToClass = null, array $body = [], $limit = 20, $offset = 0): array

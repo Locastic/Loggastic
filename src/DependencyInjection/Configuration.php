@@ -73,7 +73,6 @@ class Configuration implements ConfigurationInterface
     private function getActivityLogProperties(): array
     {
         return [
-            'id' => ['type' => 'keyword'],
             'action' => ['type' => 'text'],
             'loggedAt' => ['type' => 'date'],
             'objectId' => ['type' => 'text'],
