@@ -168,7 +168,7 @@ Now that you have the basic setup, you can add some additional options and custo
 Default configuration:
 ```yaml
 # config/packages/loggastic.yaml
-loggastic:
+locastic_loggastic:
     # directory paths containing loggable classes or xml/yaml files
     loggable_paths:
         - '%kernel.project_dir%/Resources/config/loggastic'

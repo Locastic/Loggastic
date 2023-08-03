@@ -13,7 +13,7 @@ class Loggable
 
     public function __construct(array $groups)
     {
-        $this->groups = $groups['groups'];
+        $this->groups = $groups;
     }
 
     public function getGroups(): array

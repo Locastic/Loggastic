@@ -16,12 +16,9 @@ class AnnotationLoggableContextCollectionFactory implements LoggableContextColle
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(): LoggableContextCollection
     {
-        if(count($this->loggablePaths) === 0) {
+        if (count($this->loggablePaths) === 0) {
             return new LoggableContextCollection([]);
         }
 
@@ -34,16 +31,26 @@ class AnnotationLoggableContextCollectionFactory implements LoggableContextColle
         }
 
         foreach (RecursiveClassIterator::getReflectionClasses($this->loggablePaths) as $className => $reflectionClass) {
-            if (
-                (\PHP_VERSION_ID >= 80000 && $reflectionClass->getAttributes(Loggable::class)) ||
-                (null !== $this->reader && $loggable = $this->reader->getClassAnnotation($reflectionClass, Loggable::class))
-            ) {
-                if (!empty($loggable)) {
-                    $classes[$className] = ['groups' => $loggable->getGroups()];
-                }
+            if ($loggable = $this->getLoggableAttribute($reflectionClass)) {
+                $classes[$className] = ['groups' => $loggable->getGroups()];
+            }
+
+            if (null !== $this->reader && $loggable = $this->reader->getClassAnnotation($reflectionClass, Loggable::class)) {
+                $classes[$className] = ['groups' => $loggable->getGroups()];
             }
         }
 
         return new LoggableContextCollection($classes);
+    }
+
+    private function getLoggableAttribute(\ReflectionClass $reflectionClass): ?Loggable
+    {
+        foreach ($reflectionClass->getAttributes() as $attribute) {
+            if (is_a($attribute->getName(), Loggable::class, true)) {
+                return $attribute->newInstance();
+            }
+        }
+
+        return null;
     }
 }
