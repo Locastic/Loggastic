@@ -6,7 +6,7 @@ use Locastic\Loggastic\DependencyInjection\LocasticLoggasticExtension;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class LocasticLoggasticBundle extends Bundle
+final class LocasticLoggasticBundle extends Bundle
 {
     public function getContainerExtension(): Extension
     {

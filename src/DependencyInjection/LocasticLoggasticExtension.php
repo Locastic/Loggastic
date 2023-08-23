@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 
-class LocasticLoggasticExtension extends Extension
+final class LocasticLoggasticExtension extends Extension
 {
     /**
      * {@inheritdoc}

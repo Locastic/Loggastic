@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Message;
 
-class PopulateCurrentDataTrackersMessage
+final class PopulateCurrentDataTrackersMessage
 {
     public function __construct(private readonly int $offset, private readonly int $batchSize, private readonly string $loggableClass, private readonly array $loggableContext)
     {

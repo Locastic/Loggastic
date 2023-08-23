@@ -6,7 +6,7 @@ use Locastic\Loggastic\Message\ActivityLogMessageInterface;
 use Locastic\Loggastic\Model\ActivityLogInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class PreDispatchActivityLogMessageEvent extends Event
+final class PreDispatchActivityLogMessageEvent extends Event
 {
     public function __construct(private readonly ActivityLogMessageInterface $activityLogMessage)
     {

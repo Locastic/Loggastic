@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-class CreateActivityLogHandler
+final class CreateActivityLogHandler
 {
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,

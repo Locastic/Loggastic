@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[AsMessageHandler]
-class PopulateCurrentDataTrackersHandler
+final class PopulateCurrentDataTrackersHandler
 {
     use ElasticNormalizationContextTrait;
 

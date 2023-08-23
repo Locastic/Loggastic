@@ -6,7 +6,7 @@ use Locastic\Loggastic\Model\Input\CurrentDataTrackerInput;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 use Locastic\Loggastic\Util\ClassUtils;
 
-class CurrentDataTrackerInputFactory implements CurrentDataTrackerInputFactoryInterface
+final class CurrentDataTrackerInputFactory implements CurrentDataTrackerInputFactoryInterface
 {
     public function create($item, ?array $normalizedData = []): CurrentDataTrackerInput
     {

@@ -12,7 +12,7 @@ use Doctrine\ORM\Events;
 use Locastic\Loggastic\Logger\ActivityLogger;
 use Locastic\Loggastic\Util\ClassUtils;
 
-class ActivityLogDoctrineSubscriber implements EventSubscriberInterface
+final class ActivityLogDoctrineSubscriber implements EventSubscriberInterface
 {
     private array $persistedEntities = [];
 

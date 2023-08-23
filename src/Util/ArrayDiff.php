@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Util;
 
-class ArrayDiff
+final class ArrayDiff
 {
     public static function arrayDiffRecursive($array1, $array2): array
     {

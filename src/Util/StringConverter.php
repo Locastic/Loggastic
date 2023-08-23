@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Util;
 
-class StringConverter
+final class StringConverter
 {
     /**
      * Converts a word into the format for the elastic document name. Converts 'ModelName' to 'model_name'.

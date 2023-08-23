@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient;
 
-class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
+final class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 {
     public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory, private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
     {

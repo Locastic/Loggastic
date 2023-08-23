@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ElasticsearchService
+final class ElasticsearchService
 {
     use ElasticNormalizationContextTrait;
 

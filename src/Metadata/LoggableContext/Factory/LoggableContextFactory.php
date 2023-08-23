@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-class LoggableContextFactory implements LoggableContextFactoryInterface
+final class LoggableContextFactory implements LoggableContextFactoryInterface
 {
     public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory)
     {

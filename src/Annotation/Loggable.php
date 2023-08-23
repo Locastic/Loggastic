@@ -7,7 +7,7 @@ namespace Locastic\Loggastic\Annotation;
  * @Target({"CLASS"})
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Loggable
+final class Loggable
 {
     public array $groups = [];
 

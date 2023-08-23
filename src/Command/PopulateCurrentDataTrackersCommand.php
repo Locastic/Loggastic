@@ -20,7 +20,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
  * Pull all loggable objects from DB and populate currentTracker data to elastic.
  */
 #[AsCommand('locastic:activity-logs:populate-current-data-trackers')]
-class PopulateCurrentDataTrackersCommand extends Command
+final class PopulateCurrentDataTrackersCommand extends Command
 {
     public function __construct(private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory, private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ManagerRegistry $managerRegistry, private readonly MessageBusInterface $bus)
     {

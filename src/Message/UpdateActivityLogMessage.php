@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Message;
 use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Util\ClassUtils;
 
-class UpdateActivityLogMessage implements UpdateActivityLogMessageInterface
+final class UpdateActivityLogMessage implements UpdateActivityLogMessageInterface
 {
     private \DateTime $dateTime;
     private readonly string $actionName;

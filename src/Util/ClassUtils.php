@@ -4,7 +4,7 @@ namespace Locastic\Loggastic\Util;
 
 use Doctrine\Persistence\Proxy;
 
-class ClassUtils
+final class ClassUtils
 {
     public static function getClass($object): string
     {

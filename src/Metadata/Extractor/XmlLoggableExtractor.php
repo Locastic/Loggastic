@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Metadata\Extractor;
 use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
-class XmlLoggableExtractor extends AbstractLoggableExtractor
+final class XmlLoggableExtractor extends AbstractLoggableExtractor
 {
     final public const RESOURCE_SCHEMA = __DIR__.'/schema/metadata.xsd';
 

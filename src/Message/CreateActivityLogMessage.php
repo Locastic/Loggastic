@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Message;
 use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Util\ClassUtils;
 
-class CreateActivityLogMessage implements CreateActivityLogMessageInterface
+final class CreateActivityLogMessage implements CreateActivityLogMessageInterface
 {
     private readonly string $actionName;
     private readonly \DateTime $dateTime;

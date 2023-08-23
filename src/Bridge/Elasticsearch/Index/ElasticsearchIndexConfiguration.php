@@ -4,7 +4,7 @@ namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextInterface;
 
-class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfigurationInterface
+final class ElasticsearchIndexConfiguration implements ElasticsearchIndexConfigurationInterface
 {
     public function __construct(private readonly bool $dateDetection, private readonly string $dateFormats, private readonly array $activityLogProperties, private readonly array $currentDataTrackerProperties)
     {

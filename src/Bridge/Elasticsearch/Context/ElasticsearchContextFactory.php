@@ -6,7 +6,7 @@ use Locastic\Loggastic\Model\Output\ActivityLog;
 use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 use Locastic\Loggastic\Util\StringConverter;
 
-class ElasticsearchContextFactory implements ElasticsearchContextFactoryInterface
+final class ElasticsearchContextFactory implements ElasticsearchContextFactoryInterface
 {
     public function create(string $className): ElasticsearchContext
     {

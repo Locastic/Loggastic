@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class CachedLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
+final class CachedLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
     final public const CACHE_KEY = 'loggable_name_collection';
 

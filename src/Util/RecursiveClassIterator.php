@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Util;
 
-class RecursiveClassIterator
+final class RecursiveClassIterator
 {
     public static function getReflectionClasses(array $paths): \Generator
     {

@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ActivityLogger implements ActivityLoggerInterface
+final class ActivityLogger implements ActivityLoggerInterface
 {
     use ElasticNormalizationContextTrait;
 

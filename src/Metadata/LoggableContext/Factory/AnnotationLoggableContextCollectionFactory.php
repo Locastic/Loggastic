@@ -7,7 +7,7 @@ use Locastic\Loggastic\Annotation\Loggable;
 use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Locastic\Loggastic\Util\RecursiveClassIterator;
 
-class AnnotationLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
+final class AnnotationLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
     /**
      * @param string[] $loggablePaths

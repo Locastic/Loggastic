@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Metadata\Extractor;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlLoggableExtractor extends AbstractLoggableExtractor
+final class YamlLoggableExtractor extends AbstractLoggableExtractor
 {
     protected function extractPath(string $path): void
     {

@@ -11,7 +11,7 @@ use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class UpdateActivityLogHandler
+final class UpdateActivityLogHandler
 {
     use ElasticNormalizationContextTrait;
 

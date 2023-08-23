@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Util;
 
-class ArraysComparer
+final class ArraysComparer
 {
     public static function getCompared(array $currentData, array $previousData): ?array
     {

@@ -4,7 +4,7 @@ namespace Locastic\Loggastic\Message;
 
 use Locastic\Loggastic\Enum\ActivityLogAction;
 
-class DeleteActivityLogMessage implements DeleteActivityLogMessageInterface
+final class DeleteActivityLogMessage implements DeleteActivityLogMessageInterface
 {
     private readonly \DateTime $dateTime;
     private readonly string $actionName;

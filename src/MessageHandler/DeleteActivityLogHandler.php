@@ -6,7 +6,7 @@ use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
 use Locastic\Loggastic\Message\DeleteActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 
-class DeleteActivityLogHandler
+final class DeleteActivityLogHandler
 {
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,

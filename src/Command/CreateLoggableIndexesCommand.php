@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand('locastic:activity-logs:create-loggable-indexes')]
-class CreateLoggableIndexesCommand extends Command
+final class CreateLoggableIndexesCommand extends Command
 {
     public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory)
     {
