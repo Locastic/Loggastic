@@ -1,6 +1,8 @@
 <?php
 
-namespace Locastic\Loggastic\Model;
+namespace Locastic\Loggastic\Model\Output;
+
+use Locastic\Loggastic\Model\LogInterface;
 
 interface ActivityLogInterface extends LogInterface
 {
@@ -16,13 +18,9 @@ interface ActivityLogInterface extends LogInterface
 
     public function setAction(string $action): void;
 
-    public function getDataChanges(): string;
+    public function getDataChanges(): ?array;
 
-    public function getDataChangesArray(): ?array;
-
-    public function setDataChangesFromArray(?array $dataChanges = null): void;
-
-    public function setDataChanges(string $dataChanges): void;
+    public function setDataChanges(?string $dataChanges = null): void;
 
     public function setRequestUrl(?string $requestUrl): void;
 
@@ -31,6 +29,4 @@ interface ActivityLogInterface extends LogInterface
     public function getUser(): ?array;
 
     public function setUser(?array $user): void;
-
-    public function getShortName(): ?string;
 }

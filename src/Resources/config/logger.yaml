@@ -6,10 +6,16 @@ services:
         autoconfigure: true
         autowire: true
 
-    Locastic\Loggastic\Factory\ActivityLogFactoryInterface:
-        alias: 'Locastic\Loggastic\Factory\ActivityLogFactory'
+    Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface:
+        alias: 'Locastic\Loggastic\Factory\ActivityLogInputFactory'
 
-    Locastic\Loggastic\Factory\ActivityLogFactory:
+    Locastic\Loggastic\Factory\ActivityLogInputFactory:
+        autowire: true
+
+    Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface:
+        alias: 'Locastic\Loggastic\Factory\CurrentDataTrackerInputFactory'
+
+    Locastic\Loggastic\Factory\CurrentDataTrackerInputFactory:
         autowire: true
 
 #   Data processors
@@ -21,7 +27,8 @@ services:
             - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
             - '@serializer.normalizer.object'
             - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
-            - '@Locastic\Loggastic\Factory\ActivityLogFactoryInterface'
+            - '@Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface'
+            - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
 
 #   Data providers

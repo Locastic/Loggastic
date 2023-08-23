@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\DataProvider;
 
-use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 
 interface CurrentDataTrackerProviderInterface
 {

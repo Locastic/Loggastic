@@ -6,7 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\Loggastic\Factory\ActivityLogFactory;
+use Locastic\Loggastic\Factory\ActivityLogInputFactory;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -16,7 +16,7 @@ class PopulateCurrentDataTrackersHandler
 {
     use ElasticNormalizationContextTrait;
 
-    public function __construct(private readonly ManagerRegistry $managerRegistry, private readonly ActivityLogFactory $activityLogFactory, private readonly NormalizerInterface $objectNormalizer, private readonly ElasticsearchService $elasticService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
+    public function __construct(private readonly ManagerRegistry $managerRegistry, private readonly ActivityLogInputFactory $activityLogInputFactory, private readonly NormalizerInterface $objectNormalizer, private readonly ElasticsearchService $elasticService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
     {
     }
 
@@ -44,7 +44,7 @@ class PopulateCurrentDataTrackersHandler
             echo 'Processing object '.$item->getId()."\r\n";
 
             $normalizedItem = $this->objectNormalizer->normalize($item, 'activityLog', $this->getNormalizationContext($loggableContext));
-            $currentDataTrackers[] = $this->activityLogFactory->createCurrentDataTracker($item, $normalizedItem);
+            $currentDataTrackers[] = $this->activityLogInputFactory->createCurrentDataTrackerInput($item, $normalizedItem);
         }
 
         $elasticContext = $this->elasticsearchContextFactory->create($message->getLoggableClass());

@@ -4,8 +4,8 @@ namespace Locastic\Loggastic\DataProvider;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\Loggastic\Model\CurrentDataTracker;
-use Locastic\Loggastic\Model\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Model\Output\CurrentDataTracker;
+use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 
 class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInterface
 {

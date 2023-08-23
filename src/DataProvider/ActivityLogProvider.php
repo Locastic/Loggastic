@@ -4,8 +4,8 @@ namespace Locastic\Loggastic\DataProvider;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
-use Locastic\Loggastic\Model\ActivityLog;
-use Locastic\Loggastic\Model\CurrentDataTracker;
+use Locastic\Loggastic\Model\Output\ActivityLog;
+use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 
 class ActivityLogProvider implements ActivityLogProviderInterface
 {

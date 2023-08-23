@@ -1,8 +1,7 @@
 <?php
 
-namespace Locastic\Loggastic\Model;
+namespace Locastic\Loggastic\Model\Output;
 
-use Locastic\Loggastic\Util\StringConverter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 class ActivityLog implements ActivityLogInterface
@@ -22,7 +21,7 @@ class ActivityLog implements ActivityLogInterface
     protected ?string $objectClass = null;
 
     #[Groups(["activity_log"])]
-    protected ?string $dataChanges = null;
+    protected ?array $dataChanges = null;
 
     #[Groups(["activity_log"])]
     protected ?string $requestUrl = null;
@@ -97,28 +96,14 @@ class ActivityLog implements ActivityLogInterface
         $this->requestUrl = $requestUrl;
     }
 
-    public function getDataChanges(): string
+    public function getDataChanges(): ?array
     {
         return $this->dataChanges;
     }
 
-    public function setDataChanges(string $dataChanges): void
+    public function setDataChanges(?string $dataChanges = null): void
     {
-        $this->dataChanges = $dataChanges;
-    }
-
-    public function setDataChangesFromArray(?array $dataChanges = null): void
-    {
-        $this->dataChanges = json_encode($dataChanges, JSON_THROW_ON_ERROR);
-    }
-
-    public function getDataChangesArray(): ?array
-    {
-        if(null === $this->dataChanges) {
-            return null;
-        }
-
-        return json_decode($this->dataChanges, true, 512, JSON_THROW_ON_ERROR);
+        $this->dataChanges = json_decode($dataChanges, true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function getUser(): ?array
@@ -129,16 +114,5 @@ class ActivityLog implements ActivityLogInterface
     public function setUser(?array $user): void
     {
         $this->user = $user;
-    }
-
-    public function getShortName(): ?string
-    {
-        if(null === $this->getObjectClass()) {
-            return 'activity_log';
-        }
-
-        $reflectionClass = new \ReflectionClass($this->getObjectClass());
-
-        return StringConverter::tableize($reflectionClass->getShortName()).'_activity_log';
     }
 }

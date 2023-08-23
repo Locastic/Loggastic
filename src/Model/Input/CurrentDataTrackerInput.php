@@ -1,6 +1,6 @@
 <?php
 
-namespace Locastic\Loggastic\Model;
+namespace Locastic\Loggastic\Model\Input;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -8,10 +8,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Save the latest data for each object, so it can be used to compare changes
  * when logging updates to activity log.
  */
-class CurrentDataTracker implements CurrentDataTrackerInterface
+class CurrentDataTrackerInput implements CurrentDataTrackerInputInterface
 {
-    protected $id;
-
     #[Groups(["current_data_tracker"])]
     protected $objectId;
 
@@ -29,24 +27,14 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
         $this->dateTime = new \DateTime();
     }
 
-    public function getId()
+    public function setObjectId(string $objectId): void
     {
-        return $this->id;
-    }
-
-    public function setId($id): void
-    {
-        $this->id = $id;
+        $this->objectId = $objectId;
     }
 
     public function getObjectId(): string
     {
-        return (string) $this->objectId;
-    }
-
-    public function setObjectId(string $objectId): void
-    {
-        $this->objectId = $objectId;
+        return $this->objectId;
     }
 
     public function getObjectClass(): ?string
@@ -64,7 +52,7 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
         return $this->data;
     }
 
-    public function setData(string $data): void
+    public function setData(?string $data): void
     {
         $this->data = $data;
     }
@@ -77,15 +65,5 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
     public function setDateTime(\DateTime $dateTime): void
     {
         $this->dateTime = $dateTime;
-    }
-
-    public function setDataFromArray(array $data): void
-    {
-        $this->data = json_encode($data, JSON_THROW_ON_ERROR);
-    }
-
-    public function getDataAsArray(): array
-    {
-        return json_decode($this->data, true, 512, JSON_THROW_ON_ERROR);
     }
 }

@@ -7,7 +7,7 @@ use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInter
 use Locastic\Loggastic\DataProvider\ActivityLogProviderInterface;
 use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Logger\ActivityLoggerInterface;
-use Locastic\Loggastic\Model\ActivityLogInterface;
+use Locastic\Loggastic\Model\Output\ActivityLogInterface;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -18,7 +18,7 @@ class ActivityLogTest extends KernelTestCase
     private readonly DummyBlogPost $blogPost;
     private readonly ActivityLoggerInterface $activityLogger;
 
-    public function __construct(string $name)
+    public function __construct(?string $name = null)
     {
         parent::__construct($name);
 
@@ -86,7 +86,7 @@ class ActivityLogTest extends KernelTestCase
                     1950 => ['path' => 'https://locastic.com'],
                 ]
             ],
-        ], $editedLog->getDataChangesArray());
+        ], $editedLog->getDataChanges());
     }
 
     public function testLogDelete(): void

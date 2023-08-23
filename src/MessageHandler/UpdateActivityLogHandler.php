@@ -7,7 +7,7 @@ use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
 use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactory;
-use Locastic\Loggastic\Model\CurrentDataTracker;
+use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -33,7 +33,7 @@ class UpdateActivityLogHandler
 
         $currentDataTracker = $this->currentDataTrackerProvider->getCurrentDataTrackerByClassAndId($message->getClassName(), $updatedItem->getId());
 
-        if (!$currentDataTracker instanceof CurrentDataTracker) {
+        if (!$currentDataTracker instanceof CurrentDataTrackerInterface) {
             return;
         }
 

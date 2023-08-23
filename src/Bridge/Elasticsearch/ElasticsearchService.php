@@ -17,7 +17,7 @@ class ElasticsearchService
 
     public function createItem($item, string $index, array $groups = []): void
     {
-        $body = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
+        $body = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext($groups));
 
         $request = [
             'index' => $index,
@@ -36,7 +36,7 @@ class ElasticsearchService
                 echo '.';
             }
 
-            $normalizedItem = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
+            $normalizedItem = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext($groups));
 
             $params[] = [
                 'index' => [
@@ -91,7 +91,7 @@ class ElasticsearchService
 
     public function updateItem($id, $item, string $index, array $groups = []): void
     {
-        $body = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext(['groups' => $groups]));
+        $body = $this->normalizer->normalize($item, 'array', $this->getNormalizationContext($groups));
 
         $request = [
             'index' => $index,

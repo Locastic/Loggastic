@@ -8,9 +8,8 @@ trait ElasticNormalizationContextTrait
 {
     private function getNormalizationContext(array $context): array
     {
-        return [
-            'groups' => $context['groups'] ?? [],
-            DateTimeNormalizer::FORMAT_KEY => \DateTime::ATOM, //todo move to config
-        ];
+        $context[DateTimeNormalizer::FORMAT_KEY] = \DateTime::ATOM;
+
+        return $context;
     }
 }
