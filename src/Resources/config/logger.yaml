@@ -4,11 +4,7 @@ services:
 
     Locastic\Loggastic\Logger\ActivityLogger:
         autoconfigure: true
-        arguments:
-            - '@messenger.routable_message_bus'
-            - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
-            - '@serializer.normalizer.object'
-            - '@event_dispatcher'
+        autowire: true
 
     Locastic\Loggastic\Factory\ActivityLogFactoryInterface:
         alias: 'Locastic\Loggastic\Factory\ActivityLogFactory'

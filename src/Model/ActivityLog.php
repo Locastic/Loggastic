@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class ActivityLog implements ActivityLogInterface
 {
-    private ?string $id = null;
+    protected ?string $id = null;
 
     #[Groups(["activity_log"])]
     protected ?string $action = null;

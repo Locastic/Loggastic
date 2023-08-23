@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class CurrentDataTracker implements CurrentDataTrackerInterface
 {
-    #[Groups(["current_data_tracker"])]
     protected $id;
 
     #[Groups(["current_data_tracker"])]
