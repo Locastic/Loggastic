@@ -5,6 +5,7 @@
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="-1"/>
     <server name="APP_ENV" value="test" force="true"/>
+    <server name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="KERNEL_DIR" value="tests/Fixtures/app/"/>
     <server name="KERNEL_CLASS" value="AppKernel"/>
