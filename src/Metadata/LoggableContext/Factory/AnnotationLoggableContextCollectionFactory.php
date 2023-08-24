@@ -32,11 +32,11 @@ final class AnnotationLoggableContextCollectionFactory implements LoggableContex
 
         foreach (RecursiveClassIterator::getReflectionClasses($this->loggablePaths) as $className => $reflectionClass) {
             if ($loggable = $this->getLoggableAttribute($reflectionClass)) {
-                $classes[$className] = $loggable->getGroups();
+                $classes[$className]['groups'] = $loggable->getGroups();
             }
 
             if (null !== $this->reader && $loggable = $this->reader->getClassAnnotation($reflectionClass, Loggable::class)) {
-                $classes[$className] = $loggable->getGroups();
+                $classes[$className]['groups'] = $loggable->getGroups();
             }
         }
 
