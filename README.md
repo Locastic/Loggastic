@@ -132,28 +132,27 @@ Deleted BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
 In order to display Loggastic activity logs in an ApiPlatform endpoint, you can use ApiPlatforms ElasticSearch integration: https://api-platform.com/docs/core/elasticsearch/
 
 Example for displaying activity logs in the ApiPlatform endpoint:
-```yaml
-# config/packages/api_platform.yaml
-api_platform:
-    elasticsearch:
-        hosts: ['%env(ACTIVITY_LOGS_ELASTIC_URL)%']
-        mapping:
-            Locastic\Loggastic\Model\ActivityLog:
-                index: '*_activity_log'
-                type: _doc
-                
-    resources:
-        - Locastic\Loggastic\Model\ActivityLog:
-            collection_operations:
-                get: ~
-            item_operations:
-                get: ~
-            attributes:
-                normalization_context:
-                    groups: ['activity_log']
+```php
+#[ApiResource(
+    operations: [
+        new Get(provider: ItemProvider::class),
+        new GetCollection(provider: CollectionProvider::class),
+    ],
+    order: ["loggedAt" => "DESC"],
+    stateOptions: new Options(index: '*_activity_log'),
+)]
+class ActivityLog extends BaseActivityLog
+{
+    #[ApiProperty(identifier: true)]
+    protected ?string $id = null;
+}
 ```
 
-You can easily filter the results using the existing ApiPlatform filters: https://api-platform.com/docs/core/filters/
+You can easily filter the results using the existing ApiPlatform filters: https://api-platform.com/docs/core/filters/. 
+If you want to have different fields in the response, use serialization groups or even create a custom DTO.
+
+Using `*_activity_log` index will return all activity logs. 
+If you want to return only logs for one entity, use the exact index name. For example if you only want to show `BlogPost` entity logs, use `blog_post_activity_log` index in `stateOptions` config.
 
 
 That's it!
