@@ -105,9 +105,9 @@ Here are the examples for displaying activity logs in twig or as Api endpoints:
 **a) Displaying logs in Twig**
 `Locastic\Loggastic\DataProvider\ActivityLogProviderInterface` service comes with a few useful methods for getting the activity logs data:
 ```php
-    public function getActivityLogsByClass(string $className): array;
+    public function getActivityLogsByClass(string $className, array $sort = []): array;
 
-    public function getActivityLogsByClassAndId(string $className, $objectId): array;
+    public function getActivityLogsByClassAndId(string $className, $objectId, array $sort = []): array;
 
     public function getActivityLogsByIndexAndId(string $index, $objectId, array $sort = []): array;
 ```
