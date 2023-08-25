@@ -95,7 +95,7 @@ final class Configuration implements ConfigurationInterface
             'objectId' => ['type' => 'text'],
             'objectType' => ['type' => 'text'],
             'objectClass' => ['type' => 'text'],
-            'jsonData' => ['type' => 'text'],
+            'data' => ['type' => 'text'],
         ];
     }
 }

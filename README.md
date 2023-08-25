@@ -215,7 +215,7 @@ locastic_loggastic:
                 type: text
             objectClass:
                 type: text
-            jsonData:
+            data:
                 type: text
 
 ```
