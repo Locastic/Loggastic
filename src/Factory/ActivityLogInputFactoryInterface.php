@@ -7,5 +7,5 @@ use Locastic\Loggastic\Model\Input\ActivityLogInputInterface;
 
 interface ActivityLogInputFactoryInterface
 {
-    public function createFromActivityLogMessage(ActivityLogMessageInterface $activityLogMessage, ?array $dataChanges = []): ActivityLogInputInterface;
+    public function createFromActivityLogMessage(ActivityLogMessageInterface $activityLogMessage, ?array $dataChanges = null): ActivityLogInputInterface;
 }

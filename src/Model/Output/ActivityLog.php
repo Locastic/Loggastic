@@ -103,7 +103,7 @@ class ActivityLog implements ActivityLogInterface
 
     public function setDataChanges(?string $dataChanges = null): void
     {
-        $this->dataChanges = json_decode($dataChanges, true, 512, JSON_THROW_ON_ERROR);
+        $this->dataChanges = $dataChanges ? json_decode($dataChanges, true, 512, JSON_THROW_ON_ERROR) : null;
     }
 
     public function getUser(): ?array

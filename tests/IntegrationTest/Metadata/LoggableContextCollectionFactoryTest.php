@@ -6,6 +6,7 @@ use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectio
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyCategory;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
+use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyProduct;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class LoggableContextCollectionFactoryTest extends KernelTestCase
@@ -35,5 +36,11 @@ class LoggableContextCollectionFactoryTest extends KernelTestCase
                 'dummy_blog_post_log',
             ],
         ], $loggableContextCollection[DummyBlogPost::class]);
+
+        self::assertEquals([
+            'groups' => [
+                'dummy_product_log',
+            ],
+        ], $loggableContextCollection[DummyProduct::class]);
     }
 }
