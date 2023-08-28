@@ -50,11 +50,8 @@ class ActivityLogTest extends KernelTestCase
         self::assertEquals(15, $createdLog->getObjectId());
     }
 
-    public function testLogEdit(): void
+    public function testLogEditRelation(): void
     {
-        $this->blogPost->setTitle('Activity Logs using Elasticsearch');
-        $this->blogPost->setTags(['#php', '#locastic', '#elasticSearch']);
-        $this->blogPost->setEnabled(true);
         $this->blogPost->getPhotos()->first()->setPath('https://locastic.com');
 
         $this->activityLogger->logUpdatedItem($this->blogPost);
@@ -71,11 +68,44 @@ class ActivityLogTest extends KernelTestCase
 
         self::assertEquals([
             'previousValues' => [
+                'photos' => [
+                    1950 => ['path' => 'path1'],
+                ]
+            ],
+            'currentValues' => [
+                'photos' => [
+                    1950 => ['path' => 'https://locastic.com'],
+                ]
+            ],
+        ], $editedLog->getDataChanges());
+    }
+
+    public function testLogEdit(): void
+    {
+        $this->blogPost->setTitle('Activity Logs using Elasticsearch');
+        $this->blogPost->setTags(['#php', '#locastic', '#elasticSearch']);
+        $this->blogPost->setEnabled(true);
+        $this->blogPost->getPhotos()->first()->setPath('https://locastic.com/blog');
+
+        $this->activityLogger->logUpdatedItem($this->blogPost);
+
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
+
+        self::assertCount(3, $activityLogs);
+
+        $editedLog = $activityLogs[2];
+
+        self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
+        self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
+        self::assertEquals(15, $editedLog->getObjectId());
+
+        self::assertEquals([
+            'previousValues' => [
                 'title' => 'Activity logs in Elasticsearch',
                 'tags' => [1 => '#elasticsearch'],
                 'enabled' => false,
                 'photos' => [
-                    1950 => ['path' => 'path1'],
+                    1950 => ['path' => 'https://locastic.com'],
                 ]
             ],
             'currentValues' => [
@@ -83,7 +113,7 @@ class ActivityLogTest extends KernelTestCase
                 'tags' => [1 => '#locastic', 2 => '#elasticSearch'],
                 'enabled' => true,
                 'photos' => [
-                    1950 => ['path' => 'https://locastic.com'],
+                    1950 => ['path' => 'https://locastic.com/blog'],
                 ]
             ],
         ], $editedLog->getDataChanges());
@@ -94,9 +124,9 @@ class ActivityLogTest extends KernelTestCase
         $this->activityLogger->logDeletedItem($this->blogPost->getId(), DummyBlogPost::class);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
-        self::assertCount(3, $activityLogs);
-        self::assertInstanceOf(ActivityLogInterface::class, $activityLogs[2]);
-        self::assertEquals(ActivityLogAction::DELETED, $activityLogs[2]->getAction());
+        self::assertCount(4, $activityLogs);
+        self::assertInstanceOf(ActivityLogInterface::class, $activityLogs[3]);
+        self::assertEquals(ActivityLogAction::DELETED, $activityLogs[3]->getAction());
     }
 
     private function createDummyBlogPost(): DummyBlogPost

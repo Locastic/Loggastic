@@ -8,6 +8,7 @@ use Locastic\Loggastic\Loggable\LoggableChildInterface;
 use Locastic\Loggastic\Message\CreateActivityLogMessage;
 use Locastic\Loggastic\Message\DeleteActivityLogMessage;
 use Locastic\Loggastic\Message\UpdateActivityLogMessage;
+use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Envelope;
@@ -43,26 +44,28 @@ final class ActivityLogger implements ActivityLoggerInterface
         $this->bus->dispatch(new Envelope($message));
     }
 
-    public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false)
+    public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false): void
     {
-        $message = new UpdateActivityLogMessage($item, $actionName, $createLogWithoutChanges);
-
-        if ($message->getUpdatedItem() instanceof LoggableChildInterface && is_object($message->getUpdatedItem()->logTo())) {
-            $childLoggableMessage = new UpdateActivityLogMessage($message->getUpdatedItem()->logTo(), $message->getActionName(), $message->isCreateLogWithoutChanges());
-            $this->bus->dispatch(new Envelope($childLoggableMessage));
+        if ($item instanceof LoggableChildInterface && is_object($item->logTo())) {
+            $childLoggableMessage = new UpdateActivityLogMessage($item->logTo(), $actionName, $createLogWithoutChanges);
+            $this->handleUpdateActivityLogMessage($childLoggableMessage);
         }
 
+        $message = new UpdateActivityLogMessage($item, $actionName, $createLogWithoutChanges);
+        $this->handleUpdateActivityLogMessage($message);
+    }
+
+    private function handleUpdateActivityLogMessage(UpdateActivityLogMessageInterface $message): void
+    {
         $context = $this->loggableContextFactory->create($message->getClassName());
         if (null === $context) {
             return;
         }
 
         $normalizedItem = $this->normalizer->normalize($message->getUpdatedItem(), 'activityLog', $this->getNormalizationContext($context));
-
         $message->setNormalizedItem($normalizedItem);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
-
         $this->bus->dispatch(new Envelope($message));
     }
 }
