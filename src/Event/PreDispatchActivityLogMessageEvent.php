@@ -3,7 +3,6 @@
 namespace Locastic\Loggastic\Event;
 
 use Locastic\Loggastic\Message\ActivityLogMessageInterface;
-use Locastic\Loggastic\Model\ActivityLogInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class PreDispatchActivityLogMessageEvent extends Event

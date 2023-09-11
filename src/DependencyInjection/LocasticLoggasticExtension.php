@@ -28,6 +28,7 @@ final class LocasticLoggasticExtension extends Extension
         $loader->load('identifier.yaml');
         $loader->load('listeners.yaml');
         $loader->load('logger.yaml');
+        $loader->load('message_dispatcher.yaml');
         $loader->load('message_handlers.yaml');
         $loader->load('serializer.yaml');
 

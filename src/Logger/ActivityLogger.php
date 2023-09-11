@@ -9,10 +9,9 @@ use Locastic\Loggastic\Message\CreateActivityLogMessage;
 use Locastic\Loggastic\Message\DeleteActivityLogMessage;
 use Locastic\Loggastic\Message\UpdateActivityLogMessage;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
+use Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ActivityLogger implements ActivityLoggerInterface
@@ -20,7 +19,7 @@ final class ActivityLogger implements ActivityLoggerInterface
     use ElasticNormalizationContextTrait;
 
     public function __construct(
-        private readonly MessageBusInterface $bus,
+        private readonly ActivityLogMessageDispatcherInterface $activityLogMessageDispatcher,
         private readonly LoggableContextFactoryInterface $loggableContextFactory,
         private readonly NormalizerInterface $normalizer,
         private readonly EventDispatcherInterface $eventDispatcher
@@ -32,7 +31,7 @@ final class ActivityLogger implements ActivityLoggerInterface
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $this->bus->dispatch(new Envelope($message));
+        $this->activityLogMessageDispatcher->dispatch($message);
     }
 
     public function logDeletedItem($objectId, string $className, ?string $actionName = null): void
@@ -41,7 +40,7 @@ final class ActivityLogger implements ActivityLoggerInterface
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
 
-        $this->bus->dispatch(new Envelope($message));
+        $this->activityLogMessageDispatcher->dispatch($message);
     }
 
     public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false): void
@@ -66,6 +65,6 @@ final class ActivityLogger implements ActivityLoggerInterface
         $message->setNormalizedItem($normalizedItem);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
-        $this->bus->dispatch(new Envelope($message));
+        $this->activityLogMessageDispatcher->dispatch($message);
     }
 }
