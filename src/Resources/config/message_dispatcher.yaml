@@ -1,0 +1,6 @@
+services:
+    Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface:
+        alias: 'Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcher'
+
+    Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcher:
+        autowire: true
