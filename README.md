@@ -1,5 +1,14 @@
 <h1 align="center">
-Loggastic
+Loggastic<br>
+    <a href="https://packagist.org/packages/locastic/loggastic" title="License" target="_blank">
+        <img src="https://img.shields.io/packagist/l/locastic/loggastic.svg" />
+    </a>
+    <a href="https://packagist.org/packages/locastic/loggastic" title="Version" target="_blank">
+        <img src="https://img.shields.io/packagist/v/Locastic/loggastic.svg" />
+    </a>
+    <a href="https://packagist.org/packages/locastic/loggastic" title="Total Downloads" target="_blank">
+        <img src="https://poser.pugx.org/locastic/loggastic/downloads" />
+    </a>
 </h1>
 
 Loggastic is made for tracking changes to your objects and their relations.
