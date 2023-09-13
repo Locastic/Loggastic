@@ -6,7 +6,7 @@ Loggastic<br>
     <a href="https://packagist.org/packages/locastic/loggastic" title="Version" target="_blank">
         <img src="https://img.shields.io/packagist/v/Locastic/loggastic.svg" />
     </a>
-    <a href="https://scrutinizer-ci.com/g/Locastic/ApiPlatformTranslationBundle/" title="Scrutinizer" target="_blank">
+    <a href="https://scrutinizer-ci.com/g/Locastic/Loggastic/" title="Scrutinizer" target="_blank">
         <img src="https://img.shields.io/scrutinizer/g/Locastic/Loggastic" />
     </a>
     <a href="https://packagist.org/packages/locastic/loggastic" title="Total Downloads" target="_blank">
