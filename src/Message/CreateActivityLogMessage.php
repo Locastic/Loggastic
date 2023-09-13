@@ -7,8 +7,8 @@ use Locastic\Loggastic\Util\ClassUtils;
 
 final class CreateActivityLogMessage implements CreateActivityLogMessageInterface
 {
-    private readonly string $actionName;
-    private readonly \DateTime $dateTime;
+    private string $actionName;
+    private \DateTime $dateTime;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
 

@@ -61,7 +61,7 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
         $updatedData = $message->getNormalizedItem();
 
         // no loggable fields were updated
-        if (!$updatedData && !$message->isCreateLogWithoutChanges()) {
+        if (empty($updatedData) && !$message->isCreateLogWithoutChanges()) {
             return;
         }
 
