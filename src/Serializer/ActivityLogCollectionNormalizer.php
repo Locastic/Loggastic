@@ -28,11 +28,6 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
         return $data;
     }
 
-    public function getSupportedTypes(?string $format): array
-    {
-        return $this->decorated->getSupportedTypes($format);
-    }
-
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return $data instanceof Collection && self::FORMAT === $format;

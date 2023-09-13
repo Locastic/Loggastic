@@ -10,7 +10,7 @@ class ActivityLogInput implements ActivityLogInputInterface
     protected ?string $action = null;
 
     #[Groups(["activity_log"])]
-    protected ?\DateTime $loggedAt = null;
+    protected \DateTime $loggedAt;
 
     #[Groups(["activity_log"])]
     protected $objectId;

@@ -22,7 +22,7 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
     protected ?string $objectClass = null;
 
     #[Groups(["current_data_tracker"])]
-    protected ?array $data = null;
+    protected array $data = [];
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
         $this->objectClass = $objectClass;
     }
 
-    public function getData(): ?array
+    public function getData(): array
     {
         return $this->data;
     }

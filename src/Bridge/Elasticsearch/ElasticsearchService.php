@@ -104,7 +104,7 @@ final class ElasticsearchService
         $this->elasticsearchClient->getClient()->update($request);
     }
 
-    public function getCollection(string $index, ?string $denormalizeToClass = null, array $body = [], $limit = 20, $offset = 0): array
+    public function getCollection(string $index, string $denormalizeToClass, array $body = [], $limit = 20, $offset = 0): array
     {
         $documents = $this->elasticsearchClient->getClient()->search([
             'index' => $index,

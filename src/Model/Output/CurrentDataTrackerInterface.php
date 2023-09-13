@@ -10,7 +10,7 @@ interface CurrentDataTrackerInterface extends LogInterface
 
     public function setId($id): void;
 
-    public function getData(): ?array;
+    public function getData(): array;
 
     public function setData(string $data): void;
 }

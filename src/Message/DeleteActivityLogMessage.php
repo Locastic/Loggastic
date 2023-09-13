@@ -6,8 +6,8 @@ use Locastic\Loggastic\Enum\ActivityLogAction;
 
 final class DeleteActivityLogMessage implements DeleteActivityLogMessageInterface
 {
-    private readonly \DateTime $dateTime;
-    private readonly string $actionName;
+    private \DateTime $dateTime;
+    private string $actionName;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
 

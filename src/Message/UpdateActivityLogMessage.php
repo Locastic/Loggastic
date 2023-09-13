@@ -8,7 +8,7 @@ use Locastic\Loggastic\Util\ClassUtils;
 final class UpdateActivityLogMessage implements UpdateActivityLogMessageInterface
 {
     private \DateTime $dateTime;
-    private readonly string $actionName;
+    private string $actionName;
     private ?array $userInfo = null;
     private ?string $requestUrl = null;
     private array $normalizedItem = [];

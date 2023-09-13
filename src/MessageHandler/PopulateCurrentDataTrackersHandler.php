@@ -44,7 +44,7 @@ final class PopulateCurrentDataTrackersHandler
             echo 'Processing object '.$item->getId()."\r\n";
 
             $normalizedItem = $this->objectNormalizer->normalize($item, 'activityLog', $this->getNormalizationContext($loggableContext));
-            $currentDataTrackers[] = $this->activityLogInputFactory->createCurrentDataTrackerInput($item, $normalizedItem);
+            $currentDataTrackers[] = $this->activityLogInputFactory->createFromActivityLogMessage($item, $normalizedItem);
         }
 
         $elasticContext = $this->elasticsearchContextFactory->create($message->getLoggableClass());
