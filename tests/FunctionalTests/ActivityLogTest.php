@@ -50,6 +50,32 @@ class ActivityLogTest extends KernelTestCase
         self::assertEquals(15, $createdLog->getObjectId());
     }
 
+    public function testEditWithoutChangesShouldNotBeLogged(): void
+    {
+        $this->activityLogger->logUpdatedItem($this->blogPost);
+
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
+
+        self::assertCount(1, $activityLogs);
+    }
+
+    public function testEditWithoutChangesShouldBeLoggedWhenRequested(): void
+    {
+        $this->activityLogger->logUpdatedItem($this->blogPost, 'Custom log name', true);
+
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
+
+        self::assertCount(2, $activityLogs);
+
+        $editedLog = $activityLogs[1];
+
+        self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
+        self::assertEquals('Custom log name', $editedLog->getAction());
+        self::assertEquals(15, $editedLog->getObjectId());
+
+        self::assertNull($editedLog->getDataChanges());
+    }
+
     public function testLogEditRelation(): void
     {
         $this->blogPost->getPhotos()->first()->setPath('https://locastic.com');
@@ -58,9 +84,9 @@ class ActivityLogTest extends KernelTestCase
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
 
-        self::assertCount(2, $activityLogs);
+        self::assertCount(3, $activityLogs);
 
-        $editedLog = $activityLogs[1];
+        $editedLog = $activityLogs[2];
 
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
         self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
@@ -91,9 +117,9 @@ class ActivityLogTest extends KernelTestCase
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
 
-        self::assertCount(3, $activityLogs);
+        self::assertCount(4, $activityLogs);
 
-        $editedLog = $activityLogs[2];
+        $editedLog = $activityLogs[3];
 
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
         self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
@@ -124,9 +150,9 @@ class ActivityLogTest extends KernelTestCase
         $this->activityLogger->logDeletedItem($this->blogPost->getId(), DummyBlogPost::class);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
-        self::assertCount(4, $activityLogs);
-        self::assertInstanceOf(ActivityLogInterface::class, $activityLogs[3]);
-        self::assertEquals(ActivityLogAction::DELETED, $activityLogs[3]->getAction());
+        self::assertCount(5, $activityLogs);
+        self::assertInstanceOf(ActivityLogInterface::class, $activityLogs[4]);
+        self::assertEquals(ActivityLogAction::DELETED, $activityLogs[4]->getAction());
     }
 
     private function createDummyBlogPost(): DummyBlogPost
