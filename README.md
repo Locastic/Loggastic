@@ -51,6 +51,27 @@ class BlogPost
     // ...
 }
 ```
+
+If you are using YAML:
+```yaml
+locastic_loggable:
+        - { class: 'App\Entity\BlogPost', groups: [ 'blog_post_log' ] }
+```
+
+Or XML:
+```xml
+<?xml version="1.0" ?>
+
+<locastic_loggable_classes xmlns="https://locastic.com/schema/metadata/loggable"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xsi:schemaLocation="https://locastic.com/schema/metadata/loggable
+           https://locastic.com/schema/metadata/loggable.xsd" >
+    <loggable_class class="App\Entity\BlogPost">
+        <group name="blog_post_log"/>
+    </loggable_class>
+</locastic_loggable_classes>
+```
+
 ### 2. Add serialization groups to the fields you want to log
 Use the serialization group defined in the Loggable attribute config on the fields you want to track.
 You can add them to the relations and their fields too.
@@ -232,7 +253,6 @@ locastic_loggastic:
 
 ```
 
-
 ### Saving logs async
 Activity logs are using Symfony messenger component and are made to work in the async way too.
 If you want to make them async add the following messages to the messenger config:
@@ -248,7 +268,94 @@ framework:
 
 ***Important note!***
 
-Only one consumer should be used per loggable entity in order to not corrupt the data.
+Only one consumer should be used per loggable object in order to not corrupt the data.
+
+### Optimising messenger for large amount of data
+If you have a large amount of data, you might need more than one consumer to process the messages.
+In that case, you can configure different transports for the messages and use different consumer for each one.
+First step is to configure the transports. Here are the examples for AMQP and Doctrine transports for the `activity_logs_default` and `activity_logs_product` queues:
+
+AMQP transport config example:
+```yaml
+framework:
+    messenger:
+        transports:
+             activity_logs_default:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: activity_logs_default
+                    queues:
+                        activity_logs_default: ~
+             activity_logs_product:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queues:
+                        activity_logs_product: ~
+                    exchange:
+                        name: activity_logs_product
+
+        routing:
+            'Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage': activity_logs_default
+            'Locastic\Loggastic\Message\CreateActivityLogMessage': activity_logs_default
+            'Locastic\Loggastic\Message\DeleteActivityLogMessage': activity_logs_default
+            'Locastic\Loggastic\Message\UpdateActivityLogMessage': activity_logs_default
+```
+
+Doctrine transport config example:
+```yaml
+framework:
+    messenger:
+        transports:
+             activity_logs_default:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: activity_logs_default
+             activity_logs_product:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: activity_logs_product
+        routing:
+            'Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage': activity_logs_default
+            'Locastic\Loggastic\Message\CreateActivityLogMessage': activity_logs_default
+            'Locastic\Loggastic\Message\DeleteActivityLogMessage': activity_logs_default
+            'Locastic\Loggastic\Message\UpdateActivityLogMessage': activity_logs_default
+```
+
+Next step is to decorate `ActivityLogDispatcher` and add your own logic for dispatching messages to the transports.
+In this example we are sending all messages to the `activity_logs_default` transport except the ones for the `Product` entity which are sent to the `activity_logs_product` transport:
+
+```php
+<?php
+
+namespace App\MessageDispatcher;
+
+use App\Entity\Product;
+use Locastic\Loggastic\Message\ActivityLogMessageInterface;
+use Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
+
+#[AsDecorator(ActivityLogMessageDispatcherInterface::class)]
+class ActivityLogMessageDispatcher implements ActivityLogMessageDispatcherInterface
+{
+    public function __construct(private readonly ActivityLogMessageDispatcherInterface $decorated)
+    {
+    }
+
+    public function dispatch(ActivityLogMessageInterface $activityLogMessage, ?string $transportName = null): void
+    {
+        if ($activityLogMessage->getClassName() === Product::class) {
+            $this->decorated->dispatch($activityLogMessage, 'activity_logs_product');
+
+            return;
+        }
+
+        $this->decorated->dispatch($activityLogMessage, $transportName);
+    }
+}
+```
+
+Depending on your project needs, you can have more transports and dispatch messages to them based on your own logic.
 
 ### Handling relations
 Sometimes you want to log changes made on some entity to some related entity. For example if you are using the Doctrine listener, you will only get the entity that actually had changes.
@@ -317,9 +424,14 @@ If you are using ***ApiPlatform***, one of the good options would be to use its 
 
 And for the ***Sylius projects*** you can use the Resource bundle events: https://docs.sylius.com/en/1.12/book/architecture/events.html
 
-### Optimising messenger for large amount of data
-Coming soon...
+### Save activity logs when no data changes were made
+Sometimes you want to save activity logs even if no data changes were made. 
+For example if you want to log order confirmation email was sent or some PDF was downloaded.
 
+You can do that by setting the 3rd parameter to true:
+```php
+$this->activityLogger->logUpdatedItem($item, 'Order confirmation sent', true);
+```
 
 ## Contribution
 
