@@ -17,7 +17,7 @@ services:
     Locastic\Loggastic\MessageHandler\PopulateCurrentDataTrackersHandler:
         arguments:
             - '@Doctrine\Persistence\ManagerRegistry'
-            - '@Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface'
+            - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@serializer.normalizer.object'
             - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
             - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'

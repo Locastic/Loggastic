@@ -41,7 +41,7 @@ final class ElasticsearchService
             $params[] = [
                 'index' => [
                     '_index' => $index,
-                    '_id' => $item->getId(),
+                    '_id' => method_exists($item, 'getId')? $item->getId() : null,
                 ],
             ];
             $params[] = $normalizedItem;
