@@ -3,6 +3,7 @@
 namespace Locastic\Loggastic\Logger;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Event\PreDispatchActivityLogMessageEvent;
 use Locastic\Loggastic\Loggable\LoggableChildInterface;
 use Locastic\Loggastic\Message\CreateActivityLogMessage;
@@ -27,6 +28,8 @@ final class ActivityLogger implements ActivityLoggerInterface
     }
     public function logCreatedItem(object $item, ?string $actionName = null): void
     {
+        $this->handleLoggableChild($item, $actionName);
+
         $message = new CreateActivityLogMessage($item, $actionName);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
@@ -34,8 +37,10 @@ final class ActivityLogger implements ActivityLoggerInterface
         $this->activityLogMessageDispatcher->dispatch($message);
     }
 
-    public function logDeletedItem($objectId, string $className, ?string $actionName = null): void
+    public function logDeletedItem(object $item, $objectId, string $className, ?string $actionName = null): void
     {
+        $this->handleLoggableChild($item, $actionName);
+
         $message = new DeleteActivityLogMessage($objectId, $className, $actionName);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
@@ -45,13 +50,18 @@ final class ActivityLogger implements ActivityLoggerInterface
 
     public function logUpdatedItem($item, ?string $actionName = null, bool $createLogWithoutChanges = false): void
     {
-        if ($item instanceof LoggableChildInterface && is_object($item->logTo())) {
-            $childLoggableMessage = new UpdateActivityLogMessage($item->logTo(), $actionName, $createLogWithoutChanges);
-            $this->handleUpdateActivityLogMessage($childLoggableMessage);
-        }
+        $this->handleLoggableChild($item, $actionName, $createLogWithoutChanges);
 
         $message = new UpdateActivityLogMessage($item, $actionName, $createLogWithoutChanges);
         $this->handleUpdateActivityLogMessage($message);
+    }
+
+    private function handleLoggableChild(object $item, ?string $actionName = null, bool $createLogWithoutChanges = false): void
+    {
+        if ($item instanceof LoggableChildInterface && is_object($item->logTo())) {
+            $childLoggableMessage = new UpdateActivityLogMessage($item->logTo(), $actionName ?: ActivityLogAction::EDITED, $createLogWithoutChanges);
+            $this->handleUpdateActivityLogMessage($childLoggableMessage);
+        }
     }
 
     private function handleUpdateActivityLogMessage(UpdateActivityLogMessageInterface $message): void
@@ -63,6 +73,7 @@ final class ActivityLogger implements ActivityLoggerInterface
 
         $normalizedItem = $this->normalizer->normalize($message->getUpdatedItem(), 'activityLog', $this->getNormalizationContext($context));
         $message->setNormalizedItem($normalizedItem);
+        dump($normalizedItem);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
         $this->activityLogMessageDispatcher->dispatch($message);
