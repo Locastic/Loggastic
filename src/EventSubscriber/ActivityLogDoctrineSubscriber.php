@@ -42,7 +42,7 @@ final class ActivityLogDoctrineSubscriber implements EventSubscriberInterface
     {
         $item = $args->getObject();
 
-        $this->activityLogger->logDeletedItem($item->objectId, ClassUtils::getClass($item));
+        $this->activityLogger->logDeletedItem($item, $item->objectId, ClassUtils::getClass($item));
     }
 
     public function postUpdate(PostUpdateEventArgs $args): void
