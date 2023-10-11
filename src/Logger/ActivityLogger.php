@@ -73,7 +73,6 @@ final class ActivityLogger implements ActivityLoggerInterface
 
         $normalizedItem = $this->normalizer->normalize($message->getUpdatedItem(), 'activityLog', $this->getNormalizationContext($context));
         $message->setNormalizedItem($normalizedItem);
-        dump($normalizedItem);
 
         $this->eventDispatcher->dispatch(PreDispatchActivityLogMessageEvent::create($message));
         $this->activityLogMessageDispatcher->dispatch($message);

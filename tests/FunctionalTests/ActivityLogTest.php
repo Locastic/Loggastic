@@ -147,7 +147,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testLogDelete(): void
     {
-        $this->activityLogger->logDeletedItem($this->blogPost->getId(), DummyBlogPost::class);
+        $this->activityLogger->logDeletedItem($this->blogPost, $this->blogPost->getId(), DummyBlogPost::class);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
         self::assertCount(5, $activityLogs);
