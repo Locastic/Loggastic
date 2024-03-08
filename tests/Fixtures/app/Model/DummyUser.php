@@ -62,7 +62,7 @@ class DummyUser implements UserInterface
         $this->username = $username;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->password = null;
     }
