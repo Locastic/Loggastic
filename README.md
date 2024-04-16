@@ -209,6 +209,11 @@ locastic_loggastic:
     # Turn on/off the default Doctrine subscriber
     default_doctrine_subscriber: true
 
+    # Turn on/off collection identifier extractor 
+    # if set to `true` objects identifiers in collections will be used as array keys
+    # if set to `false` default numeric array keys will be used
+    identifier_extractor: true
+    
     # ElasticSearch config
     elastic_host: 'localhost:9200'
     elastic_date_detection: true    #https://www.elastic.co/guide/en/elasticsearch/reference/current/date-detection.html
