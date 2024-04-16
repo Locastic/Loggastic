@@ -6,5 +6,6 @@ services:
         arguments:
             - '@serializer.normalizer.object'
             - '@Locastic\Loggastic\Identifier\LogIdentifierExtractorInterface'
+            - '%locastic_activity_log.identifier_extractor%'
         tags:
             - { name: serializer.normalizer }

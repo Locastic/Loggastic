@@ -32,6 +32,8 @@ final class LocasticLoggasticExtension extends Extension
         $loader->load('message_handlers.yaml');
         $loader->load('serializer.yaml');
 
+        $container->setParameter('locastic_activity_log.identifier_extractor', $config['identifier_extractor'] ?? true);
+
         $container->setParameter('locastic_activity_log.elasticsearch_host', $config['elastic_host']);
         $container->setParameter('locastic_activity_log.elastic_date_detection', $config['elastic_date_detection']);
         $container->setParameter('locastic_activity_log.elastic_dynamic_date_formats', $config['elastic_dynamic_date_formats']);
