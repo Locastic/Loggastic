@@ -3,11 +3,8 @@ services:
         alias: 'Locastic\Loggastic\Logger\ActivityLogger'
 
     Locastic\Loggastic\Logger\ActivityLogger:
-        arguments:
-            - '@Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface'
-            - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'
-            - '@serializer.normalizer.object'
-            - '@event_dispatcher'
+        autoconfigure: true
+        autowire: true
 
     Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface:
         alias: 'Locastic\Loggastic\Factory\ActivityLogInputFactory'
