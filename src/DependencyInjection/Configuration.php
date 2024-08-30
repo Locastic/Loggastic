@@ -48,7 +48,23 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('activity_log')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('elastic_properties')
+                        ->arrayNode('elastic_properties')
+                            ->arrayPrototype()
+                                ->validate()
+                                    ->always(function($v){
+                                        if (empty($v['properties'])) {
+                                            unset($v['properties']);
+                                        }
+                                        return $v;
+                                    })
+                                ->end()
+                                ->children()
+                                    ->scalarNode('type')->end()
+                                    ->arrayNode('properties')
+                                        ->arrayPrototype()->scalarPrototype()->end()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                             ->defaultValue($this->getActivityLogProperties())
                         ->end()
                     ->end()
@@ -56,8 +72,23 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('current_data_tracker')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('elastic_properties')
-                            ->cannotBeEmpty()
+                        ->arrayNode('elastic_properties')
+                            ->arrayPrototype()
+                                ->validate()
+                                    ->always(function($v){
+                                        if (empty($v['properties'])) {
+                                            unset($v['properties']);
+                                        }
+                                        return $v;
+                                    })
+                                ->end()
+                                ->children()
+                                    ->scalarNode('type')->end()
+                                    ->arrayNode('properties')
+                                        ->arrayPrototype()->scalarPrototype()->end()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                             ->defaultValue($this->getCurrentDataTrackerProperties())
                          ->end()
                     ->end()
