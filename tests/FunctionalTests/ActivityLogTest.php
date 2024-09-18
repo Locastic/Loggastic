@@ -144,6 +144,62 @@ class ActivityLogTest extends KernelTestCase
             ],
         ], $editedLog->getDataChanges());
     }
+    public function testLogProviderByClassLimit(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClass(DummyBlogPost::class, [], 1);
+
+        self::assertCount(1, $activityLogs);
+    }
+
+    public function testLogProviderByClassAndIdLimit(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15, [], 1);
+
+        self::assertCount(1, $activityLogs);
+    }
+
+    public function testProviderByClassAndIndexLimit(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log',15, [],1);
+
+        self::assertCount(1, $activityLogs);
+    }
+
+    public function testLogProviderByClassLimitAndOffset(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClass(DummyBlogPost::class, [], 20, 1);
+
+        $editedLog = reset($activityLogs);
+
+        self::assertCount(3, $activityLogs);
+        self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
+        self::assertEquals(15, $editedLog->getObjectId());
+        self::assertEquals('Custom log name', $editedLog->getAction());
+    }
+
+    public function testLogProviderByClassAndIdLimitAndOffset(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15, [], 20, 2);
+
+        $editedLog = reset($activityLogs);
+
+        self::assertCount(2, $activityLogs);
+        self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
+        self::assertEquals(15, $editedLog->getObjectId());
+        self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
+    }
+
+    public function testProviderByClassAndIndexLimitAndOffset(): void
+    {
+        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log',15, [],20, 3);
+
+        $editedLog = $activityLogs[0];
+
+        self::assertCount(1, $activityLogs);
+        self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
+        self::assertEquals(15, $editedLog->getObjectId());
+        self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
+    }
 
     public function testLogDelete(): void
     {

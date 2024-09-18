@@ -9,11 +9,12 @@ use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 
 final class ActivityLogProvider implements ActivityLogProviderInterface
 {
-    public function __construct(private readonly ElasticsearchService $elasticsearchService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
-    {
-    }
+    public function __construct(
+        private readonly ElasticsearchService $elasticsearchService,
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
+    ) { }
 
-    public function getActivityLogsByClass(string $className, array $sort = []): array
+    public function getActivityLogsByClass(string $className, array $sort = [], int $limit = 20, int $offset = 0): array
     {
         $elasticContext = $this->elasticsearchContextFactory->create($className);
 
@@ -25,7 +26,9 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getCollection(
             $elasticContext->getActivityLogIndex(),
             ActivityLog::class,
-            $body
+            $body,
+            $limit,
+            $offset
         );
     }
 
@@ -45,8 +48,13 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         );
     }
 
-    public function getActivityLogsByClassAndId(string $className, mixed $objectId, array $sort = []): array
-    {
+    public function getActivityLogsByClassAndId(
+        string $className,
+        mixed $objectId,
+        array $sort = [],
+        int $limit = 20,
+        int $offset = 0
+    ): array {
         $elasticContext = $this->elasticsearchContextFactory->create($className);
 
         $body = [
@@ -60,12 +68,19 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getCollection(
             $elasticContext->getActivityLogIndex(),
             ActivityLog::class,
-            $body
+            $body,
+            $limit,
+            $offset
         );
     }
 
-    public function getActivityLogsByIndexAndId(string $index, $objectId, array $sort = []): array
-    {
+    public function getActivityLogsByIndexAndId(
+        string $index,
+        $objectId,
+        array $sort = [],
+        int $limit = 20,
+        int $offset = 0
+    ): array {
         $body = [
             'sort' => $sort,
             'query' => [
@@ -77,7 +92,9 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         return $this->elasticsearchService->getCollection(
             $index,
             ActivityLog::class,
-            $body
+            $body,
+            $limit,
+            $offset
         );
     }
 }
