@@ -5,7 +5,7 @@ dist: trusty
 sudo: false
 
 php:
-    - 8.0
+    - 8.1
 
 cache:
     directories:
@@ -20,7 +20,7 @@ install:
     - composer install --no-interaction --prefer-dist
 
 script:
-    - export SYMFONY_PHPUNIT_VERSION=6.1.6
+    - export SYMFONY_PHPUNIT_VERSION=9.6.20
     - export SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
     - export SYMFONY_DEPRECATIONS_HELPER=strict
     - vendor/phpunit/phpunit/phpunit --verbose
