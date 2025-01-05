@@ -48,4 +48,9 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
     {
         return $data instanceof Collection && self::FORMAT === $format;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+       return [];
+    }
 }

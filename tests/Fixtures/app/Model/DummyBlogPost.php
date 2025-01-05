@@ -7,29 +7,27 @@ use Doctrine\Common\Collections\Collection;
 use Locastic\Loggastic\Annotation\Loggable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @Loggable(groups={"dummy_blog_post_log"})
- */
+#[Loggable(groups: ["dummy_blog_post_log"])]
 class DummyBlogPost
 {
     private int $id;
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private ?string $title;
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private array $tags = [];
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private int $position = 0;
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private ?\DateTime $publishAt;
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private bool $enabled;
 
-    /** @Groups({"dummy_blog_post_log"}) */
+    #[Groups(["dummy_blog_post_log"])]
     private Collection $photos;
 
     public function __construct()

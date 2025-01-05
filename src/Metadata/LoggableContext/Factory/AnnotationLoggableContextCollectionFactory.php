@@ -2,7 +2,6 @@
 
 namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use Doctrine\Common\Annotations\Reader;
 use Locastic\Loggastic\Annotation\Loggable;
 use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Locastic\Loggastic\Util\RecursiveClassIterator;
@@ -12,9 +11,10 @@ final class AnnotationLoggableContextCollectionFactory implements LoggableContex
     /**
      * @param string[] $loggablePaths
      */
-    public function __construct(private readonly LoggableContextCollectionFactoryInterface $decorated, private readonly Reader $reader, private readonly array $loggablePaths)
-    {
-    }
+    public function __construct(
+        private readonly LoggableContextCollectionFactoryInterface $decorated,
+        private readonly array $loggablePaths
+    ) {}
 
     public function create(): LoggableContextCollection
     {
@@ -33,10 +33,6 @@ final class AnnotationLoggableContextCollectionFactory implements LoggableContex
         foreach (RecursiveClassIterator::getReflectionClasses($this->loggablePaths) as $className => $reflectionClass) {
             if ($loggable = $this->getLoggableAttribute($reflectionClass)) {
                 $classes[$className] = ['groups' => $loggable->getGroups()];
-            }
-
-            if (null !== $this->reader && $loggable = $this->reader->getClassAnnotation($reflectionClass, Loggable::class)) {
-                $classes[$className] = $loggable->getGroups();
             }
         }
 

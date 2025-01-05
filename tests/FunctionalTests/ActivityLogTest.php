@@ -116,10 +116,9 @@ class ActivityLogTest extends KernelTestCase
         $this->activityLogger->logUpdatedItem($this->blogPost);
 
         $activityLogs = $this->activityLogProvider->getActivityLogsByClassAndId(DummyBlogPost::class, 15);
-
         self::assertCount(4, $activityLogs);
 
-        $editedLog = $activityLogs[3];
+        $editedLog = end($activityLogs);
 
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
         self::assertEquals(ActivityLogAction::EDITED, $editedLog->getAction());
@@ -193,7 +192,7 @@ class ActivityLogTest extends KernelTestCase
     {
         $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log',15, [],20, 3);
 
-        $editedLog = $activityLogs[0];
+        $editedLog = reset($activityLogs);
 
         self::assertCount(1, $activityLogs);
         self::assertInstanceOf(ActivityLogInterface::class, $editedLog);
