@@ -9,6 +9,10 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="KERNEL_DIR" value="tests/Fixtures/app/"/>
     <server name="KERNEL_CLASS" value="AppKernel"/>
+    <server name="ACTIVITY_LOGS_ELASTIC_URL" value="https://localhost:9200"/>
+    <server name="ACTIVITY_LOGS_ELASTIC_USER" value="my_user"/>
+    <server name="ACTIVITY_LOGS_ELASTIC_PASSWORD" value="my_password"/>
+    <server name="ACTIVITY_LOGS_ELASTIC_SSL_VERIFICATION" value="0"/>
   </php>
   <testsuites>
     <testsuite name="Project Test Suite">

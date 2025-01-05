@@ -7,12 +7,23 @@ use Elasticsearch\ClientBuilder;
 
 final class ElasticsearchClient
 {
-    public function __construct(private readonly string $activityLogElasticHost)
-    {
+    public function __construct(
+        private readonly string $activityLogElasticHost,
+        private readonly ?string $activityLogElasticUser = null,
+        private readonly ?string $activityLogElasticPassword = null,
+        private readonly bool $activityLogElasticUseSSLVerification = true,
+    ) {
     }
 
     public function getClient(): Client
     {
-        return ClientBuilder::create()->setHosts([$this->activityLogElasticHost])->build();
+        $client = ClientBuilder::create()->setHosts([$this->activityLogElasticHost])
+            ->setSSLVerification($this->activityLogElasticUseSSLVerification);
+
+        if ($this->activityLogElasticUser !== null && $this->activityLogElasticPassword !== null) {
+            $client->setBasicAuthentication($this->activityLogElasticUser, $this->activityLogElasticPassword);
+        }
+
+        return $client->build();
     }
 }
