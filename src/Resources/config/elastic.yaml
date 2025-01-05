@@ -2,6 +2,9 @@ services:
     Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient:
         arguments:
             $activityLogElasticHost: '%locastic_activity_log.elasticsearch_host%'
+            $activityLogElasticUser: '%locastic_activity_log.elasticsearch_user%'
+            $activityLogElasticPassword: '%locastic_activity_log.elasticsearch_password%'
+            $activityLogElasticUseSSLVerification: '%locastic_activity_log.elasticsearch_ssl_verification%'
 
     Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService:
         arguments:

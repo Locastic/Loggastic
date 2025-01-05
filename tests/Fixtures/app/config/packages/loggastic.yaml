@@ -1,5 +1,8 @@
 locastic_loggastic:
-#    elastic_host: "%env(ACTIVITY_LOGS_ELASTIC_URL)%"
+    elastic_host: "%env(ACTIVITY_LOGS_ELASTIC_URL)%"
+    elastic_user: "%env(ACTIVITY_LOGS_ELASTIC_USER)%"
+    elastic_password: "%env(ACTIVITY_LOGS_ELASTIC_PASSWORD)%"
+    elastic_ssl_verification: "%env(ACTIVITY_LOGS_ELASTIC_SSL_VERIFICATION)%"
     loggable_paths:
         - '%kernel.project_dir%/Resources'
         - '%kernel.project_dir%/Model'

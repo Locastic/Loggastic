@@ -35,6 +35,9 @@ final class LocasticLoggasticExtension extends Extension
         $container->setParameter('locastic_activity_log.identifier_extractor', $config['identifier_extractor'] ?? true);
 
         $container->setParameter('locastic_activity_log.elasticsearch_host', $config['elastic_host']);
+        $container->setParameter('locastic_activity_log.elasticsearch_user', $config['elastic_user']);
+        $container->setParameter('locastic_activity_log.elasticsearch_password', $config['elastic_password']);
+        $container->setParameter('locastic_activity_log.elasticsearch_ssl_verification', $config['elastic_ssl_verification']);
         $container->setParameter('locastic_activity_log.elastic_date_detection', $config['elastic_date_detection']);
         $container->setParameter('locastic_activity_log.elastic_dynamic_date_formats', $config['elastic_dynamic_date_formats']);
 
