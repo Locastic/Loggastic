@@ -9,8 +9,10 @@ use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Logger\ActivityLoggerInterface;
 use Locastic\Loggastic\Model\Output\ActivityLogInterface;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
+use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyComment;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Uid\Uuid;
 
 class ActivityLogTest extends KernelTestCase
 {
@@ -112,6 +114,7 @@ class ActivityLogTest extends KernelTestCase
         $this->blogPost->setTags(['#php', '#locastic', '#elasticSearch']);
         $this->blogPost->setEnabled(true);
         $this->blogPost->getPhotos()->first()->setPath('https://locastic.com/blog');
+        $this->blogPost->getComments()->first()->setContent('comment 1 edited');
 
         $this->activityLogger->logUpdatedItem($this->blogPost);
 
@@ -132,7 +135,10 @@ class ActivityLogTest extends KernelTestCase
                 'enabled' => false,
                 'photos' => [
                     1950 => ['path' => 'https://locastic.com'],
-                ]
+                ],
+                'comments' => [
+                    '019777b9-346a-7eb9-b289-1a7327b54dc1' => ['content' => 'comment 1'],
+                ],
             ],
             'currentValues' => [
                 'title' => 'Activity Logs using Elasticsearch',
@@ -140,7 +146,10 @@ class ActivityLogTest extends KernelTestCase
                 'enabled' => true,
                 'photos' => [
                     1950 => ['path' => 'https://locastic.com/blog'],
-                ]
+                ],
+                'comments' => [
+                    '019777b9-346a-7eb9-b289-1a7327b54dc1' => ['content' => 'comment 1 edited'],
+                ],
             ],
         ], $editedLog->getDataChanges());
     }
@@ -231,6 +240,16 @@ class ActivityLogTest extends KernelTestCase
         $photo2->setPath('path2');
 
         $blogPost->setPhotos(new ArrayCollection([$photo1, $photo2]));
+
+        $comment1 = new DummyComment();
+        $comment1->setId(Uuid::fromString('019777b9-346a-7eb9-b289-1a7327b54dc1'));
+        $comment1->setContent('comment 1');
+
+        $comment2 = new DummyComment();
+        $comment2->setId(Uuid::fromString('019777b9-346a-7eb9-b289-1a7327fad6fb'));
+        $comment2->setContent('comment 2');
+
+        $blogPost->setComments(new ArrayCollection([$comment1, $comment2]));
 
         return $blogPost;
     }

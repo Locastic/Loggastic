@@ -30,6 +30,9 @@ class DummyBlogPost
     #[Groups(['dummy_blog_post_log'])]
     private Collection $photos;
 
+    /** @Groups({"dummy_blog_post_log"}) */
+    private Collection $comments;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -103,5 +106,15 @@ class DummyBlogPost
     public function setPhotos(Collection $photos): void
     {
         $this->photos = $photos;
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function setComments(Collection $comments): void
+    {
+        $this->comments = $comments;
     }
 }

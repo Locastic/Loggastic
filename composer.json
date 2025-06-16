@@ -33,7 +33,11 @@
     "symfony/css-selector": "7.3.*",
     "symfony/console": "7.3.*",
     "symfony/phpunit-bridge": "^7.3",
-    "symfony/test-pack": "1.1.0"
+    "symfony/test-pack": "1.1.0",
+    "symfony/uid": "7.3.*"
+  },
+  "suggest": {
+    "symfony/uid": "Provides an object-oriented API to generate and represent UIDs"
   },
   "prefer-stable": true,
   "autoload": {

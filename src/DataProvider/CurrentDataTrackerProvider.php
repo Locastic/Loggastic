@@ -6,6 +6,7 @@ use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryI
 use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
 use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
+use Symfony\Component\Uid\Uuid;
 
 final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInterface
 {
@@ -17,8 +18,13 @@ final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInte
     {
         $elasticContext = $this->elasticsearchContextFactory->create($className);
 
+        $queryTerm = 'term';
+        if (class_exists(Uuid::class) && $objectId instanceof Uuid) {
+            $queryTerm = 'match_phrase';
+        }
+
         $body = [
-            'query' => ['term' => ['objectId' => $objectId]],
+            'query' => [$queryTerm => ['objectId' => $objectId]],
         ];
 
         //todo move class to config
