@@ -19,12 +19,12 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
     {
     }
 
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($data, string $format = null, array $context = []): array
     {
-        $data = [];
+        $collection = [];
 
         if ($this->useIdentifierExtractor) {
-            foreach ($object as $item) {
+            foreach ($data as $item) {
                 $normalizedItem = $this->decorated->normalize($item, 'array', $context);
 
                 $logId = $this->logIdentifierExtractor->getIdentifierValue($item);
@@ -32,20 +32,34 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
                     continue;
                 }
 
-                $data[$logId] = $normalizedItem;
+                $collection[$logId] = $normalizedItem;
             }
         } else {
-            foreach ($object as $item) {
+            foreach ($data as $item) {
                 $normalizedItem = $this->decorated->normalize($item, 'array', $context);
-                $data[] = $normalizedItem;
+                $collection[] = $normalizedItem;
             }
         }
 
-        return $data;
+        return $collection;
     }
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return $data instanceof Collection && self::FORMAT === $format;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        if (self::FORMAT !== $format) {
+            return [];
+        }
+
+        return [
+            Collection::class => true,
+            'array' => true,
+            'object' => true,
+            'Locastic\Loggastic\Model\Output\ActivityLogInterface' => true,
+        ];
     }
 }
