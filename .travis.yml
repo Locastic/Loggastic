@@ -5,7 +5,7 @@ dist: trusty
 sudo: false
 
 php:
-    - 8.2
+    - 8.1
 
 cache:
     directories:

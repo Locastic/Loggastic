@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.1",
     "doctrine/annotations": "^2.0",
     "doctrine/doctrine-bundle": "^2.8",
     "doctrine/orm": "^2.2",
