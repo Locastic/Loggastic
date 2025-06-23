@@ -2,7 +2,6 @@
 
 namespace Locastic\Loggastic\Identifier;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\MappingException;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -17,7 +16,10 @@ final class LogIdentifierExtractor implements LogIdentifierExtractorInterface
     public function getIdentifierValue(object $object): int|string|null
     {
         try {
-            $identifier = $this->entityManager->getClassMetadata(ClassUtils::getClass($object))->getSingleIdentifierFieldName();
+            $metadata = $this->entityManager->getClassMetadata(get_class($object));
+            $entityClass = $metadata->getName();
+
+            $identifier = $this->entityManager->getClassMetadata($entityClass)->getSingleIdentifierFieldName();
             $identifierGetter = 'get' . $identifier;
 
             return $object->$identifierGetter();

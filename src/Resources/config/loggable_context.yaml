@@ -26,12 +26,11 @@ services:
             - '@Locastic\Loggastic\Metadata\Extractor\YamlLoggableExtractor'
             - '@.inner'
 
-    locastic_activity_log.metadata.loggable.context_collection_factory.annotation:
-        class: Locastic\Loggastic\Metadata\LoggableContext\Factory\AnnotationLoggableContextCollectionFactory
+    locastic_activity_log.metadata.loggable.context_collection_factory.attribute:
+        class: Locastic\Loggastic\Metadata\LoggableContext\Factory\AttributeLoggableContextCollectionFactory
         decorates: 'locastic_activity_log.metadata.loggable.context_collection_factory'
         arguments:
             - '@.inner'
-            - '@annotations.reader'
             - '%locastic_activity_log.dir.loggable_classes%'
 
     Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface:
