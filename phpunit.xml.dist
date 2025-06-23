@@ -9,6 +9,7 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="KERNEL_DIR" value="tests/Fixtures/app/"/>
     <server name="KERNEL_CLASS" value="AppKernel"/>
+    <server name="SYMFONY_PHPUNIT_VERSION" value="9.6"/>
   </php>
   <testsuites>
     <testsuite name="Project Test Suite">
