@@ -1,11 +1,17 @@
 services:
+    Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClientInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient'
+
     Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient:
         arguments:
             $activityLogElasticHost: '%locastic_activity_log.elasticsearch_host%'
 
+    Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
+
     Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService:
         arguments:
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClientInterface'
             - '@serializer.normalizer.object'
             - '@serializer'
 

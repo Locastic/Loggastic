@@ -4,7 +4,7 @@ namespace Locastic\Loggastic\DataProcessor;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface;
 use Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface;
 use Locastic\Loggastic\Message\CreateActivityLogMessageInterface;
@@ -22,7 +22,7 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
     public function __construct(
         private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
         private readonly NormalizerInterface $objectNormalizer,
-        private readonly ElasticsearchService $elasticService,
+        private readonly ElasticsearchServiceInterface $elasticService,
         private readonly ActivityLogInputFactoryInterface $activityLogInputFactory,
         private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
         private readonly LoggableContextFactoryInterface $loggableContextFactory

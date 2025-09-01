@@ -3,12 +3,15 @@
 namespace Locastic\Loggastic\Bridge\Elasticsearch\Index;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClient;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchClientInterface;
 
 final class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterface
 {
-    public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory, private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration)
-    {
+    public function __construct(
+        private readonly ElasticsearchClientInterface $elasticsearchClient,
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
+        private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration
+    ) {
     }
 
     public function recreateActivityLogIndex(string $className): void

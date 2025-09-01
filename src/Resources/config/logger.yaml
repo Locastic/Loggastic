@@ -26,7 +26,7 @@ services:
         arguments:
             - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
             - '@serializer.normalizer.object'
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface'
             - '@Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface'
             - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'

@@ -19,7 +19,7 @@ services:
             - '@Doctrine\Persistence\ManagerRegistry'
             - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@serializer.normalizer.object'
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService'
+            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface'
             - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
         tags:
             - { name: messenger.message_handler }

@@ -7,12 +7,15 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class ElasticsearchService
+final class ElasticsearchService implements ElasticsearchServiceInterface
 {
     use ElasticNormalizationContextTrait;
 
-    public function __construct(private readonly ElasticsearchClient $elasticsearchClient, private readonly NormalizerInterface $normalizer, private readonly DenormalizerInterface $denormalizer)
-    {
+    public function __construct(
+        private readonly ElasticsearchClientInterface $elasticsearchClient,
+        private readonly NormalizerInterface $normalizer,
+        private readonly DenormalizerInterface $denormalizer
+    ) {
     }
 
     public function createItem($item, string $index, array $groups = []): void
