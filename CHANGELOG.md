@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Support for Symfony 6.4 (LTS): all `symfony/*` requirements now accept `^6.4 || ^7.0`
+- Tests matrix CI workflow covering PHP 8.2/8.3/8.4 with Symfony 6.4 and 7.4
+
+### Changed
+- `doctrine/annotations` (abandoned upstream) is no longer a dependency; configure loggable classes with the `#[Loggable]` PHP attribute or XML/YAML
+
+### Deprecated
+- `AnnotationLoggableContextCollectionFactory`, to be removed in 2.0; use `AttributeLoggableContextCollectionFactory` with the `#[Loggable]` attribute instead
 - `ElasticsearchClientInterface` and `ElasticsearchServiceInterface`; services now type-hint the interfaces, enabling decoration (#32, thanks @manuel-gamma)
 - PHPStan (level 6) and PHP-CS-Fixer with a dedicated Quality CI workflow
 - `CHANGELOG.md`, `CONTRIBUTING.md`, `SECURITY.md`, and GitHub issue/PR templates

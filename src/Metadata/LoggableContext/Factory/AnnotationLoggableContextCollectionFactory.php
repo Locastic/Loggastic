@@ -7,6 +7,9 @@ use Locastic\Loggastic\Annotation\Loggable;
 use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Locastic\Loggastic\Util\RecursiveClassIterator;
 
+/**
+ * @deprecated since locastic/loggastic 1.2 and will be removed in 2.0, use AttributeLoggableContextCollectionFactory with the #[Loggable] attribute instead. Requires the abandoned doctrine/annotations package, which is no longer a dependency of this bundle.
+ */
 final class AnnotationLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
     /**
@@ -14,6 +17,7 @@ final class AnnotationLoggableContextCollectionFactory implements LoggableContex
      */
     public function __construct(private readonly LoggableContextCollectionFactoryInterface $decorated, private readonly Reader $reader, private readonly array $loggablePaths)
     {
+        trigger_deprecation('locastic/loggastic', '1.2', 'The "%s" class is deprecated and will be removed in 2.0, use "%s" with the #[Loggable] attribute instead.', self::class, AttributeLoggableContextCollectionFactory::class);
     }
 
     public function create(): LoggableContextCollection
