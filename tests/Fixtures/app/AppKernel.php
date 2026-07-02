@@ -42,6 +42,6 @@ class AppKernel extends Kernel
         $configDir = $this->getConfigDir();
 
         $container->import($configDir.'/{packages}/*.{php,yaml}');
-        $container->import($configDir.'/*.{php,yaml}');
+        $container->import($configDir.'/*.yaml');
     }
 }

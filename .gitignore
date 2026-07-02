@@ -2,3 +2,6 @@
 /.phpunit.result.cache
 /composer.lock
 /bin
+/data
+/tests/Fixtures/app/var
+/tests/Fixtures/app/config/reference.php
