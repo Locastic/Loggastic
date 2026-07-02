@@ -5,3 +5,4 @@
 /data
 /tests/Fixtures/app/var
 /tests/Fixtures/app/config/reference.php
+/.php-cs-fixer.cache
