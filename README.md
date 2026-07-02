@@ -37,7 +37,7 @@ Making your entity loggable
 To make your entity loggable you need to do the following steps:
 ### 1. Add Loggable attribute to your entity
 
-Add `Locastic\Loggastic\Annotation\Loggable` annotation to your entity and define serialization group name:
+Add the `Locastic\Loggastic\Annotation\Loggable` PHP attribute to your entity and define serialization group name:
 ```php
 <?php
 
