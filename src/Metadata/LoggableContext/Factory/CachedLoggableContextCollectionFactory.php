@@ -13,9 +13,6 @@ final class CachedLoggableContextCollectionFactory implements LoggableContextCol
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(): LoggableContextCollection
     {
         return $this->cache->get(self::CACHE_KEY, fn () => $this->decorated->create());

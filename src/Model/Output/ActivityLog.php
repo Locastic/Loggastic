@@ -8,25 +8,25 @@ class ActivityLog implements ActivityLogInterface
 {
     protected ?string $id = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $action = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected \DateTime $loggedAt;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected $objectId;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $objectClass = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?array $dataChanges = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $requestUrl = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?array $user = null;
 
     protected ?string $shortName = null;

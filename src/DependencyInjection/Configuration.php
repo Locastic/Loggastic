@@ -51,10 +51,11 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('elastic_properties')
                             ->arrayPrototype()
                                 ->validate()
-                                    ->always(function($v){
+                                    ->always(function ($v) {
                                         if (empty($v['properties'])) {
                                             unset($v['properties']);
                                         }
+
                                         return $v;
                                     })
                                 ->end()
@@ -75,10 +76,11 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('elastic_properties')
                             ->arrayPrototype()
                                 ->validate()
-                                    ->always(function($v){
+                                    ->always(function ($v) {
                                         if (empty($v['properties'])) {
                                             unset($v['properties']);
                                         }
+
                                         return $v;
                                     })
                                 ->end()

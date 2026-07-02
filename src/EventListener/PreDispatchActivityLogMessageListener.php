@@ -13,7 +13,7 @@ final class PreDispatchActivityLogMessageListener
     public function __construct(
         private readonly Security $security,
         private readonly NormalizerInterface $normalizer,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
     ) {
     }
 

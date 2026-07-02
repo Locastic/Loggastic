@@ -14,18 +14,13 @@ final class LoggableContextCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return \Traversable<string>
+     * @return \Traversable<class-string, array<string, mixed>>
      */
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->loggableContextCollection);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count(): int
     {
         return \count($this->loggableContextCollection);

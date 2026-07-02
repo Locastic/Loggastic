@@ -33,7 +33,11 @@
     "symfony/dotenv": "^7.3",
     "symfony/phpunit-bridge": "^7.3",
     "symfony/runtime": "^7.3",
-    "symfony/test-pack": "1.1.0"
+    "symfony/test-pack": "1.1.0",
+    "phpstan/phpstan": "^2.2",
+    "phpstan/phpstan-symfony": "^2.0",
+    "phpstan/extension-installer": "^1.4",
+    "friendsofphp/php-cs-fixer": "^3.95"
   },
   "prefer-stable": true,
   "autoload": {
@@ -55,7 +59,8 @@
   "config": {
     "allow-plugins": {
       "symfony/runtime": true,
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "phpstan/extension-installer": true
     }
   }
 }

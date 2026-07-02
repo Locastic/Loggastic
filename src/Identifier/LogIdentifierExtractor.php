@@ -20,7 +20,7 @@ final class LogIdentifierExtractor implements LogIdentifierExtractorInterface
             $entityClass = $metadata->getName();
 
             $identifier = $this->entityManager->getClassMetadata($entityClass)->getSingleIdentifierFieldName();
-            $identifierGetter = 'get' . $identifier;
+            $identifierGetter = 'get'.$identifier;
 
             return $object->$identifierGetter();
         } catch (MappingException|HandlerFailedException) {

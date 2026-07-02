@@ -17,7 +17,7 @@ final class ActivityLogDoctrineSubscriber implements EventSubscriberInterface
     private array $persistedEntities = [];
 
     public function __construct(
-        private readonly ActivityLogger $activityLogger
+        private readonly ActivityLogger $activityLogger,
     ) {
     }
 

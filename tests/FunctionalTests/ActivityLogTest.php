@@ -96,12 +96,12 @@ class ActivityLogTest extends KernelTestCase
             'previousValues' => [
                 'photos' => [
                     1950 => ['path' => 'path1'],
-                ]
+                ],
             ],
             'currentValues' => [
                 'photos' => [
                     1950 => ['path' => 'https://locastic.com'],
-                ]
+                ],
             ],
         ], $editedLog->getDataChanges());
     }
@@ -132,7 +132,7 @@ class ActivityLogTest extends KernelTestCase
                 'enabled' => false,
                 'photos' => [
                     1950 => ['path' => 'https://locastic.com'],
-                ]
+                ],
             ],
             'currentValues' => [
                 'title' => 'Activity Logs using Elasticsearch',
@@ -140,10 +140,11 @@ class ActivityLogTest extends KernelTestCase
                 'enabled' => true,
                 'photos' => [
                     1950 => ['path' => 'https://locastic.com/blog'],
-                ]
+                ],
             ],
         ], $editedLog->getDataChanges());
     }
+
     public function testLogProviderByClassLimit(): void
     {
         $activityLogs = $this->activityLogProvider->getActivityLogsByClass(DummyBlogPost::class, [], 1);
@@ -160,7 +161,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testProviderByClassAndIndexLimit(): void
     {
-        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log',15, [],1);
+        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log', 15, [], 1);
 
         self::assertCount(1, $activityLogs);
     }
@@ -191,7 +192,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testProviderByClassAndIndexLimitAndOffset(): void
     {
-        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log',15, [],20, 3);
+        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log', 15, [], 20, 3);
 
         $editedLog = $activityLogs[0];
 

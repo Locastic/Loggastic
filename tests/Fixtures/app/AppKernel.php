@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Locastic\Loggastic\LocasticLoggasticBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
-use Locastic\Loggastic\LocasticLoggasticBundle;
-use Symfony\Bundle\SecurityBundle\SecurityBundle;
 
 class AppKernel extends Kernel
 {

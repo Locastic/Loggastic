@@ -10,7 +10,7 @@ final class ElasticsearchIndexFactory implements ElasticsearchIndexFactoryInterf
     public function __construct(
         private readonly ElasticsearchClientInterface $elasticsearchClient,
         private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
-        private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration
+        private readonly ElasticsearchIndexConfigurationInterface $elasticsearchIndexConfiguration,
     ) {
     }
 

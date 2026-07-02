@@ -23,9 +23,10 @@ final class ActivityLogger implements ActivityLoggerInterface
         private readonly ActivityLogMessageDispatcherInterface $activityLogMessageDispatcher,
         private readonly LoggableContextFactoryInterface $loggableContextFactory,
         private readonly NormalizerInterface $normalizer,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
+
     public function logCreatedItem(object $item, ?string $actionName = null): void
     {
         $this->handleLoggableChild($item, $actionName);

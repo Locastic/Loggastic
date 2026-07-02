@@ -11,8 +11,9 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
 {
     public function __construct(
         private readonly ElasticsearchServiceInterface $elasticsearchService,
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
-    ) { }
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
+    ) {
+    }
 
     public function getActivityLogsByClass(string $className, array $sort = [], int $limit = 20, int $offset = 0): array
     {
@@ -53,7 +54,7 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         mixed $objectId,
         array $sort = [],
         int $limit = 20,
-        int $offset = 0
+        int $offset = 0,
     ): array {
         $elasticContext = $this->elasticsearchContextFactory->create($className);
 
@@ -79,7 +80,7 @@ final class ActivityLogProvider implements ActivityLogProviderInterface
         $objectId,
         array $sort = [],
         int $limit = 20,
-        int $offset = 0
+        int $offset = 0,
     ): array {
         $body = [
             'sort' => $sort,

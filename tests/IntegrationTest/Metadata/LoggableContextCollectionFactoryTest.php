@@ -22,7 +22,7 @@ class LoggableContextCollectionFactoryTest extends KernelTestCase
             'groups' => [
                 'dummy_category_log',
                 'dummy_photo_log',
-                ],
+            ],
         ], $loggableContextCollection[DummyCategory::class]);
 
         self::assertEquals([
