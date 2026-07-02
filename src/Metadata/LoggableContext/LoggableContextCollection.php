@@ -14,7 +14,7 @@ final class LoggableContextCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return \Traversable<string>
+     * @return \Traversable<class-string, array<string, mixed>>
      */
     public function getIterator(): \Traversable
     {

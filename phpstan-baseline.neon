@@ -235,12 +235,6 @@ parameters:
 			path: src/Command/PopulateCurrentDataTrackersCommand.php
 
 		-
-			message: '#^Parameter \#4 \$loggableContext of class Locastic\\Loggastic\\Message\\PopulateCurrentDataTrackersMessage constructor expects array, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Command/PopulateCurrentDataTrackersCommand.php
-
-		-
 			message: '#^Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager\:\:getRepository\(\)$#'
 			identifier: argument.templateType
 			count: 1
