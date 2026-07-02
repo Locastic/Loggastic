@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Bridge\Elasticsearch;
 
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 interface ElasticsearchClientInterface
 {

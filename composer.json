@@ -13,7 +13,7 @@
     "php": ">=8.2",
     "doctrine/doctrine-bundle": "^2.8",
     "doctrine/orm": "^3.4",
-    "elasticsearch/elasticsearch": "^7.1",
+    "elasticsearch/elasticsearch": "^8.0 || ^9.0",
     "symfony/deprecation-contracts": "^3.0",
     "symfony/expression-language": "^6.4 || ^7.0",
     "symfony/framework-bundle": "^6.4 || ^7.0",
@@ -38,7 +38,9 @@
     "phpstan/phpstan": "^2.2",
     "phpstan/phpstan-symfony": "^2.0",
     "phpstan/extension-installer": "^1.4",
-    "friendsofphp/php-cs-fixer": "^3.95"
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "symfony/http-client": "^6.4 || ^7.0",
+    "nyholm/psr7": "^1.8"
   },
   "prefer-stable": true,
   "autoload": {
@@ -50,7 +52,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.2-dev"
+      "dev-master": "2.0-dev"
     }
   },
   "conflict": {
@@ -58,7 +60,8 @@
     "symfony/var-exporter": ">=8.0"
   },
   "suggest": {
-    "doctrine/annotations": "To configure loggable classes with the legacy @Loggable annotation (deprecated, use the PHP attribute instead)"
+    "doctrine/annotations": "To configure loggable classes with the legacy @Loggable annotation (deprecated, use the PHP attribute instead)",
+    "symfony/http-client": "A PSR-18 HTTP client implementation is required by the Elasticsearch client (any PSR-18 implementation works)"
   },
   "config": {
     "allow-plugins": {

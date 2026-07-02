@@ -11,9 +11,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Runs Elasticsearch
-              uses: elastic/elastic-github-actions/elasticsearch@master
-              with:
-                stack-version: '7.6.0'
+              run: |
+                  docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node \
+                    -e xpack.security.enabled=false -e "ES_JAVA_OPTS=-Xms1g -Xmx1g" \
+                    docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+            - name: Wait for Elasticsearch
+              run: |
+                  for i in $(seq 1 60); do curl -s localhost:9200 >/dev/null && exit 0; sleep 2; done
+                  docker logs elasticsearch; exit 1
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.2'
@@ -28,6 +33,8 @@ jobs:
                   key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
                       ${{ runner.os }}-php-
+            - name: Pin Elasticsearch client to the server major version
+              run: composer require --no-update --no-interaction "elasticsearch/elasticsearch:^8.0"
             - name: Install Dependencies
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
             - name: Create Database

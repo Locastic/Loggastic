@@ -31,6 +31,8 @@ Installation
 
 `composer require locastic/loggastic`
 
+Requirements: Elasticsearch 8 or 9, and a PSR-18 HTTP client implementation for the Elasticsearch client (for example `composer require symfony/http-client nyholm/psr7`).
+
 Making your entity loggable
 ---------------------------
 
@@ -216,6 +218,9 @@ locastic_loggastic:
     
     # ElasticSearch config
     elastic_host: 'localhost:9200'
+    elastic_user: null              # basic auth username, for secured clusters
+    elastic_password: null          # basic auth password, for secured clusters
+    elastic_ssl_verification: true  # disable only for local development
     elastic_date_detection: true    #https://www.elastic.co/guide/en/elasticsearch/reference/current/date-detection.html
     elastic_dynamic_date_formats: "strict_date_optional_time||epoch_millis||strict_time"
 

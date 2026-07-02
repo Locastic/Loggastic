@@ -3,6 +3,21 @@
 This document collects the breaking changes planned for 2.0. Each entry lists
 the deprecation shipped in a 1.x release so you can migrate before upgrading.
 
+## Elasticsearch client and server
+
+- The bundle now requires `elasticsearch/elasticsearch` `^8.0 || ^9.0` and an
+  Elasticsearch 8 or 9 server. Elasticsearch 7 is end of life and no longer
+  supported.
+- The Elasticsearch client no longer ships an HTTP client: install any PSR-18
+  implementation, for example `composer require symfony/http-client nyholm/psr7`.
+- `ElasticsearchClientInterface::getClient()` returns
+  `Elastic\Elasticsearch\Client` (new vendor namespace) instead of
+  `Elasticsearch\Client`. Custom decorators or direct client usage must update
+  their imports. Search responses are now response objects; they still support
+  array access, so `$response['hits']['hits']` keeps working.
+- New config options for secured clusters: `elastic_user`, `elastic_password`
+  and `elastic_ssl_verification`.
+
 ## Metadata
 
 - `AnnotationLoggableContextCollectionFactory` (deprecated since 1.2) is

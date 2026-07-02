@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Basic auth (`elastic_user`, `elastic_password`) and `elastic_ssl_verification` config options for secured Elasticsearch clusters (originally proposed in #26 by @jakubdusek)
+- Tests matrix now also runs against Elasticsearch 9
+
+### Changed
+- **Breaking:** upgraded to `elasticsearch/elasticsearch` `^8.0 || ^9.0`; Elasticsearch 7 servers are no longer supported and a PSR-18 HTTP client implementation is required (see UPGRADE-2.0.md)
+- **Breaking:** `ElasticsearchClientInterface::getClient()` now returns `Elastic\Elasticsearch\Client` instead of `Elasticsearch\Client`
+
+### Fixed
+- `ElasticsearchService::getItemById()` always returned null because it compared the hit total against an integer while Elasticsearch returns an object
+
 ## [1.2.0] - 2026-07-02
 
 First stable release. The project now follows semantic versioning: breaking

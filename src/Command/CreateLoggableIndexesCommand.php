@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Command;
 
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,8 +31,8 @@ final class CreateLoggableIndexesCommand extends Command
 
             try {
                 $this->elasticsearchIndexFactory->createActivityLogIndex($loggableClass);
-            } catch (BadRequest400Exception $e) {
-                if (strpos($e->getMessage(), 'resource_already_exists_exception')) {
+            } catch (ClientResponseException $e) {
+                if (str_contains($e->getMessage(), 'resource_already_exists_exception')) {
                     $output->writeln('Index already exists, skipping.');
                 } else {
                     throw $e;
@@ -43,8 +43,8 @@ final class CreateLoggableIndexesCommand extends Command
 
             try {
                 $this->elasticsearchIndexFactory->createCurrentDataTrackerLogIndex($loggableClass);
-            } catch (BadRequest400Exception $e) {
-                if (strpos($e->getMessage(), 'resource_already_exists_exception')) {
+            } catch (ClientResponseException $e) {
+                if (str_contains($e->getMessage(), 'resource_already_exists_exception')) {
                     $output->writeln('Index already exists, skipping.');
                 } else {
                     throw $e;
