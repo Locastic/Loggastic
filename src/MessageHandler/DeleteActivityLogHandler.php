@@ -10,7 +10,7 @@ final class DeleteActivityLogHandler
 {
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,
-        private readonly LoggableContextFactoryInterface $loggableContextFactory
+        private readonly LoggableContextFactoryInterface $loggableContextFactory,
     ) {
     }
 

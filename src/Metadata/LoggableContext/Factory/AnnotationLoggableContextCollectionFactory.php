@@ -18,7 +18,7 @@ final class AnnotationLoggableContextCollectionFactory implements LoggableContex
 
     public function create(): LoggableContextCollection
     {
-        if (count($this->loggablePaths) === 0) {
+        if (0 === count($this->loggablePaths)) {
             return new LoggableContextCollection([]);
         }
 

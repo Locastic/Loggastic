@@ -12,16 +12,16 @@ class CurrentDataTracker implements CurrentDataTrackerInterface
 {
     protected $id;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected $objectId;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected \DateTime $dateTime;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected ?string $objectClass = null;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected array $data = [];
 
     public function __construct()

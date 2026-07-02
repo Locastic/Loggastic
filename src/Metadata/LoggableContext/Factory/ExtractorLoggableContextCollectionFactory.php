@@ -7,13 +7,10 @@ use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 
 final class ExtractorLoggableContextCollectionFactory implements LoggableContextCollectionFactoryInterface
 {
-    public function __construct(private readonly LoggableExtractorInterface $extractor, private readonly ?\Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface $decorated = null)
+    public function __construct(private readonly LoggableExtractorInterface $extractor, private readonly ?LoggableContextCollectionFactoryInterface $decorated = null)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(): LoggableContextCollection
     {
         $loggableClasses = [];

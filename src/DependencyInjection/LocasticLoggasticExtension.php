@@ -14,9 +14,6 @@ use Symfony\Component\Finder\Finder;
 
 final class LocasticLoggasticExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -53,7 +50,7 @@ final class LocasticLoggasticExtension extends Extension
         $container->getDefinition(XmlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['xml']);
         $container->getDefinition(YamlLoggableExtractor::class)->replaceArgument(0, $loggableClasses['yml']);
 
-        if($config['default_doctrine_subscriber']) {
+        if ($config['default_doctrine_subscriber']) {
             $loader->load('activity_log_doctrine_subscriber.yaml');
         }
     }
@@ -71,11 +68,11 @@ final class LocasticLoggasticExtension extends Extension
         // add default paths
         $kernelRoot = $container->getParameter('kernel.project_dir');
 
-        if(is_dir($dir = $kernelRoot.'/Resources/config/loggastic')) {
+        if (is_dir($dir = $kernelRoot.'/Resources/config/loggastic')) {
             $loggablePaths[] = $dir;
         }
 
-        if(is_dir($dir = $kernelRoot.'/src/Entity')) {
+        if (is_dir($dir = $kernelRoot.'/src/Entity')) {
             $loggablePaths[] = $dir;
         }
 

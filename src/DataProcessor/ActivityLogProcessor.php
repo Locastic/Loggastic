@@ -25,7 +25,7 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
         private readonly ElasticsearchServiceInterface $elasticService,
         private readonly ActivityLogInputFactoryInterface $activityLogInputFactory,
         private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
-        private readonly LoggableContextFactoryInterface $loggableContextFactory
+        private readonly LoggableContextFactoryInterface $loggableContextFactory,
     ) {
     }
 
@@ -62,7 +62,6 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
             $this->objectNormalizer->normalize($message->getUpdatedItem(), 'activityLog', $this->getNormalizationContext($loggableContext)) :
             $message->getNormalizedItem();
 
-
         // no loggable fields were updated
         if (empty($updatedData) && !$message->isCreateLogWithoutChanges()) {
             return;
@@ -81,7 +80,7 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
 
         $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
 
-        //update full data log
+        // update full data log
         $currentDataTrackerInput = $this->currentDataTrackerInputFactory->createFromCurrentDataTracker($currentDataTracker);
         $currentDataTrackerInput->setData(json_encode($updatedData, JSON_THROW_ON_ERROR));
 

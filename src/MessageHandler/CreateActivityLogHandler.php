@@ -2,8 +2,8 @@
 
 namespace Locastic\Loggastic\MessageHandler;
 
-use Locastic\Loggastic\Loggable\LoggableChildInterface;
 use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
+use Locastic\Loggastic\Loggable\LoggableChildInterface;
 use Locastic\Loggastic\Message\CreateActivityLogMessageInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessage;
 use Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface;
@@ -16,7 +16,7 @@ final class CreateActivityLogHandler
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,
         private readonly LoggableContextFactoryInterface $loggableContextFactory,
-        private readonly ActivityLogMessageDispatcherInterface $activityLogMessageDispatcher
+        private readonly ActivityLogMessageDispatcherInterface $activityLogMessageDispatcher,
     ) {
     }
 

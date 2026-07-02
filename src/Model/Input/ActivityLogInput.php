@@ -6,25 +6,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class ActivityLogInput implements ActivityLogInputInterface
 {
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $action = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected \DateTime $loggedAt;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected $objectId;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $objectClass = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $dataChanges = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?string $requestUrl = null;
 
-    #[Groups(["activity_log"])]
+    #[Groups(['activity_log'])]
     protected ?array $user = null;
 
     public function __construct()

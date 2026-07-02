@@ -16,7 +16,7 @@ class ActivityLogMessageDispatcher implements ActivityLogMessageDispatcherInterf
     public function dispatch(ActivityLogMessageInterface $activityLogMessage, ?string $transportName = null): void
     {
         $stamps = [];
-        if($transportName !== null) {
+        if (null !== $transportName) {
             $stamps[] = new TransportNamesStamp($transportName);
         }
         $this->bus->dispatch(new Envelope($activityLogMessage), $stamps);

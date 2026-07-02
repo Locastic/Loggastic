@@ -12,14 +12,13 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
     public const FORMAT = 'activityLog';
 
     public function __construct(
-        private readonly NormalizerInterface             $decorated,
+        private readonly NormalizerInterface $decorated,
         private readonly LogIdentifierExtractorInterface $logIdentifierExtractor,
-        private readonly bool                            $useIdentifierExtractor
-    )
-    {
+        private readonly bool $useIdentifierExtractor,
+    ) {
     }
 
-    public function normalize($data, string $format = null, array $context = []): array
+    public function normalize($data, ?string $format = null, array $context = []): array
     {
         $collection = [];
 
@@ -28,7 +27,7 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
                 $normalizedItem = $this->decorated->normalize($item, 'array', $context);
 
                 $logId = $this->logIdentifierExtractor->getIdentifierValue($item);
-                if ($logId === null) {
+                if (null === $logId) {
                     continue;
                 }
 
@@ -44,7 +43,7 @@ final class ActivityLogCollectionNormalizer implements ActivityLogCollectionNorm
         return $collection;
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Collection && self::FORMAT === $format;
     }

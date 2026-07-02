@@ -3,8 +3,8 @@
 namespace Locastic\Loggastic\MessageHandler;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
 use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
+use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactory;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
@@ -18,7 +18,7 @@ final class UpdateActivityLogHandler
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,
         private readonly CurrentDataTrackerProviderInterface $currentDataTrackerProvider,
-        private readonly LoggableContextFactory $loggableContextFactory
+        private readonly LoggableContextFactory $loggableContextFactory,
     ) {
     }
 

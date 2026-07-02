@@ -2,7 +2,6 @@
 
 namespace Locastic\Loggastic\Metadata\LoggableContext\Factory;
 
-use Doctrine\Common\Annotations\Reader;
 use Locastic\Loggastic\Annotation\Loggable;
 use Locastic\Loggastic\Metadata\LoggableContext\LoggableContextCollection;
 use Locastic\Loggastic\Util\RecursiveClassIterator;
@@ -18,7 +17,7 @@ final class AttributeLoggableContextCollectionFactory implements LoggableContext
 
     public function create(): LoggableContextCollection
     {
-        if (count($this->loggablePaths) === 0) {
+        if (0 === count($this->loggablePaths)) {
             return new LoggableContextCollection([]);
         }
 

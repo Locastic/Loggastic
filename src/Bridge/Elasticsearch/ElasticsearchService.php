@@ -14,7 +14,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
     public function __construct(
         private readonly ElasticsearchClientInterface $elasticsearchClient,
         private readonly NormalizerInterface $normalizer,
-        private readonly DenormalizerInterface $denormalizer
+        private readonly DenormalizerInterface $denormalizer,
     ) {
     }
 
@@ -44,7 +44,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
             $params[] = [
                 'index' => [
                     '_index' => $index,
-                    '_id' => method_exists($item, 'getId')? $item->getId() : null,
+                    '_id' => method_exists($item, 'getId') ? $item->getId() : null,
                 ],
             ];
             $params[] = $normalizedItem;

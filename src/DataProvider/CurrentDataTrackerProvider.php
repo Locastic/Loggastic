@@ -11,7 +11,7 @@ final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInte
 {
     public function __construct(
         private readonly ElasticsearchServiceInterface $elasticsearchService,
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
     ) {
     }
 
@@ -23,7 +23,7 @@ final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInte
             'query' => ['term' => ['objectId' => $objectId]],
         ];
 
-        //todo move class to config
+        // todo move class to config
         return $this->elasticsearchService->getItemByQuery(
             $elasticContext->getCurrentDataTrackerIndex(),
             CurrentDataTracker::class,

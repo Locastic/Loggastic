@@ -21,7 +21,7 @@ final class PopulateCurrentDataTrackersHandler
         private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
         private readonly NormalizerInterface $objectNormalizer,
         private readonly ElasticsearchServiceInterface $elasticService,
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
     ) {
     }
 
@@ -33,11 +33,11 @@ final class PopulateCurrentDataTrackersHandler
         $repository = $manager->getRepository($message->getLoggableClass());
 
         $args = [];
-        if (method_exists($message->getLoggableClass(), 'getCreatedAt')) { //todo move to config or command args
+        if (method_exists($message->getLoggableClass(), 'getCreatedAt')) { // todo move to config or command args
             $args = ['createdAt' => 'DESC'];
         }
 
-        //todo move order to config or command
+        // todo move order to config or command
         $data = $repository->findBy([], $args, $message->getBatchSize(), $message->getOffset());
 
         echo "\r\n";

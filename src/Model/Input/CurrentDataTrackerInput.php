@@ -10,16 +10,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class CurrentDataTrackerInput implements CurrentDataTrackerInputInterface
 {
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected $objectId;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected \DateTime $dateTime;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected ?string $objectClass = null;
 
-    #[Groups(["current_data_tracker"])]
+    #[Groups(['current_data_tracker'])]
     protected ?string $data = null;
 
     public function __construct()
