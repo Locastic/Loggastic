@@ -3,14 +3,16 @@
 namespace Locastic\Loggastic\DataProvider;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
 
 final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInterface
 {
-    public function __construct(private readonly ElasticsearchService $elasticsearchService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
-    {
+    public function __construct(
+        private readonly ElasticsearchServiceInterface $elasticsearchService,
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
+    ) {
     }
 
     public function getCurrentDataTrackerByClassAndId(string $className, $objectId): ?CurrentDataTrackerInterface

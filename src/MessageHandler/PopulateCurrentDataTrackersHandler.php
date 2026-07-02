@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\MessageHandler;
 use Doctrine\Persistence\ManagerRegistry;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,8 +16,13 @@ final class PopulateCurrentDataTrackersHandler
 {
     use ElasticNormalizationContextTrait;
 
-    public function __construct(private readonly ManagerRegistry $managerRegistry, private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory, private readonly NormalizerInterface $objectNormalizer, private readonly ElasticsearchService $elasticService, private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory)
-    {
+    public function __construct(
+        private readonly ManagerRegistry $managerRegistry,
+        private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
+        private readonly NormalizerInterface $objectNormalizer,
+        private readonly ElasticsearchServiceInterface $elasticService,
+        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
+    ) {
     }
 
     public function __invoke(PopulateCurrentDataTrackersMessage $message): void

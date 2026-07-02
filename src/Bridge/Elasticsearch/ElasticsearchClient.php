@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Bridge\Elasticsearch;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
-final class ElasticsearchClient
+final class ElasticsearchClient implements ElasticsearchClientInterface
 {
     public function __construct(private readonly string $activityLogElasticHost)
     {

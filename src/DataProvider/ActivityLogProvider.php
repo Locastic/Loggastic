@@ -3,14 +3,14 @@
 namespace Locastic\Loggastic\DataProvider;
 
 use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchService;
+use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Model\Output\ActivityLog;
 use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 
 final class ActivityLogProvider implements ActivityLogProviderInterface
 {
     public function __construct(
-        private readonly ElasticsearchService $elasticsearchService,
+        private readonly ElasticsearchServiceInterface $elasticsearchService,
         private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory
     ) { }
 
