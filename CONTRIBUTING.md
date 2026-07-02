@@ -40,7 +40,7 @@ Elasticsearch-specific code only under `Bridge/Elasticsearch/`.
 - Fill in the PR template (the Q/A table helps us triage quickly).
 - Add a CHANGELOG entry under "Unreleased" for any user-visible change.
 - Public class/method signatures, service IDs, container parameters, and
-  config keys are all covered by our backward-compatibility policy — breaking
+  config keys are all covered by our backward-compatibility policy: breaking
   them requires a deprecation first and is only released in a major version.
 - New tests are expected for new behavior; bug fixes ideally come with a test
   that fails without the fix.
@@ -53,4 +53,4 @@ reproduction (config + entity + the action that misbehaves).
 
 ## Security issues
 
-Never open a public issue for a vulnerability — see [SECURITY.md](SECURITY.md).
+Never open a public issue for a vulnerability, see [SECURITY.md](SECURITY.md).
