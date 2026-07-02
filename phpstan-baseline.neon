@@ -1,0 +1,991 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Locastic\\Loggastic\\Annotation\\Loggable\:\:__construct\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Annotation/Loggable.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Annotation\\Loggable\:\:getGroups\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Annotation/Loggable.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Annotation\\Loggable\:\:\$groups type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Annotation/Loggable.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:bulkCreate\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:bulkCreate\(\) has parameter \$items with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:createItem\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:createItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getCollection\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getCollection\(\) has parameter \$limit with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getCollection\(\) has parameter \$offset with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getCollection\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getItemById\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getItemByQuery\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getNormalizationContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:getNormalizationContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:updateItem\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:updateItem\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchService\:\:updateItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchService.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:bulkCreate\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:bulkCreate\(\) has parameter \$items with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:createItem\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:createItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getCollection\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getCollection\(\) has parameter \$limit with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getCollection\(\) has parameter \$offset with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getCollection\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getItemById\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:getItemByQuery\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:updateItem\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:updateItem\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\ElasticsearchServiceInterface\:\:updateItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Bridge/Elasticsearch/ElasticsearchServiceInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfiguration\:\:__construct\(\) has parameter \$activityLogProperties with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfiguration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfiguration\:\:__construct\(\) has parameter \$currentDataTrackerProperties with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfiguration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfiguration\:\:getActivityLogIndexConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfiguration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfiguration\:\:getCurrentDataTrackerIndexConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfiguration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfigurationInterface\:\:getActivityLogIndexConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfigurationInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Bridge\\Elasticsearch\\Index\\ElasticsearchIndexConfigurationInterface\:\:getCurrentDataTrackerIndexConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bridge/Elasticsearch/Index/ElasticsearchIndexConfigurationInterface.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<object\>\:\:count\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Command/PopulateCurrentDataTrackersCommand.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Console\\Helper\\HelperInterface\:\:ask\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Command/PopulateCurrentDataTrackersCommand.php
+
+		-
+			message: '#^Parameter \#4 \$loggableContext of class Locastic\\Loggastic\\Message\\PopulateCurrentDataTrackersMessage constructor expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command/PopulateCurrentDataTrackersCommand.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager\:\:getRepository\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Command/PopulateCurrentDataTrackersCommand.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProcessor\\ActivityLogProcessor\:\:getNormalizationContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProcessor/ActivityLogProcessor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProcessor\\ActivityLogProcessor\:\:getNormalizationContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProcessor/ActivityLogProcessor.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and object will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/DataProcessor/ActivityLogProcessor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByClass\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByClass\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByClassAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByClassAndId\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getCurrentDataTrackerByClassAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getCurrentDataTrackerByClassAndId\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClass\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClass\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClassAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClassAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClassAndId\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DataProvider/ActivityLogProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\CurrentDataTrackerProvider\:\:getCurrentDataTrackerByClassAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/CurrentDataTrackerProvider.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DataProvider\\CurrentDataTrackerProviderInterface\:\:getCurrentDataTrackerByClassAndId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/DataProvider/CurrentDataTrackerProviderInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DependencyInjection\\Configuration\:\:getActivityLogProperties\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DependencyInjection\\Configuration\:\:getCurrentDataTrackerProperties\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DependencyInjection/Configuration.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DependencyInjection\\LocasticLoggasticExtension\:\:getLoggablePaths\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DependencyInjection/LocasticLoggasticExtension.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\DependencyInjection\\LocasticLoggasticExtension\:\:getLoggablePaths\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DependencyInjection/LocasticLoggasticExtension.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\EventListener\\PreDispatchActivityLogMessageListener\:\:__invoke\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/EventListener/PreDispatchActivityLogMessageListener.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\EventSubscriber\\ActivityLogDoctrineSubscriber\:\:\$persistedEntities type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/EventSubscriber/ActivityLogDoctrineSubscriber.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\ActivityLogInputFactory\:\:createFromActivityLogMessage\(\) has parameter \$dataChanges with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Factory/ActivityLogInputFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\ActivityLogInputFactoryInterface\:\:createFromActivityLogMessage\(\) has parameter \$dataChanges with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Factory/ActivityLogInputFactoryInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\CurrentDataTrackerInputFactory\:\:create\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Factory/CurrentDataTrackerInputFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\CurrentDataTrackerInputFactory\:\:create\(\) has parameter \$normalizedData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Factory/CurrentDataTrackerInputFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\CurrentDataTrackerInputFactoryInterface\:\:create\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Factory/CurrentDataTrackerInputFactoryInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Factory\\CurrentDataTrackerInputFactoryInterface\:\:create\(\) has parameter \$normalizedData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Factory/CurrentDataTrackerInputFactoryInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLogger\:\:getNormalizationContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Logger/ActivityLogger.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLogger\:\:getNormalizationContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Logger/ActivityLogger.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLogger\:\:logDeletedItem\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Logger/ActivityLogger.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLogger\:\:logUpdatedItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Logger/ActivityLogger.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLoggerInterface\:\:logDeletedItem\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Logger/ActivityLoggerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLoggerInterface\:\:logUpdatedItem\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Logger/ActivityLoggerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Logger\\ActivityLoggerInterface\:\:logUpdatedItem\(\) has parameter \$item with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Logger/ActivityLoggerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\ActivityLogMessageInterface\:\:getObjectId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Message/ActivityLogMessageInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\ActivityLogMessageInterface\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/ActivityLogMessageInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\ActivityLogMessageInterface\:\:setUser\(\) has parameter \$userInfo with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/ActivityLogMessageInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\CreateActivityLogMessage\:\:getObjectId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Message/CreateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\CreateActivityLogMessage\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/CreateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\CreateActivityLogMessage\:\:setUser\(\) has parameter \$userInfo with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/CreateActivityLogMessage.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Message\\CreateActivityLogMessage\:\:\$userInfo type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/CreateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\DeleteActivityLogMessage\:\:__construct\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Message/DeleteActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\DeleteActivityLogMessage\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/DeleteActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\DeleteActivityLogMessage\:\:setUser\(\) has parameter \$userInfo with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/DeleteActivityLogMessage.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Message\\DeleteActivityLogMessage\:\:\$userInfo type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/DeleteActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\PopulateCurrentDataTrackersMessage\:\:__construct\(\) has parameter \$loggableContext with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/PopulateCurrentDataTrackersMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\PopulateCurrentDataTrackersMessage\:\:getLoggableContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/PopulateCurrentDataTrackersMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:getNormalizedItem\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:getObjectId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:setNormalizedItem\(\) has parameter \$normalizedItem with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:setUpdatedItem\(\) has parameter \$updatedItem with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:setUser\(\) has parameter \$userInfo with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:\$normalizedItem type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Message\\UpdateActivityLogMessage\:\:\$userInfo type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessage.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessageInterface\:\:getNormalizedItem\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessageInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Message\\UpdateActivityLogMessageInterface\:\:setNormalizedItem\(\) has parameter \$normalizedItem with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Message/UpdateActivityLogMessageInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\MessageHandler\\DeleteActivityLogHandler\:\:__invoke\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/MessageHandler/DeleteActivityLogHandler.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\MessageHandler\\PopulateCurrentDataTrackersHandler\:\:getNormalizationContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/MessageHandler/PopulateCurrentDataTrackersHandler.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\MessageHandler\\PopulateCurrentDataTrackersHandler\:\:getNormalizationContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/MessageHandler/PopulateCurrentDataTrackersHandler.php
+
+		-
+			message: '#^Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager\:\:getRepository\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/MessageHandler/PopulateCurrentDataTrackersHandler.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\MessageHandler\\UpdateActivityLogHandler\:\:getNormalizationContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/MessageHandler/UpdateActivityLogHandler.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\MessageHandler\\UpdateActivityLogHandler\:\:getNormalizationContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/MessageHandler/UpdateActivityLogHandler.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\AbstractLoggableExtractor\:\:__construct\(\) has parameter \$loggablePaths with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/AbstractLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\AbstractLoggableExtractor\:\:extractPath\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Metadata/Extractor/AbstractLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\AbstractLoggableExtractor\:\:getLoggableResources\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/AbstractLoggableExtractor.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Metadata\\Extractor\\AbstractLoggableExtractor\:\:\$loggableClasses type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/AbstractLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\LoggableExtractorInterface\:\:getLoggableResources\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/LoggableExtractorInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\YamlLoggableExtractor\:\:buildLoggableClasses\(\) has parameter \$loggableClasses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/YamlLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\YamlLoggableExtractor\:\:buildLoggableClasses\(\) has parameter \$path with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Metadata/Extractor/YamlLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\YamlLoggableExtractor\:\:validateLoggableClass\(\) has parameter \$loggableClassConfig with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/Extractor/YamlLoggableExtractor.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\Extractor\\YamlLoggableExtractor\:\:validateLoggableClass\(\) has parameter \$path with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Metadata/Extractor/YamlLoggableExtractor.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/AnnotationLoggableContextCollectionFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\Factory\\AnnotationLoggableContextCollectionFactory\:\:getLoggableAttribute\(\) has parameter \$reflectionClass with generic class ReflectionClass but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/AnnotationLoggableContextCollectionFactory.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Doctrine\\Common\\Annotations\\Reader will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/AnnotationLoggableContextCollectionFactory.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/AttributeLoggableContextCollectionFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\Factory\\AttributeLoggableContextCollectionFactory\:\:getLoggableAttribute\(\) has parameter \$reflectionClass with generic class ReflectionClass but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/AttributeLoggableContextCollectionFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\Factory\\LoggableContextFactory\:\:create\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/LoggableContextFactory.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\Factory\\LoggableContextFactoryInterface\:\:create\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/LoggableContext/Factory/LoggableContextFactoryInterface.php
+
+		-
+			message: '#^Class Locastic\\Loggastic\\Metadata\\LoggableContext\\LoggableContextCollection implements generic interface IteratorAggregate but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Metadata/LoggableContext/LoggableContextCollection.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\LoggableContextCollection\:\:__construct\(\) has parameter \$loggableContextCollection with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/LoggableContext/LoggableContextCollection.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Metadata\\LoggableContext\\LoggableContextCollection\:\:getByClass\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Metadata/LoggableContext/LoggableContextCollection.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Input\\ActivityLogInput\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Input/ActivityLogInput.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Input\\ActivityLogInput\:\:setObjectId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Model/Input/ActivityLogInput.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Input\\ActivityLogInput\:\:setUser\(\) has parameter \$user with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Input/ActivityLogInput.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Input\\ActivityLogInput\:\:\$objectId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Model/Input/ActivityLogInput.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Input\\ActivityLogInput\:\:\$user type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Input/ActivityLogInput.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Input\\ActivityLogInputInterface\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Input/ActivityLogInputInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Input\\ActivityLogInputInterface\:\:setUser\(\) has parameter \$user with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Input/ActivityLogInputInterface.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Input\\CurrentDataTrackerInput\:\:\$objectId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Model/Input/CurrentDataTrackerInput.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:getDataChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:setObjectId\(\) has parameter \$objectId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:setUser\(\) has parameter \$user with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:\$dataChanges type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:\$objectId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\ActivityLog\:\:\$user type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLog.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLogInterface\:\:getDataChanges\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLogInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLogInterface\:\:getUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLogInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\ActivityLogInterface\:\:setUser\(\) has parameter \$user with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/ActivityLogInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:getId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:setId\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:\$data type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:\$id has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Property Locastic\\Loggastic\\Model\\Output\\CurrentDataTracker\:\:\$objectId has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Model/Output/CurrentDataTracker.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTrackerInterface\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/Output/CurrentDataTrackerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTrackerInterface\:\:getId\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Model/Output/CurrentDataTrackerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Model\\Output\\CurrentDataTrackerInterface\:\:setId\(\) has parameter \$id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Model/Output/CurrentDataTrackerInterface.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArrayDiff\:\:arrayDiffRecursive\(\) has parameter \$array1 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Util/ArrayDiff.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArrayDiff\:\:arrayDiffRecursive\(\) has parameter \$array2 with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Util/ArrayDiff.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArrayDiff\:\:arrayDiffRecursive\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util/ArrayDiff.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArraysComparer\:\:getCompared\(\) has parameter \$currentData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util/ArraysComparer.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArraysComparer\:\:getCompared\(\) has parameter \$previousData with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util/ArraysComparer.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ArraysComparer\:\:getCompared\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util/ArraysComparer.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\ClassUtils\:\:getClass\(\) has parameter \$object with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Util/ClassUtils.php
+
+		-
+			message: '#^Method Locastic\\Loggastic\\Util\\RecursiveClassIterator\:\:getReflectionClasses\(\) has parameter \$paths with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Util/RecursiveClassIterator.php
