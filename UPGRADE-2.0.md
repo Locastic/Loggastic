@@ -53,3 +53,35 @@ the deprecation shipped in a 1.x release so you can migrate before upgrading.
   (handled by `AttributeLoggableContextCollectionFactory`) or with XML/YAML
   extractors. The `doctrine/annotations` package is no longer a dependency
   since 1.2.
+
+## Storage abstraction
+
+Core services no longer talk to Elasticsearch directly. Three new interfaces
+in `Locastic\Loggastic\Storage` sit between the core and the backend:
+`ActivityLogStorageInterface`, `CurrentDataTrackerStorageInterface` and
+`StorageInitializerInterface`. The default Elasticsearch implementations live
+in `Locastic\Loggastic\Bridge\Elasticsearch\Storage` and are aliased to the
+interfaces, so nothing changes unless you extended the affected classes:
+
+- The constructor signatures of `ActivityLogProcessor`, `ActivityLogProvider`,
+  `CurrentDataTrackerProvider`, `PopulateCurrentDataTrackersHandler`,
+  `CreateLoggableIndexesCommand` and `PopulateCurrentDataTrackersCommand`
+  changed: they now receive the storage interfaces instead of
+  `ElasticsearchServiceInterface`, `ElasticsearchContextFactoryInterface` and
+  `ElasticsearchIndexFactoryInterface`. Update any decorators or service
+  definitions overriding their arguments.
+- `ActivityLogProviderInterface::getActivityLogsByIndexAndId()` was removed
+  from the interface because it leaks the Elasticsearch index name into the
+  storage-agnostic API. Inject
+  `Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage`
+  and call `findByIndexAndObjectId()` instead.
+- `ActivityLogProvider::getCurrentDataTrackerByClassAndId()` was removed. It
+  declared an `?array` return type while the denormalizer returns an object,
+  so every call that found a tracker threw a `TypeError`. Use
+  `CurrentDataTrackerProviderInterface::getCurrentDataTrackerByClassAndId()`.
+- `Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait`
+  moved to `Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait`;
+  it only forces the `\DateTime::ATOM` date format and is not
+  Elasticsearch-specific. Update the import if you used it.
+- The unused `Locastic\Loggastic\Exception\IndexNotFoundException` class was
+  removed.

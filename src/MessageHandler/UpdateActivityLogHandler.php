@@ -2,18 +2,18 @@
 
 namespace Locastic\Loggastic\MessageHandler;
 
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
 use Locastic\Loggastic\DataProcessor\ActivityLogProcessorInterface;
 use Locastic\Loggastic\DataProvider\CurrentDataTrackerProviderInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactory;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final class UpdateActivityLogHandler
 {
-    use ElasticNormalizationContextTrait;
+    use NormalizationContextTrait;
 
     public function __construct(
         private readonly ActivityLogProcessorInterface $activityLogProcessor,

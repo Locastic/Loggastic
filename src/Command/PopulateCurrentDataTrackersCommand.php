@@ -3,9 +3,9 @@
 namespace Locastic\Loggastic\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
+use Locastic\Loggastic\Storage\StorageInitializerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[AsCommand('locastic:activity-logs:populate-current-data-trackers')]
 final class PopulateCurrentDataTrackersCommand extends Command
 {
-    public function __construct(private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory, private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ManagerRegistry $managerRegistry, private readonly MessageBusInterface $bus)
+    public function __construct(private readonly StorageInitializerInterface $storageInitializer, private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ManagerRegistry $managerRegistry, private readonly MessageBusInterface $bus)
     {
         parent::__construct();
     }
@@ -68,7 +68,7 @@ final class PopulateCurrentDataTrackersCommand extends Command
             }
 
             try {
-                $this->elasticsearchIndexFactory->recreateCurrentDataTrackerLogIndex($loggableClass);
+                $this->storageInitializer->recreateCurrentDataTrackerStorage($loggableClass);
             } catch (\Exception $e) {
                 $io->error($e->getMessage());
 

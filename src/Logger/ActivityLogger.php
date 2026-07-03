@@ -2,7 +2,6 @@
 
 namespace Locastic\Loggastic\Logger;
 
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
 use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Event\PreDispatchActivityLogMessageEvent;
 use Locastic\Loggastic\Loggable\LoggableChildInterface;
@@ -12,12 +11,13 @@ use Locastic\Loggastic\Message\UpdateActivityLogMessage;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\MessageDispatcher\ActivityLogMessageDispatcherInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
+use Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ActivityLogger implements ActivityLoggerInterface
 {
-    use ElasticNormalizationContextTrait;
+    use NormalizationContextTrait;
 
     public function __construct(
         private readonly ActivityLogMessageDispatcherInterface $activityLogMessageDispatcher,

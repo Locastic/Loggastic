@@ -3,11 +3,12 @@
 namespace Locastic\Loggastic\Tests\FunctionalTests;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
+use Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage;
 use Locastic\Loggastic\DataProvider\ActivityLogProviderInterface;
 use Locastic\Loggastic\Enum\ActivityLogAction;
 use Locastic\Loggastic\Logger\ActivityLoggerInterface;
 use Locastic\Loggastic\Model\Output\ActivityLogInterface;
+use Locastic\Loggastic\Storage\StorageInitializerInterface;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyBlogPost;
 use Locastic\Loggastic\Tests\Fixtures\App\Model\DummyPhoto;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class ActivityLogTest extends KernelTestCase
 {
     private readonly ActivityLogProviderInterface $activityLogProvider;
+    private readonly ElasticsearchActivityLogStorage $elasticsearchActivityLogStorage;
     private readonly DummyBlogPost $blogPost;
     private readonly ActivityLoggerInterface $activityLogger;
 
@@ -25,12 +27,13 @@ class ActivityLogTest extends KernelTestCase
         $container = self::getContainer()->get('test.service_container');
 
         $this->activityLogProvider = $container->get(ActivityLogProviderInterface::class);
+        $this->elasticsearchActivityLogStorage = $container->get(ElasticsearchActivityLogStorage::class);
         $this->activityLogger = $container->get(ActivityLoggerInterface::class);
 
         // prepare elastic index
-        $elasticsearchIndexFactory = $container->get(ElasticsearchIndexFactoryInterface::class);
-        $elasticsearchIndexFactory->recreateActivityLogIndex(DummyBlogPost::class);
-        $elasticsearchIndexFactory->recreateCurrentDataTrackerLogIndex(DummyBlogPost::class);
+        $storageInitializer = $container->get(StorageInitializerInterface::class);
+        $storageInitializer->recreateActivityLogStorage(DummyBlogPost::class);
+        $storageInitializer->recreateCurrentDataTrackerStorage(DummyBlogPost::class);
 
         $this->blogPost = $this->createDummyBlogPost();
     }
@@ -161,7 +164,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testProviderByClassAndIndexLimit(): void
     {
-        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log', 15, [], 1);
+        $activityLogs = $this->elasticsearchActivityLogStorage->findByIndexAndObjectId('dummy_blog_post_activity_log', 15, [], 1);
 
         self::assertCount(1, $activityLogs);
     }
@@ -192,7 +195,7 @@ class ActivityLogTest extends KernelTestCase
 
     public function testProviderByClassAndIndexLimitAndOffset(): void
     {
-        $activityLogs = $this->activityLogProvider->getActivityLogsByIndexAndId('dummy_blog_post_activity_log', 15, [], 20, 3);
+        $activityLogs = $this->elasticsearchActivityLogStorage->findByIndexAndObjectId('dummy_blog_post_activity_log', 15, [], 20, 3);
 
         $editedLog = $activityLogs[0];
 

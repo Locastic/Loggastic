@@ -3,25 +3,23 @@
 namespace Locastic\Loggastic\MessageHandler;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface;
 use Locastic\Loggastic\Message\PopulateCurrentDataTrackersMessage;
+use Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait;
+use Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[AsMessageHandler]
 final class PopulateCurrentDataTrackersHandler
 {
-    use ElasticNormalizationContextTrait;
+    use NormalizationContextTrait;
 
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
         private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
         private readonly NormalizerInterface $objectNormalizer,
-        private readonly ElasticsearchServiceInterface $elasticService,
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
+        private readonly CurrentDataTrackerStorageInterface $currentDataTrackerStorage,
     ) {
     }
 
@@ -52,7 +50,6 @@ final class PopulateCurrentDataTrackersHandler
             $currentDataTrackers[] = $this->currentDataTrackerInputFactory->create($item, $normalizedItem);
         }
 
-        $elasticContext = $this->elasticsearchContextFactory->create($message->getLoggableClass());
-        $this->elasticService->bulkCreate($currentDataTrackers, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
+        $this->currentDataTrackerStorage->bulkSave($currentDataTrackers, $message->getLoggableClass());
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Locastic\Loggastic\Command;
 
-use Elastic\Elasticsearch\Exception\ClientResponseException;
-use Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactoryInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextCollectionFactoryInterface;
+use Locastic\Loggastic\Storage\StorageInitializerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand('locastic:activity-logs:create-loggable-indexes')]
 final class CreateLoggableIndexesCommand extends Command
 {
-    public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly ElasticsearchIndexFactoryInterface $elasticsearchIndexFactory)
+    public function __construct(private readonly LoggableContextCollectionFactoryInterface $loggableContextCollectionFactory, private readonly StorageInitializerInterface $storageInitializer)
     {
         parent::__construct();
     }
@@ -29,26 +28,14 @@ final class CreateLoggableIndexesCommand extends Command
         foreach ($loggableContextCollection->getIterator() as $loggableClass => $config) {
             $io->writeln('Creating '.$loggableClass.' activity_log index');
 
-            try {
-                $this->elasticsearchIndexFactory->createActivityLogIndex($loggableClass);
-            } catch (ClientResponseException $e) {
-                if (str_contains($e->getMessage(), 'resource_already_exists_exception')) {
-                    $output->writeln('Index already exists, skipping.');
-                } else {
-                    throw $e;
-                }
+            if (!$this->storageInitializer->initializeActivityLogStorage($loggableClass)) {
+                $output->writeln('Index already exists, skipping.');
             }
 
             $io->writeln('Creating '.$loggableClass.' current_data_tracker index');
 
-            try {
-                $this->elasticsearchIndexFactory->createCurrentDataTrackerLogIndex($loggableClass);
-            } catch (ClientResponseException $e) {
-                if (str_contains($e->getMessage(), 'resource_already_exists_exception')) {
-                    $output->writeln('Index already exists, skipping.');
-                } else {
-                    throw $e;
-                }
+            if (!$this->storageInitializer->initializeCurrentDataTrackerStorage($loggableClass)) {
+                $output->writeln('Index already exists, skipping.');
             }
         }
 

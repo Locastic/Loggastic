@@ -19,7 +19,6 @@ services:
             - '@Doctrine\Persistence\ManagerRegistry'
             - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@serializer.normalizer.object'
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface'
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
+            - '@Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface'
         tags:
             - { name: messenger.message_handler }
