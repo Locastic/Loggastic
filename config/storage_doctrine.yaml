@@ -1,0 +1,18 @@
+services:
+    Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineActivityLogStorage:
+        autowire: true
+
+    Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineCurrentDataTrackerStorage:
+        autowire: true
+
+    Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineStorageInitializer:
+        autowire: true
+
+    Locastic\Loggastic\Storage\ActivityLogStorageInterface:
+        alias: 'Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineActivityLogStorage'
+
+    Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface:
+        alias: 'Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineCurrentDataTrackerStorage'
+
+    Locastic\Loggastic\Storage\StorageInitializerInterface:
+        alias: 'Locastic\Loggastic\Bridge\Doctrine\Storage\DoctrineStorageInitializer'

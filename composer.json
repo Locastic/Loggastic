@@ -1,6 +1,6 @@
 {
   "name": "locastic/loggastic",
-  "description": "ElasticSearch activity logs for Symfony",
+  "description": "Activity logs for Symfony, stored in Elasticsearch or your relational database",
   "license": "MIT",
   "type": "symfony-bundle",
   "authors": [
@@ -11,6 +11,7 @@
   ],
   "require": {
     "php": ">=8.2",
+    "doctrine/dbal": "^3.8 || ^4.0",
     "doctrine/doctrine-bundle": "^2.8 || ^3.0",
     "doctrine/orm": "^3.4",
     "elasticsearch/elasticsearch": "^8.0 || ^9.0",

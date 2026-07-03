@@ -3,3 +3,11 @@ locastic_loggastic:
     loggable_paths:
         - '%kernel.project_dir%/Resources'
         - '%kernel.project_dir%/Model'
+
+when@in_memory_storage:
+    locastic_loggastic:
+        storage: in_memory
+
+when@doctrine_storage:
+    locastic_loggastic:
+        storage: doctrine

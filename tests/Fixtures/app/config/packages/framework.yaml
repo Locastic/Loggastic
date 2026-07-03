@@ -17,8 +17,12 @@ framework:
         php_errors:
                 log: true
 
-when@test:
+when@test: &test_framework
         framework:
                 test: true
                 session:
                         storage_factory_id: session.storage.factory.mock_file
+
+when@in_memory_storage: *test_framework
+
+when@doctrine_storage: *test_framework

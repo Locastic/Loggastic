@@ -33,17 +33,7 @@ final class LocasticLoggasticBundle extends AbstractBundle
 
         $builder->setParameter('locastic_activity_log.identifier_extractor', $config['identifier_extractor'] ?? true);
 
-        $builder->setParameter('locastic_activity_log.elasticsearch_host', $config['elastic_host']);
-        $builder->setParameter('locastic_activity_log.elasticsearch_user', $config['elastic_user']);
-        $builder->setParameter('locastic_activity_log.elasticsearch_password', $config['elastic_password']);
-        $builder->setParameter('locastic_activity_log.elasticsearch_ssl_verification', $config['elastic_ssl_verification']);
-        $builder->setParameter('locastic_activity_log.elastic_date_detection', $config['elastic_date_detection']);
-        $builder->setParameter('locastic_activity_log.elastic_dynamic_date_formats', $config['elastic_dynamic_date_formats']);
-
-        $builder->setParameter('locastic_activity_log.activity_log.elastic_properties', $config['activity_log']['elastic_properties']);
-        $builder->setParameter('locastic_activity_log.current_data_tracker.elastic_properties', $config['current_data_tracker']['elastic_properties']);
-
-        $container->import('../config/elastic.yaml');
+        $this->loadStorage($config, $container, $builder);
 
         // load loggable resources
         $loggableClasses = $this->getLoggablePaths($builder, $config);
@@ -58,6 +48,35 @@ final class LocasticLoggasticBundle extends AbstractBundle
         if ($config['default_doctrine_subscriber']) {
             $container->import('../config/activity_log_doctrine_subscriber.yaml');
         }
+    }
+
+    /**
+     * @param array<array-key, mixed> $config
+     */
+    private function loadStorage(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        switch ($config['storage']) {
+            case 'doctrine':
+                $container->import('../config/storage_doctrine.yaml');
+
+                return;
+            case 'in_memory':
+                $container->import('../config/storage_in_memory.yaml');
+
+                return;
+        }
+
+        $builder->setParameter('locastic_activity_log.elasticsearch_host', $config['elastic_host']);
+        $builder->setParameter('locastic_activity_log.elasticsearch_user', $config['elastic_user']);
+        $builder->setParameter('locastic_activity_log.elasticsearch_password', $config['elastic_password']);
+        $builder->setParameter('locastic_activity_log.elasticsearch_ssl_verification', $config['elastic_ssl_verification']);
+        $builder->setParameter('locastic_activity_log.elastic_date_detection', $config['elastic_date_detection']);
+        $builder->setParameter('locastic_activity_log.elastic_dynamic_date_formats', $config['elastic_dynamic_date_formats']);
+
+        $builder->setParameter('locastic_activity_log.activity_log.elastic_properties', $config['activity_log']['elastic_properties']);
+        $builder->setParameter('locastic_activity_log.current_data_tracker.elastic_properties', $config['current_data_tracker']['elastic_properties']);
+
+        $container->import('../config/elastic.yaml');
     }
 
     private function getLoggablePaths(ContainerBuilder $builder, array $config): array
