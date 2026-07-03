@@ -9,17 +9,29 @@ on:
 jobs:
     tests:
         runs-on: ubuntu-latest
-        name: PHP ${{ matrix.php }} + Symfony ${{ matrix.symfony }}
+        name: PHP ${{ matrix.php }} + Symfony ${{ matrix.symfony }} + ES ${{ matrix.elasticsearch }}
         strategy:
             fail-fast: false
             matrix:
                 php: ['8.2', '8.3', '8.4']
                 symfony: ['6.4.*', '7.4.*']
+                elasticsearch: ['8.17.0']
+                es-client: ['^8.0']
+                include:
+                    - php: '8.4'
+                      symfony: '7.4.*'
+                      elasticsearch: '9.0.0'
+                      es-client: '^9.0'
         steps:
             - name: Runs Elasticsearch
-              uses: elastic/elastic-github-actions/elasticsearch@master
-              with:
-                  stack-version: '7.17.28'
+              run: |
+                  docker run -d --name elasticsearch -p 9200:9200 -e discovery.type=single-node \
+                    -e xpack.security.enabled=false -e "ES_JAVA_OPTS=-Xms1g -Xmx1g" \
+                    docker.elastic.co/elasticsearch/elasticsearch:${{ matrix.elasticsearch }}
+            - name: Wait for Elasticsearch
+              run: |
+                  for i in $(seq 1 60); do curl -s localhost:9200 >/dev/null && exit 0; sleep 2; done
+                  docker logs elasticsearch; exit 1
             - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
               with:
@@ -29,6 +41,8 @@ jobs:
               run: |
                   composer global config --no-plugins allow-plugins.symfony/flex true
                   composer global require --no-progress --no-scripts symfony/flex
+            - name: Pin Elasticsearch client to the server major version
+              run: composer require --no-update --no-interaction "elasticsearch/elasticsearch:${{ matrix.es-client }}"
             - name: Install Dependencies
               run: composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
               env:

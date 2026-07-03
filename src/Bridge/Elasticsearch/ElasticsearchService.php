@@ -25,7 +25,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
         $request = [
             'index' => $index,
             'body' => $body,
-            'refresh' => true,
+            'refresh' => 'true',
         ];
 
         $this->elasticsearchClient->getClient()->index($request);
@@ -65,7 +65,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
             'body' => ['query' => ['term' => ['id' => $id]]],
         ]);
 
-        if (1 !== $documents['hits']['total']) {
+        if (1 !== $documents['hits']['total']['value']) {
             return null;
         }
 
@@ -100,7 +100,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
             'index' => $index,
             'id' => (string) $id,
             'body' => ['doc' => $body],
-            'refresh' => true,
+            'refresh' => 'true',
             'retry_on_conflict' => 1,
         ];
 
