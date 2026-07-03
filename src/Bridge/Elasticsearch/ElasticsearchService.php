@@ -53,6 +53,7 @@ final class ElasticsearchService implements ElasticsearchServiceInterface
         $request = [
             'index' => $index,
             'body' => $params,
+            'refresh' => 'true',
         ];
 
         $this->elasticsearchClient->getClient()->bulk($request);
