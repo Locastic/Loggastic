@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class DummyCategory
 {

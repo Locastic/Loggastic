@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Model\Output;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 /**
  * Save the latest data for each object, so it can be used to compare changes
