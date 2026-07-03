@@ -24,9 +24,9 @@ services:
 
     Locastic\Loggastic\DataProcessor\ActivityLogProcessor:
         arguments:
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface'
             - '@serializer.normalizer.object'
-            - '@Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface'
+            - '@Locastic\Loggastic\Storage\ActivityLogStorageInterface'
+            - '@Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface'
             - '@Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface'
             - '@Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface'
             - '@Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface'

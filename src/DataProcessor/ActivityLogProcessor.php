@@ -2,9 +2,6 @@
 
 namespace Locastic\Loggastic\DataProcessor;
 
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
 use Locastic\Loggastic\Factory\ActivityLogInputFactoryInterface;
 use Locastic\Loggastic\Factory\CurrentDataTrackerInputFactoryInterface;
 use Locastic\Loggastic\Message\CreateActivityLogMessageInterface;
@@ -12,17 +9,20 @@ use Locastic\Loggastic\Message\DeleteActivityLogMessageInterface;
 use Locastic\Loggastic\Message\UpdateActivityLogMessageInterface;
 use Locastic\Loggastic\Metadata\LoggableContext\Factory\LoggableContextFactoryInterface;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait;
+use Locastic\Loggastic\Storage\ActivityLogStorageInterface;
+use Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface;
 use Locastic\Loggastic\Util\ArraysComparer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ActivityLogProcessor implements ActivityLogProcessorInterface
 {
-    use ElasticNormalizationContextTrait;
+    use NormalizationContextTrait;
 
     public function __construct(
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
         private readonly NormalizerInterface $objectNormalizer,
-        private readonly ElasticsearchServiceInterface $elasticService,
+        private readonly ActivityLogStorageInterface $activityLogStorage,
+        private readonly CurrentDataTrackerStorageInterface $currentDataTrackerStorage,
         private readonly ActivityLogInputFactoryInterface $activityLogInputFactory,
         private readonly CurrentDataTrackerInputFactoryInterface $currentDataTrackerInputFactory,
         private readonly LoggableContextFactoryInterface $loggableContextFactory,
@@ -39,15 +39,13 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
 
         $normalizedItem = $this->objectNormalizer->normalize($message->getItem(), 'activityLog', $this->getNormalizationContext($loggableContext));
 
-        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
-
         // create log to save full item data for later comparison
         $currentDataTracker = $this->currentDataTrackerInputFactory->create($message->getItem(), $normalizedItem);
-        $this->elasticService->createItem($currentDataTracker, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
+        $this->currentDataTrackerStorage->save($currentDataTracker, $message->getClassName());
 
         // create log for item creation
         $activityLog = $this->activityLogInputFactory->createFromActivityLogMessage($message);
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
+        $this->activityLogStorage->save($activityLog, $message->getClassName());
     }
 
     public function processUpdatedItem(UpdateActivityLogMessageInterface $message, CurrentDataTrackerInterface $currentDataTracker): void
@@ -73,18 +71,16 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
             return;
         }
 
-        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
-
         // create log
         $activityLog = $this->activityLogInputFactory->createFromActivityLogMessage($message, $changes);
 
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
+        $this->activityLogStorage->save($activityLog, $message->getClassName());
 
         // update full data log
         $currentDataTrackerInput = $this->currentDataTrackerInputFactory->createFromCurrentDataTracker($currentDataTracker);
         $currentDataTrackerInput->setData(json_encode($updatedData, JSON_THROW_ON_ERROR));
 
-        $this->elasticService->updateItem($currentDataTracker->getId(), $currentDataTrackerInput, $elasticContext->getCurrentDataTrackerIndex(), ['current_data_tracker']);
+        $this->currentDataTrackerStorage->update($currentDataTracker->getId(), $currentDataTrackerInput, $message->getClassName());
     }
 
     public function processDeletedItem(DeleteActivityLogMessageInterface $message): void
@@ -97,7 +93,6 @@ final class ActivityLogProcessor implements ActivityLogProcessorInterface
 
         $activityLog = $this->activityLogInputFactory->createFromActivityLogMessage($message);
 
-        $elasticContext = $this->elasticsearchContextFactory->create($message->getClassName());
-        $this->elasticService->createItem($activityLog, $elasticContext->getActivityLogIndex(), ['activity_log']);
+        $this->activityLogStorage->save($activityLog, $message->getClassName());
     }
 }

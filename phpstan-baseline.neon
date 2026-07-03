@@ -283,36 +283,6 @@ parameters:
 			path: src/DataProvider/ActivityLogProvider.php
 
 		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) has parameter \$objectId with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/DataProvider/ActivityLogProvider.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/DataProvider/ActivityLogProvider.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getActivityLogsByIndexAndId\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/DataProvider/ActivityLogProvider.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getCurrentDataTrackerByClassAndId\(\) has parameter \$objectId with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/DataProvider/ActivityLogProvider.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProvider\:\:getCurrentDataTrackerByClassAndId\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/DataProvider/ActivityLogProvider.php
-
-		-
 			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClass\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -338,24 +308,6 @@ parameters:
 
 		-
 			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByClassAndId\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/DataProvider/ActivityLogProviderInterface.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) has parameter \$objectId with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: src/DataProvider/ActivityLogProviderInterface.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) has parameter \$sort with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/DataProvider/ActivityLogProviderInterface.php
-
-		-
-			message: '#^Method Locastic\\Loggastic\\DataProvider\\ActivityLogProviderInterface\:\:getActivityLogsByIndexAndId\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/DataProvider/ActivityLogProviderInterface.php

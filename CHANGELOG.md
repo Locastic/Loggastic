@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Storage abstraction: `ActivityLogStorageInterface`, `CurrentDataTrackerStorageInterface` and `StorageInitializerInterface` in the new `Locastic\Loggastic\Storage` namespace; implement and alias them to store activity logs in a custom backend
+- Elasticsearch implementations of the storage interfaces in `Locastic\Loggastic\Bridge\Elasticsearch\Storage` (used by default, no configuration changes needed)
 - Support for Symfony 8 and DoctrineBundle 3 (`symfony/*` now `^6.4 || ^7.0 || ^8.0`, `doctrine/doctrine-bundle` now `^2.8 || ^3.0`), with Symfony 8 CI legs
 - Basic auth (`elastic_user`, `elastic_password`) and `elastic_ssl_verification` config options for secured Elasticsearch clusters (originally proposed in #26 by @jakubdusek)
 - Tests matrix now also runs against Elasticsearch 9
@@ -18,6 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking:** migrated to the modern bundle directory layout: service configuration moved from `src/Resources/config/` to `config/`, and the bundle now extends `AbstractBundle`; the `LocasticLoggasticExtension` and `Configuration` classes were removed (see UPGRADE-2.0.md)
 - **Breaking:** upgraded to `elasticsearch/elasticsearch` `^8.0 || ^9.0`; Elasticsearch 7 servers are no longer supported and a PSR-18 HTTP client implementation is required (see UPGRADE-2.0.md)
 - **Breaking:** `ElasticsearchClientInterface::getClient()` now returns `Elastic\Elasticsearch\Client` instead of `Elasticsearch\Client`
+- **Breaking:** core services (`ActivityLogProcessor`, `ActivityLogProvider`, `CurrentDataTrackerProvider`, `PopulateCurrentDataTrackersHandler` and the console commands) now depend on the storage interfaces instead of `ElasticsearchServiceInterface`/`ElasticsearchContextFactoryInterface`/`ElasticsearchIndexFactoryInterface`; their constructor signatures changed (see UPGRADE-2.0.md)
+- **Breaking:** `ActivityLogProviderInterface::getActivityLogsByIndexAndId()` was removed; use `ElasticsearchActivityLogStorage::findByIndexAndObjectId()` for index-based reads
+- **Breaking:** `ElasticNormalizationContextTrait` moved to `Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait` (it is not Elasticsearch-specific)
+
+### Removed
+- **Breaking:** `ActivityLogProvider::getCurrentDataTrackerByClassAndId()`, which declared an `?array` return type but returned an object and threw a `TypeError` on every hit; use `CurrentDataTrackerProviderInterface` instead
+- **Breaking:** the unused `IndexNotFoundException` class
 
 ### Fixed
 - `ElasticsearchService::getItemById()` always returned null because it compared the hit total against an integer while Elasticsearch returns an object

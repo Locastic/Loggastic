@@ -2,32 +2,17 @@
 
 namespace Locastic\Loggastic\DataProvider;
 
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\ElasticsearchContextFactoryInterface;
-use Locastic\Loggastic\Bridge\Elasticsearch\ElasticsearchServiceInterface;
-use Locastic\Loggastic\Model\Output\CurrentDataTracker;
 use Locastic\Loggastic\Model\Output\CurrentDataTrackerInterface;
+use Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface;
 
 final class CurrentDataTrackerProvider implements CurrentDataTrackerProviderInterface
 {
-    public function __construct(
-        private readonly ElasticsearchServiceInterface $elasticsearchService,
-        private readonly ElasticsearchContextFactoryInterface $elasticsearchContextFactory,
-    ) {
+    public function __construct(private readonly CurrentDataTrackerStorageInterface $currentDataTrackerStorage)
+    {
     }
 
     public function getCurrentDataTrackerByClassAndId(string $className, $objectId): ?CurrentDataTrackerInterface
     {
-        $elasticContext = $this->elasticsearchContextFactory->create($className);
-
-        $body = [
-            'query' => ['term' => ['objectId' => $objectId]],
-        ];
-
-        // todo move class to config
-        return $this->elasticsearchService->getItemByQuery(
-            $elasticContext->getCurrentDataTrackerIndex(),
-            CurrentDataTracker::class,
-            $body
-        );
+        return $this->currentDataTrackerStorage->findByClassAndObjectId($className, $objectId);
     }
 }

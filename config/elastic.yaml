@@ -42,4 +42,23 @@ services:
     Locastic\Loggastic\Bridge\Elasticsearch\Index\ElasticsearchIndexFactory:
         autowire: true
 
+#   Storage
+    Locastic\Loggastic\Storage\ActivityLogStorageInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage:
+        autowire: true
+
+    Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchCurrentDataTrackerStorage'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchCurrentDataTrackerStorage:
+        autowire: true
+
+    Locastic\Loggastic\Storage\StorageInitializerInterface:
+        alias: 'Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchStorageInitializer'
+
+    Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchStorageInitializer:
+        autowire: true
+
 

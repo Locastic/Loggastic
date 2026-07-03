@@ -144,9 +144,9 @@ Here are the examples for displaying activity logs in twig or as Api endpoints:
     public function getActivityLogsByClass(string $className, array $sort = []): array;
 
     public function getActivityLogsByClassAndId(string $className, $objectId, array $sort = []): array;
-
-    public function getActivityLogsByIndexAndId(string $index, $objectId, array $sort = []): array;
 ```
+If you need to read logs directly from a specific Elasticsearch index, use
+`Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage::findByIndexAndObjectId()`.
 Use them to fetch data from the Elasticsearch and display it in your views. Example for displaying results in Twig:
 ```twig
 Activity logs for Blog Posts:
@@ -198,6 +198,27 @@ Each time some change happens in the database for loggable entities, the activit
 
 ## Customization guide
 Now that you have the basic setup, you can add some additional options and customize the library to your needs.
+
+### Custom storage backends
+Activity logs are stored in Elasticsearch by default, but the core services only talk to three storage interfaces:
+
+```php
+Locastic\Loggastic\Storage\ActivityLogStorageInterface        # writes and reads activity logs
+Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface # tracks the latest state of each loggable object
+Locastic\Loggastic\Storage\StorageInitializerInterface        # creates the underlying storage (indexes, tables, ...)
+```
+
+To store logs somewhere else, implement the three interfaces and alias them to your services:
+
+```yaml
+# config/services.yaml
+services:
+    Locastic\Loggastic\Storage\ActivityLogStorageInterface: '@App\Loggastic\MyActivityLogStorage'
+    Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface: '@App\Loggastic\MyCurrentDataTrackerStorage'
+    Locastic\Loggastic\Storage\StorageInitializerInterface: '@App\Loggastic\MyStorageInitializer'
+```
+
+The loggers, message handlers, data providers and console commands will use your implementations without any further changes.
 
 ## Configuration reference
 Default configuration:

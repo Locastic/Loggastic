@@ -2,14 +2,14 @@
 
 namespace Locastic\Loggastic\Bridge\Elasticsearch;
 
-use Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits\ElasticNormalizationContextTrait;
+use Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ElasticsearchService implements ElasticsearchServiceInterface
 {
-    use ElasticNormalizationContextTrait;
+    use NormalizationContextTrait;
 
     public function __construct(
         private readonly ElasticsearchClientInterface $elasticsearchClient,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Locastic\Loggastic\Bridge\Elasticsearch\Context\Traits;
+namespace Locastic\Loggastic\Serializer\Traits;
 
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
-trait ElasticNormalizationContextTrait
+trait NormalizationContextTrait
 {
     private function getNormalizationContext(array $context): array
     {
