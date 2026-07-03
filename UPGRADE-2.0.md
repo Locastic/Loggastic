@@ -3,6 +3,17 @@
 This document collects the breaking changes planned for 2.0. Each entry lists
 the deprecation shipped in a 1.x release so you can migrate before upgrading.
 
+## Bundle structure
+
+- The bundle uses the modern directory layout: service configuration lives in
+  `config/` at the bundle root instead of `src/Resources/config/`, and the
+  bundle class extends `AbstractBundle`. The
+  `Locastic\Loggastic\DependencyInjection\LocasticLoggasticExtension` and
+  `Locastic\Loggastic\DependencyInjection\Configuration` classes were removed.
+  Application config (the `locastic_loggastic` key, all options, service IDs
+  and aliases) is unchanged; only code referencing those two internal classes
+  or bundle-internal file paths needs updating.
+
 ## Elasticsearch client and server
 
 - The bundle now requires `elasticsearch/elasticsearch` `^8.0 || ^9.0` and an
