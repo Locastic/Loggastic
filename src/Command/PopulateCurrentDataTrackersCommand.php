@@ -16,8 +16,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
- * Recreate CurrentDataTracker index
- * Pull all loggable objects from DB and populate currentTracker data to elastic.
+ * Recreates the current data tracker storage for a loggable class and
+ * repopulates it from all objects in the database.
  */
 #[AsCommand('locastic:activity-logs:populate-current-data-trackers')]
 final class PopulateCurrentDataTrackersCommand extends Command
