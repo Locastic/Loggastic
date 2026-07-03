@@ -31,6 +31,14 @@ final class UpdateActivityLogHandler
             return;
         }
 
+        // the item was removed in the meantime (e.g. a LoggableChildInterface
+        // logging to a parent that was deleted in the same flush); Doctrine
+        // clears generated identifiers on removal, and an item without an
+        // identifier has no current data tracker to compare against
+        if (null === $updatedItem->getId()) {
+            return;
+        }
+
         $currentDataTracker = $this->currentDataTrackerProvider->getCurrentDataTrackerByClassAndId($message->getClassName(), $updatedItem->getId());
 
         if (!$currentDataTracker instanceof CurrentDataTrackerInterface) {
