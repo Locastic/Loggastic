@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `ElasticsearchService::getItemById()` always returned null because it compared the hit total against an integer while Elasticsearch returns an object
+- Deleting an entity together with its `LoggableChildInterface` children crashed the update handler: the child's delete log triggers an update log for the parent, whose identifier Doctrine has already cleared; such updates are now skipped
 
 ## [1.2.0] - 2026-07-02
 
