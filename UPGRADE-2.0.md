@@ -3,6 +3,23 @@
 This document collects the breaking changes planned for 2.0. Each entry lists
 the deprecation shipped in a 1.x release so you can migrate before upgrading.
 
+## Symfony 8 and serializer attributes
+
+- Symfony 8 is now supported (`^6.4 || ^7.0 || ^8.0`), together with
+  DoctrineBundle 3. On Symfony 8 stacks Doctrine uses PHP 8.4 native lazy
+  objects; the previous `symfony/var-exporter < 8.0` restriction is gone.
+- Import `Groups` from `Symfony\Component\Serializer\Attribute` instead of
+  `Symfony\Component\Serializer\Annotation` on your loggable entities. The
+  `Annotation` namespace was removed in Symfony 8; the `Attribute` namespace
+  exists since Symfony 6.4, so this change is safe on every supported
+  version. On Symfony 8, entities still using the old import are silently
+  not logged (the group metadata is invisible), so update the imports before
+  upgrading.
+- `ActivityLogDoctrineSubscriber` no longer implements DoctrineBundle's
+  `EventSubscriberInterface` (removed in DoctrineBundle 3). It is registered
+  via per-event `doctrine.event_listener` tags. If you decorated or replaced
+  this service, mirror that registration.
+
 ## Bundle structure
 
 - The bundle uses the modern directory layout: service configuration lives in
