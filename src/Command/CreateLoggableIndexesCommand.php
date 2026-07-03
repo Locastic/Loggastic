@@ -22,20 +22,20 @@ final class CreateLoggableIndexesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->title('Creating activity log indexes ...');
+        $io->title('Preparing activity log storage ...');
         $loggableContextCollection = $this->loggableContextCollectionFactory->create();
 
         foreach ($loggableContextCollection->getIterator() as $loggableClass => $config) {
-            $io->writeln('Creating '.$loggableClass.' activity_log index');
+            $io->writeln('Creating '.$loggableClass.' activity log storage');
 
             if (!$this->storageInitializer->initializeActivityLogStorage($loggableClass)) {
-                $output->writeln('Index already exists, skipping.');
+                $output->writeln('Already exists, skipping.');
             }
 
-            $io->writeln('Creating '.$loggableClass.' current_data_tracker index');
+            $io->writeln('Creating '.$loggableClass.' current data tracker storage');
 
             if (!$this->storageInitializer->initializeCurrentDataTrackerStorage($loggableClass)) {
-                $output->writeln('Index already exists, skipping.');
+                $output->writeln('Already exists, skipping.');
             }
         }
 

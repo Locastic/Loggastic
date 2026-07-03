@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking:** core services (`ActivityLogProcessor`, `ActivityLogProvider`, `CurrentDataTrackerProvider`, `PopulateCurrentDataTrackersHandler` and the console commands) now depend on the storage interfaces instead of `ElasticsearchServiceInterface`/`ElasticsearchContextFactoryInterface`/`ElasticsearchIndexFactoryInterface`; their constructor signatures changed (see UPGRADE-2.0.md)
 - **Breaking:** `ActivityLogProviderInterface::getActivityLogsByIndexAndId()` was removed; use `ElasticsearchActivityLogStorage::findByIndexAndObjectId()` for index-based reads
 - **Breaking:** `ElasticNormalizationContextTrait` moved to `Locastic\Loggastic\Serializer\Traits\NormalizationContextTrait` (it is not Elasticsearch-specific)
+- `locastic:activity-logs:create-loggable-indexes` output is storage-neutral ("Creating ... activity log storage" instead of "... activity_log index"); the command name is unchanged
 
 ### Removed
 - **Breaking:** `ActivityLogProvider::getCurrentDataTrackerByClassAndId()`, which declared an `?array` return type but returned an object and threw a `TypeError` on every hit; use `CurrentDataTrackerProviderInterface` instead
