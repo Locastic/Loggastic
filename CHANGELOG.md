@@ -5,7 +5,12 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.0.0] - 2026-07-03
+
+Major release: pluggable storage. Elasticsearch is now one storage backend
+behind three storage-agnostic interfaces, on a modernized foundation
+(Elasticsearch 8/9 client, Symfony 6.4-8.x, DoctrineBundle 2/3, modern bundle
+layout). See UPGRADE-2.0.md for the migration guide.
 
 ### Added
 - Storage abstraction: `ActivityLogStorageInterface`, `CurrentDataTrackerStorageInterface` and `StorageInitializerInterface` in the new `Locastic\Loggastic\Storage` namespace; implement and alias them to store activity logs in a custom backend
