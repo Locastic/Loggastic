@@ -5,7 +5,7 @@ namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Locastic\Loggastic\Annotation\Loggable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[Loggable(groups: ['dummy_blog_post_log'])]
 class DummyBlogPost

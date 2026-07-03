@@ -43,5 +43,11 @@ class AppKernel extends Kernel
 
         $container->import($configDir.'/{packages}/*.{php,yaml}');
         $container->import($configDir.'/*.yaml');
+
+        // DoctrineBundle 3 (Symfony 8 stacks) removed this option in favor of
+        // PHP 8.4 native lazy objects; DoctrineBundle 2 still needs it
+        if (Composer\InstalledVersions::satisfies(new Composer\Semver\VersionParser(), 'doctrine/doctrine-bundle', '^2.0')) {
+            $container->extension('doctrine', ['orm' => ['auto_generate_proxy_classes' => true]]);
+        }
     }
 }

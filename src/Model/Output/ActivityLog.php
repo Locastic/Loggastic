@@ -2,7 +2,7 @@
 
 namespace Locastic\Loggastic\Model\Output;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class ActivityLog implements ActivityLogInterface
 {

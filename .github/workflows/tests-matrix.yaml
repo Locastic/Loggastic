@@ -22,6 +22,14 @@ jobs:
                       symfony: '7.4.*'
                       elasticsearch: '9.0.0'
                       es-client: '^9.0'
+                    - php: '8.4'
+                      symfony: '8.1.*'
+                      elasticsearch: '9.0.0'
+                      es-client: '^9.0'
+                    - php: '8.4'
+                      symfony: '8.1.*'
+                      elasticsearch: '8.17.0'
+                      es-client: '^8.0'
         steps:
             - name: Runs Elasticsearch
               run: |

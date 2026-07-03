@@ -2,34 +2,24 @@
 
 namespace Locastic\Loggastic\EventSubscriber;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PostRemoveEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
-use Doctrine\ORM\Events;
-use Locastic\Loggastic\Logger\ActivityLogger;
+use Locastic\Loggastic\Logger\ActivityLoggerInterface;
 use Locastic\Loggastic\Util\ClassUtils;
 
-final class ActivityLogDoctrineSubscriber implements EventSubscriberInterface
+// registered as a doctrine.event_listener for each handled event, see
+// config/activity_log_doctrine_subscriber.yaml (DoctrineBundle 3 removed
+// event subscribers)
+final class ActivityLogDoctrineSubscriber
 {
     private array $persistedEntities = [];
 
     public function __construct(
-        private readonly ActivityLogger $activityLogger,
+        private readonly ActivityLoggerInterface $activityLogger,
     ) {
-    }
-
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::preRemove,
-            Events::postUpdate,
-            Events::postRemove,
-            Events::prePersist,
-            Events::postFlush,
-        ];
     }
 
     public function preRemove(PreRemoveEventArgs $args): void

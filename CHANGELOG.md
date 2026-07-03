@@ -8,10 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Support for Symfony 8 and DoctrineBundle 3 (`symfony/*` now `^6.4 || ^7.0 || ^8.0`, `doctrine/doctrine-bundle` now `^2.8 || ^3.0`), with Symfony 8 CI legs
 - Basic auth (`elastic_user`, `elastic_password`) and `elastic_ssl_verification` config options for secured Elasticsearch clusters (originally proposed in #26 by @jakubdusek)
 - Tests matrix now also runs against Elasticsearch 9
 
 ### Changed
+- **Breaking:** serializer attributes moved from the `Symfony\Component\Serializer\Annotation` namespace (removed in Symfony 8) to `Symfony\Component\Serializer\Attribute`; update the `Groups` import on your loggable entities
+- **Breaking:** `ActivityLogDoctrineSubscriber` no longer implements DoctrineBundle's `EventSubscriberInterface` (removed in DoctrineBundle 3) and is registered as per-event `doctrine.event_listener` instead
 - **Breaking:** migrated to the modern bundle directory layout: service configuration moved from `src/Resources/config/` to `config/`, and the bundle now extends `AbstractBundle`; the `LocasticLoggasticExtension` and `Configuration` classes were removed (see UPGRADE-2.0.md)
 - **Breaking:** upgraded to `elasticsearch/elasticsearch` `^8.0 || ^9.0`; Elasticsearch 7 servers are no longer supported and a PSR-18 HTTP client implementation is required (see UPGRADE-2.0.md)
 - **Breaking:** `ElasticsearchClientInterface::getClient()` now returns `Elastic\Elasticsearch\Client` instead of `Elasticsearch\Client`

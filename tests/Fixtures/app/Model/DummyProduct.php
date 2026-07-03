@@ -3,7 +3,7 @@
 namespace Locastic\Loggastic\Tests\Fixtures\App\Model;
 
 use Locastic\Loggastic\Annotation\Loggable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[Loggable(groups: ['dummy_product_log'])]
 class DummyProduct

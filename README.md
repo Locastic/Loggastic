@@ -24,7 +24,8 @@ Each tracked entity will have two indexes in the ElasticSearch:
 System requirements
 -------------------
 
-Elasticsearch version 7.17
+- PHP 8.2+ with Symfony 6.4, 7.x or 8.x (Symfony 8 requires PHP 8.4)
+- Elasticsearch 8 or 9
 
 Installation
 ------------
@@ -83,7 +84,7 @@ You can add them to the relations and their fields too.
 namespace App\Entity;
 
 use Locastic\Loggastic\Annotation\Loggable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[Loggable(groups: ['blog_post_log'])]
 class BlogPost
@@ -108,7 +109,7 @@ Example for logging fields from relations:
 namespace App\Entity;
 
 use Locastic\Loggastic\Annotation\Loggable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class Tag
 {
