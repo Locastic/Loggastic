@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests matrix now also runs against Elasticsearch 9
 
 ### Changed
+- **Breaking:** migrated to the modern bundle directory layout: service configuration moved from `src/Resources/config/` to `config/`, and the bundle now extends `AbstractBundle`; the `LocasticLoggasticExtension` and `Configuration` classes were removed (see UPGRADE-2.0.md)
 - **Breaking:** upgraded to `elasticsearch/elasticsearch` `^8.0 || ^9.0`; Elasticsearch 7 servers are no longer supported and a PSR-18 HTTP client implementation is required (see UPGRADE-2.0.md)
 - **Breaking:** `ElasticsearchClientInterface::getClient()` now returns `Elastic\Elasticsearch\Client` instead of `Elasticsearch\Client`
 
