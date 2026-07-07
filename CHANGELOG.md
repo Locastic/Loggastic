@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `storage` configuration option to select the storage backend: `elasticsearch` (default), `doctrine` or `in_memory`; when a non-Elasticsearch backend is selected, no Elasticsearch services are registered
+- Doctrine DBAL storage adapter in `Locastic\Loggastic\Bridge\Doctrine\Storage`: stores activity logs and current data trackers in two shared database tables with JSON columns, works with any DBAL-supported database (PostgreSQL, MySQL, SQLite, ...) and requires no Elasticsearch; each object keeps a single current data tracker row, so repeated saves (message retries, re-running the populate command) update it instead of failing
+- In-memory storage adapter in `Locastic\Loggastic\Storage\InMemory` for running the full logging flow in test suites without an external service
+- `doctrine/dbal` (`^3.8 || ^4.0`) added as an explicit dependency
+
 ## [2.0.0] - 2026-07-03
 
 Major release: pluggable storage. Elasticsearch is now one storage backend

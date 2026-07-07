@@ -30,6 +30,11 @@ return static function (DefinitionConfigurator $definition): void {
 
     $definition->rootNode()
         ->children()
+            ->enumNode('storage')
+                ->info('Storage backend for activity logs and current data trackers.')
+                ->values(['elasticsearch', 'doctrine', 'in_memory'])
+                ->defaultValue('elasticsearch')
+            ->end()
             ->booleanNode('default_doctrine_subscriber')
                 ->defaultTrue()
             ->end()

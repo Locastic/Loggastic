@@ -1,0 +1,16 @@
+services:
+    Locastic\Loggastic\Storage\InMemory\InMemoryActivityLogStorage: ~
+
+    Locastic\Loggastic\Storage\InMemory\InMemoryCurrentDataTrackerStorage: ~
+
+    Locastic\Loggastic\Storage\InMemory\InMemoryStorageInitializer:
+        autowire: true
+
+    Locastic\Loggastic\Storage\ActivityLogStorageInterface:
+        alias: 'Locastic\Loggastic\Storage\InMemory\InMemoryActivityLogStorage'
+
+    Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface:
+        alias: 'Locastic\Loggastic\Storage\InMemory\InMemoryCurrentDataTrackerStorage'
+
+    Locastic\Loggastic\Storage\StorageInitializerInterface:
+        alias: 'Locastic\Loggastic\Storage\InMemory\InMemoryStorageInitializer'
