@@ -135,6 +135,22 @@ class InMemoryStorageTest extends TestCase
         self::assertNotNull($this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 16));
     }
 
+    public function testSavingAnAlreadyTrackedObjectUpdatesTheExistingTracker(): void
+    {
+        $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{"title":"foo"}'), 'Some\Class');
+
+        $original = $this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 15);
+        self::assertNotNull($original);
+
+        $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{"title":"bar"}'), 'Some\Class');
+
+        $tracker = $this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 15);
+
+        self::assertNotNull($tracker);
+        self::assertEquals(['title' => 'bar'], $tracker->getData());
+        self::assertSame($original->getId(), $tracker->getId());
+    }
+
     public function testRecreateCurrentDataTrackerStorageOnlyClearsGivenClass(): void
     {
         $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{}'), 'Some\Class');

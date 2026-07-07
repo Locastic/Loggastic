@@ -38,6 +38,7 @@ final class DoctrineStorageInitializer implements StorageInitializerInterface
         $table->addColumn('user_data', Types::JSON, ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['object_class', 'object_id'], 'idx_'.$this->activityLogTable.'_object');
+        $table->addIndex(['object_class', 'logged_at'], 'idx_'.$this->activityLogTable.'_logged_at');
 
         $this->connection->createSchemaManager()->createTable($table);
 

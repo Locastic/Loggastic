@@ -9,6 +9,11 @@ on:
 jobs:
     symfony-tests:
         runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                dbal: ['^3.8', '^4.0']
+        name: PHPUnit (DBAL ${{ matrix.dbal }})
         steps:
             - name: Runs Elasticsearch
               run: |
@@ -30,11 +35,13 @@ jobs:
               uses: actions/cache@v3
               with:
                   path: vendor
-                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  key: ${{ runner.os }}-php-dbal${{ matrix.dbal }}-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
-                      ${{ runner.os }}-php-
+                      ${{ runner.os }}-php-dbal${{ matrix.dbal }}-
             - name: Pin Elasticsearch client to the server major version
               run: composer require --no-update --no-interaction "elasticsearch/elasticsearch:^8.0"
+            - name: Pin Doctrine DBAL to the matrix major version
+              run: composer require --no-update --no-interaction "doctrine/dbal:${{ matrix.dbal }}"
             - name: Install Dependencies
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
             - name: Create Database

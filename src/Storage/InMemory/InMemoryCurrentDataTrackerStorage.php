@@ -10,6 +10,7 @@ use Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface;
 /**
  * Keeps current data trackers in memory. Intended for test suites that need the
  * full logging flow without a real storage backend; trackers do not survive the process.
+ * Each object keeps a single tracker: saving an already tracked object updates it.
  */
 final class InMemoryCurrentDataTrackerStorage implements CurrentDataTrackerStorageInterface
 {
@@ -22,12 +23,19 @@ final class InMemoryCurrentDataTrackerStorage implements CurrentDataTrackerStora
 
     public function save(CurrentDataTrackerInputInterface $currentDataTracker, string $className): void
     {
+        foreach ($this->trackers[$className] ?? [] as $existingTracker) {
+            if ($existingTracker->getObjectId() === (string) $currentDataTracker->getObjectId()) {
+                $this->apply($existingTracker, $currentDataTracker);
+
+                return;
+            }
+        }
+
         $tracker = new CurrentDataTracker();
         $tracker->setId((string) $this->nextId++);
         $tracker->setObjectId($currentDataTracker->getObjectId());
         $tracker->setObjectClass($className);
-        $tracker->setDateTime(clone $currentDataTracker->getDateTime());
-        $tracker->setData($currentDataTracker->getData() ?? '');
+        $this->apply($tracker, $currentDataTracker);
 
         $this->trackers[$className][] = $tracker;
     }
@@ -36,8 +44,7 @@ final class InMemoryCurrentDataTrackerStorage implements CurrentDataTrackerStora
     {
         foreach ($this->trackers[$className] ?? [] as $tracker) {
             if ((string) $tracker->getId() === (string) $id) {
-                $tracker->setDateTime(clone $currentDataTracker->getDateTime());
-                $tracker->setData($currentDataTracker->getData() ?? '');
+                $this->apply($tracker, $currentDataTracker);
 
                 return;
             }
@@ -68,5 +75,11 @@ final class InMemoryCurrentDataTrackerStorage implements CurrentDataTrackerStora
     public function clear(string $className): void
     {
         unset($this->trackers[$className]);
+    }
+
+    private function apply(CurrentDataTracker $tracker, CurrentDataTrackerInputInterface $input): void
+    {
+        $tracker->setDateTime(clone $input->getDateTime());
+        $tracker->setData($input->getData() ?? '[]');
     }
 }

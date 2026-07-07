@@ -171,6 +171,35 @@ class DoctrineStorageTest extends TestCase
         self::assertNotNull($this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 16));
     }
 
+    public function testSavingAnAlreadyTrackedObjectUpdatesTheExistingRow(): void
+    {
+        $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{"title":"foo"}'), 'Some\Class');
+        $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{"title":"bar"}'), 'Some\Class');
+
+        $tracker = $this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 15);
+
+        self::assertNotNull($tracker);
+        self::assertEquals(['title' => 'bar'], $tracker->getData());
+        self::assertSame(1, $this->countTrackerRows());
+    }
+
+    public function testBulkSaveOverExistingTrackersUpdatesThemInsteadOfFailing(): void
+    {
+        $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{"title":"foo"}'), 'Some\Class');
+
+        $this->currentDataTrackerStorage->bulkSave([
+            $this->createTrackerInput('15', '{"title":"updated"}'),
+            $this->createTrackerInput('16', '{"title":"new"}'),
+        ], 'Some\Class');
+
+        $existing = $this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 15);
+
+        self::assertNotNull($existing);
+        self::assertEquals(['title' => 'updated'], $existing->getData());
+        self::assertNotNull($this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 16));
+        self::assertSame(2, $this->countTrackerRows());
+    }
+
     public function testRecreateCurrentDataTrackerStorageOnlyClearsGivenClass(): void
     {
         $this->currentDataTrackerStorage->save($this->createTrackerInput('15', '{}'), 'Some\Class');
@@ -180,6 +209,11 @@ class DoctrineStorageTest extends TestCase
 
         self::assertNull($this->currentDataTrackerStorage->findByClassAndObjectId('Some\Class', 15));
         self::assertNotNull($this->currentDataTrackerStorage->findByClassAndObjectId('Another\Class', 15));
+    }
+
+    private function countTrackerRows(): int
+    {
+        return (int) $this->connection->fetchOne('SELECT COUNT(*) FROM '.DoctrineCurrentDataTrackerStorage::DEFAULT_TABLE);
     }
 
     private function createActivityLogInput(string $objectId, string $action, \DateTime $loggedAt, ?string $dataChanges = null, ?array $user = null, ?string $requestUrl = null): ActivityLogInput

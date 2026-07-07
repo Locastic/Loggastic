@@ -12,7 +12,9 @@ use Locastic\Loggastic\Storage\CurrentDataTrackerStorageInterface;
 /**
  * Stores current data trackers in a relational database using Doctrine DBAL.
  * All loggable classes share a single table, discriminated by the object_class column.
- * Timestamps are normalized to UTC before writing.
+ * Timestamps are normalized to UTC before writing. Each object keeps a single tracker
+ * row: saving an already tracked object updates its row, so message retries and
+ * re-running the populate command never hit the unique index.
  */
 final class DoctrineCurrentDataTrackerStorage implements CurrentDataTrackerStorageInterface
 {
@@ -26,6 +28,22 @@ final class DoctrineCurrentDataTrackerStorage implements CurrentDataTrackerStora
 
     public function save(CurrentDataTrackerInputInterface $currentDataTracker, string $className): void
     {
+        $existingId = $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from($this->table)
+            ->where('object_class = :objectClass')
+            ->andWhere('object_id = :objectId')
+            ->setParameter('objectClass', $className)
+            ->setParameter('objectId', (string) $currentDataTracker->getObjectId())
+            ->executeQuery()
+            ->fetchOne();
+
+        if (false !== $existingId) {
+            $this->update($existingId, $currentDataTracker, $className);
+
+            return;
+        }
+
         $this->connection->insert($this->table, [
             'object_id' => $currentDataTracker->getObjectId(),
             'object_class' => $className,
@@ -43,6 +61,7 @@ final class DoctrineCurrentDataTrackerStorage implements CurrentDataTrackerStora
             'data' => $currentDataTracker->getData(),
         ], [
             'id' => $id,
+            'object_class' => $className,
         ], [
             'date_time' => Types::DATETIME_IMMUTABLE,
         ]);
@@ -81,7 +100,7 @@ final class DoctrineCurrentDataTrackerStorage implements CurrentDataTrackerStora
         $currentDataTracker->setObjectId($row['object_id']);
         $currentDataTracker->setObjectClass($row['object_class']);
         $currentDataTracker->setDateTime(new \DateTime($row['date_time'], new \DateTimeZone('UTC')));
-        $currentDataTracker->setData($row['data'] ?? '');
+        $currentDataTracker->setData($row['data'] ?? '[]');
 
         return $currentDataTracker;
     }
