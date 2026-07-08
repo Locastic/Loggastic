@@ -9,9 +9,11 @@
     "Requires PHP 8.2+, Symfony 6.4/7.x/8.x, and Doctrine ORM 3.4+. Storage backend: Elasticsearch 8 or 9 (default), any relational database via Doctrine DBAL, or in-memory for tests.",
     "Select the storage backend with the locastic_loggastic.storage config option: 'elasticsearch' (default, needs a PSR-18 HTTP client, e.g. symfony/http-client + nyholm/psr7), 'doctrine' (uses the default DBAL connection, two shared tables with JSON columns), or 'in_memory' (test suites).",
     "Mark entities with the #[Loggable(groups: ['...'])] attribute and add the same serialization group to every field and relation you want tracked.",
-    "Import Groups from Symfony\\Component\\Serializer\\Attribute, not Symfony\\Component\\Serializer\\Annotation — the Annotation import silently disables logging on Symfony 8.",
+    "Import Groups from Symfony\\Component\\Serializer\\Attribute, not Symfony\\Component\\Serializer\\Annotation; the Annotation import silently disables logging on Symfony 8.",
     "After configuring loggable entities, initialize the storage (Elasticsearch indexes or database tables) with bin/console locastic:activity-logs:create-loggable-indexes, then bin/console locastic:activity-logs:populate-current-data-trackers if data already exists.",
     "Read activity logs through the ActivityLogProviderInterface service instead of querying the storage backend directly.",
     "For a custom storage backend, implement ActivityLogStorageInterface, CurrentDataTrackerStorageInterface and StorageInitializerInterface, and alias the three interfaces to your services."
-  ]
+  ],
+  "url": "https://context7.com/locastic/loggastic",
+  "public_key": "pk_6nLhWveJT5eYd7x7e5w1o"
 }
