@@ -14,6 +14,10 @@
     "Read activity logs through the ActivityLogProviderInterface service instead of querying the storage backend directly.",
     "For a custom storage backend, implement ActivityLogStorageInterface, CurrentDataTrackerStorageInterface and StorageInitializerInterface, and alias the three interfaces to your services."
   ],
+  "previousVersions": [
+    { "tag": "v2.0.0" },
+    { "tag": "v1.2.0" }
+  ],
   "url": "https://context7.com/locastic/loggastic",
   "public_key": "pk_6nLhWveJT5eYd7x7e5w1o"
 }
