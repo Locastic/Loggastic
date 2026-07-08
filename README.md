@@ -33,6 +33,45 @@ Installation
 
 `composer require locastic/loggastic`
 
+Quick start
+-----------
+
+Mark an entity as loggable with the `Loggable` attribute and put the serialization group on every field you want to track:
+
+```php
+<?php
+
+namespace App\Entity;
+
+use Locastic\Loggastic\Annotation\Loggable;
+use Symfony\Component\Serializer\Attribute\Groups;
+
+#[Loggable(groups: ['blog_post_log'])]
+class BlogPost
+{
+    private int $id;
+
+    #[Groups(groups: ['blog_post_log'])]
+    private string $title;
+
+    // ...
+}
+```
+
+Initialize the storage (Elasticsearch indexes or database tables):
+
+```bash
+bin/console locastic:activity-logs:create-loggable-indexes
+```
+
+Every create, update and delete on `BlogPost` is now logged automatically. Read the logs back with the `Locastic\Loggastic\DataProvider\ActivityLogProviderInterface` service:
+
+```php
+$activityLogs = $activityLogProvider->getActivityLogsByClassAndId(BlogPost::class, $blogPost->getId());
+```
+
+Logs are stored in Elasticsearch by default. Set `locastic_loggastic.storage: doctrine` to store them in your relational database instead (see the next section). The rest of this README covers each step in detail.
+
 Choose your storage
 -------------------
 
@@ -147,16 +186,20 @@ Note: You can also use **annotations, xml and yaml**! Examples coming soon.
 
 Create the Elasticsearch indexes or database tables for your loggable classes:
 
-    bin/console locastic:activity-logs:create-loggable-indexes
+```bash
+bin/console locastic:activity-logs:create-loggable-indexes
+```
 
 If you already have some data in the database, make sure to populate current data trackers with the following command:
 
-    bin/console locastic:activity-logs:populate-current-data-trackers
+```bash
+bin/console locastic:activity-logs:populate-current-data-trackers
+```
 
 ### 4. Displaying activity logs
 Here are the examples for displaying activity logs in twig or as Api endpoints:
 
-**a) Displaying logs in Twig**
+#### Display activity logs in Twig
 `Locastic\Loggastic\DataProvider\ActivityLogProviderInterface` service comes with a few useful methods for getting the activity logs data:
 ```php
     public function getActivityLogsByClass(string $className, array $sort = []): array;
@@ -165,7 +208,7 @@ Here are the examples for displaying activity logs in twig or as Api endpoints:
 ```
 If you need to read logs directly from a specific Elasticsearch index, use
 `Locastic\Loggastic\Bridge\Elasticsearch\Storage\ElasticsearchActivityLogStorage::findByIndexAndObjectId()`.
-Use them to fetch data from the Elasticsearch and display it in your views. Example for displaying results in Twig:
+Use them to fetch the activity logs from the configured storage and display them in your views. Example for displaying results in Twig:
 ```twig
 Activity logs for Blog Posts:
 <br>
@@ -182,8 +225,8 @@ Updated BlogPost with 1 ID at 02.01.2023 08:30:00 by admin
 Deleted BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
 ```
 
-**b) Displaying logs in the api endpoint using ApiPlatform**
-In order to display Loggastic activity logs in an ApiPlatform endpoint, you can use ApiPlatforms ElasticSearch integration: https://api-platform.com/docs/core/elasticsearch/
+#### Expose activity logs as an API Platform endpoint (Elasticsearch storage)
+In order to display Loggastic activity logs in an ApiPlatform endpoint, you can use ApiPlatforms ElasticSearch integration (this approach only applies to the `elasticsearch` storage): https://api-platform.com/docs/core/elasticsearch/
 
 Example for displaying activity logs in the ApiPlatform endpoint:
 ```php
@@ -212,7 +255,7 @@ If you want to return only logs for one entity, use the exact index name. For ex
 That's it!
 ----------
 Now you have the basic activity logs setup. 
-Each time some change happens in the database for loggable entities, the activity log will be saved to the Elasticsearch.
+Each time some change happens in the database for loggable entities, the activity log will be saved to the configured storage.
 
 ## Customization guide
 Now that you have the basic setup, you can add some additional options and customize the library to your needs.
@@ -239,7 +282,10 @@ services:
 The loggers, message handlers, data providers and console commands will use your implementations without any further changes.
 
 ## Configuration reference
-Default configuration:
+All options live under the `locastic_loggastic` key in `config/packages/loggastic.yaml`. The values below are the defaults.
+
+### General options
+
 ```yaml
 # config/packages/loggastic.yaml
 locastic_loggastic:
@@ -258,16 +304,31 @@ locastic_loggastic:
     # if set to `true` objects identifiers in collections will be used as array keys
     # if set to `false` default numeric array keys will be used
     identifier_extractor: true
-    
-    # ElasticSearch config (only used when storage is 'elasticsearch')
+```
+
+### Elasticsearch connection options
+
+Only used when `storage` is `elasticsearch`:
+
+```yaml
+# config/packages/loggastic.yaml
+locastic_loggastic:
     elastic_host: 'localhost:9200'
     elastic_user: null              # basic auth username, for secured clusters
     elastic_password: null          # basic auth password, for secured clusters
     elastic_ssl_verification: true  # disable only for local development
     elastic_date_detection: true    #https://www.elastic.co/guide/en/elasticsearch/reference/current/date-detection.html
     elastic_dynamic_date_formats: "strict_date_optional_time||epoch_millis||strict_time"
+```
 
-    # ElasticSearch index mapping for ActivityLog. https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html#mappings
+### Elasticsearch index mappings
+
+Index mappings for the activity log and current data tracker indexes, only used when `storage` is `elasticsearch` (see https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html#mappings):
+
+```yaml
+# config/packages/loggastic.yaml
+locastic_loggastic:
+    # ElasticSearch index mapping for ActivityLog
     activity_log:
         elastic_properties:
             id:
@@ -303,7 +364,6 @@ locastic_loggastic:
                 type: text
             data:
                 type: text
-
 ```
 
 ### Saving logs async
@@ -460,10 +520,12 @@ public function removeProductVariant(ProductVariant $productVariant): static
 With `orphanRemoval` enabled the variant is deleted as soon as it leaves the collection, so nulling the owning side is unnecessary, and it makes `logTo()` return null while Loggastic is logging the removal, silently dropping the parent's activity log. Keep the owning side set instead.
 
 ### Custom event listeners for saving activity logs
-You can use `Locastic\Loggastic\Logger\ActivityLoggerInterface` service to save item changes to the Elasticsearch:
+You can use `Locastic\Loggastic\Logger\ActivityLoggerInterface` service to save item changes to the configured storage:
 ```php
 <?php
 namespace App\Service;
+
+use Locastic\Loggastic\Logger\ActivityLoggerInterface;
 
 class SomeService
 {
@@ -482,12 +544,12 @@ class SomeService
 Depending on you application logic, you need to find the most fitting place to trigger logs saving.
 
 In most cases that can be the ***Doctrine event listener*** which is triggered on each database change. Loggastic comes with a built-in Doctrine listener which is used by default.
-If you want to turn it off, you can do it by setting the `loggastic.doctrine_listener_enabled` config parameter to `false`:
+If you want to turn it off, you can do it by setting the `default_doctrine_subscriber` config option to `false`:
 ```yaml
 # config/packages/loggastic.yaml
 
-loggastic:
-    doctrine_listener_enabled: false
+locastic_loggastic:
+    default_doctrine_subscriber: false
 ```
 
 If you are using ***ApiPlatform***, one of the good options would be to use its POST_WRITE event: https://api-platform.com/docs/core/events/#custom-event-listeners
