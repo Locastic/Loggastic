@@ -87,6 +87,31 @@ locastic_loggastic:
 
 The Doctrine storage uses your default DBAL connection and keeps all activity logs in two shared tables (`loggastic_activity_log` and `loggastic_current_data_tracker`), with JSON columns for changes data. Timestamps are stored in UTC. No Elasticsearch dependency or configuration is needed.
 
+### Doctrine storage tables
+
+Both tables are created by the `locastic:activity-logs:create-loggable-indexes` command and are shared by all loggable classes. Do not create them by hand. The exact column types depend on your database platform, Doctrine DBAL maps them per driver:
+
+```text
+loggastic_activity_log
+    id            BIGINT, autoincrement, primary key
+    object_id     VARCHAR(255)
+    object_class  VARCHAR(255)
+    action        VARCHAR(255), nullable
+    logged_at     DATETIME
+    data_changes  JSON, nullable
+    request_url   TEXT, nullable
+    user_data     JSON, nullable
+    indexes on (object_class, object_id) and (object_class, logged_at)
+
+loggastic_current_data_tracker
+    id            BIGINT, autoincrement, primary key
+    object_id     VARCHAR(255)
+    object_class  VARCHAR(255)
+    date_time     DATETIME
+    data          JSON, nullable
+    unique index on (object_class, object_id)
+```
+
 For test suites there is also an `in_memory` storage that keeps logs in the PHP process, so the full logging flow runs without any external service.
 
 Making your entity loggable
@@ -199,6 +224,17 @@ bin/console locastic:activity-logs:populate-current-data-trackers
 ### 4. Displaying activity logs
 Here are the examples for displaying activity logs in twig or as Api endpoints:
 
+#### The activity log record
+
+Each activity log entry contains the following fields: `action` (`Created`, `Edited`, `Deleted` or a custom action name), `loggedAt` (UTC timestamp), `objectId`, `objectClass` (the class of the loggable entity), `user` (data about the authenticated user, e.g. `user.username`), `requestUrl` and `dataChanges`. For edit actions `dataChanges` holds only the modified fields, split into the values before and after the change:
+
+```json
+{
+    "previousValues": {"title": "My first post"},
+    "currentValues": {"title": "My updated post"}
+}
+```
+
 #### Display activity logs in Twig
 `Locastic\Loggastic\DataProvider\ActivityLogProviderInterface` service comes with a few useful methods for getting the activity logs data:
 ```php
@@ -221,7 +257,7 @@ The output would look something like this:
 Activity logs for Blog Posts:
 
 Created BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
-Updated BlogPost with 1 ID at 02.01.2023 08:30:00 by admin
+Edited BlogPost with 1 ID at 02.01.2023 08:30:00 by admin
 Deleted BlogPost with 1 ID at 01.01.2023 12:00:00 by admin
 ```
 
@@ -280,6 +316,26 @@ services:
 ```
 
 The loggers, message handlers, data providers and console commands will use your implementations without any further changes.
+
+## Console commands
+
+### locastic:activity-logs:create-loggable-indexes
+
+Creates the storage for every loggable class: two Elasticsearch indexes per class (`entity_name_activity_log` and `entity_name_current_data_tracker`), or the two shared database tables when using the Doctrine storage. Existing indexes and tables are skipped, so the command is idempotent and safe to run on every deployment or after adding new loggable classes:
+
+```bash
+bin/console locastic:activity-logs:create-loggable-indexes
+```
+
+### locastic:activity-logs:populate-current-data-trackers
+
+Rebuilds the current data trackers from the objects already in your database. Run it after installing Loggastic on a project with existing data, or when logging was disabled for a while:
+
+```bash
+bin/console locastic:activity-logs:populate-current-data-trackers
+```
+
+The command is interactive: it asks which loggable class to process (or `ALL`) and an optional limit of latest objects. It recreates the current data tracker storage for the chosen class, which clears the previously tracked data for that class, and dispatches Messenger messages in batches of 250 objects to repopulate it. If those messages are routed to an async transport, run your consumers to process them.
 
 ## Configuration reference
 All options live under the `locastic_loggastic` key in `config/packages/loggastic.yaml`. The values below are the defaults.
