@@ -1,7 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
   "projectTitle": "Loggastic",
-  "description": "Symfony bundle for tracking changes to entities and their relations, storing activity logs in Elasticsearch or a relational database (Doctrine DBAL).",
+  "description": "Activity log bundle for Symfony: tracks entity changes and relations, storing activity logs in Elasticsearch or a relational database (Doctrine DBAL).",
   "folders": [],
   "excludeFolders": ["tests", ".github"],
   "excludeFiles": ["CHANGELOG.md", "SECURITY.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"],

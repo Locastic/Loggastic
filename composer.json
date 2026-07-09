@@ -1,6 +1,19 @@
 {
   "name": "locastic/loggastic",
   "description": "Activity logs for Symfony, stored in Elasticsearch or your relational database",
+  "keywords": [
+    "symfony",
+    "symfony-bundle",
+    "activity-log",
+    "activity-feed",
+    "audit-log",
+    "audit-trail",
+    "entity-tracking",
+    "change-tracking",
+    "doctrine",
+    "elasticsearch",
+    "logging"
+  ],
   "license": "MIT",
   "type": "symfony-bundle",
   "authors": [
