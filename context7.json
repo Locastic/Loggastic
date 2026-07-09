@@ -12,7 +12,8 @@
     "Import Groups from Symfony\\Component\\Serializer\\Attribute, not Symfony\\Component\\Serializer\\Annotation; the Annotation import silently disables logging on Symfony 8.",
     "After configuring loggable entities, initialize the storage with bin/console locastic:activity-logs:create-loggable-indexes, then bin/console locastic:activity-logs:populate-current-data-trackers if data already exists.",
     "Read activity logs through the ActivityLogProviderInterface service instead of querying the storage backend directly.",
-    "For a custom storage backend, implement ActivityLogStorageInterface, CurrentDataTrackerStorageInterface and StorageInitializerInterface, and alias the three interfaces to your services."
+    "For a custom storage backend, implement ActivityLogStorageInterface, CurrentDataTrackerStorageInterface and StorageInitializerInterface, and alias the three interfaces to your services.",
+    "The dataChanges field of an activity log holds two objects, previousValues and currentValues, each listing only the modified fields. It is not structured as per-field old/new pairs."
   ],
   "previousVersions": [
     { "tag": "v2.0.0" },
