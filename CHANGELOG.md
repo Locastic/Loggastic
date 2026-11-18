@@ -5,6 +5,16 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- README: the quick start and the storage section start with the Doctrine storage, which needs no extra infrastructure (Elasticsearch stays the default); the introduction names the bundle an activity log and audit trail bundle; the CI badge shows the GitHub Actions status
+- `audit` added to the Packagist keywords; the package description now names the audit trail
+
+### Removed
+- Obsolete Travis CI configuration (`.travis.yml`); CI runs on GitHub Actions
+- README note that announced YAML and XML examples as "coming soon"; the examples are already in the README
+
 ## [2.1.0] - 2026-07-07
 
 ### Added

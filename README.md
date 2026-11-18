@@ -6,16 +6,16 @@ Loggastic<br>
     <a href="https://packagist.org/packages/locastic/loggastic" title="Version" target="_blank">
         <img src="https://img.shields.io/packagist/v/Locastic/loggastic.svg" />
     </a>
-    <a href="https://scrutinizer-ci.com/g/Locastic/Loggastic/" title="Scrutinizer" target="_blank">
-        <img src="https://img.shields.io/scrutinizer/g/Locastic/Loggastic" />
+    <a href="https://github.com/Locastic/Loggastic/actions/workflows/phpunit.yaml" title="Tests" target="_blank">
+        <img src="https://github.com/Locastic/Loggastic/actions/workflows/phpunit.yaml/badge.svg?branch=master" />
     </a>
     <a href="https://packagist.org/packages/locastic/loggastic" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/locastic/loggastic/downloads" />
     </a>
 </h1>
 
-Loggastic is made for tracking changes to your objects and their relations.
-Built on top of the **Symfony framework**, this library makes it easy to implement activity logs and store them in **Elasticsearch** or in your **relational database** (via Doctrine DBAL).
+Loggastic is an activity log and **audit trail** bundle for the **Symfony framework**. It tracks changes to your objects and their relations.
+It stores the activity logs in your **relational database** (via Doctrine DBAL) or in **Elasticsearch**.
 
 Two kinds of records are stored for each tracked entity:
 1. **Activity logs** -> saving all CRUD actions made on an object. And additionally saving before and after values for Edit actions.
@@ -26,7 +26,7 @@ System requirements
 
 - PHP 8.2+ with Symfony 6.4, 7.x or 8.x (Symfony 8 requires PHP 8.4)
 - Doctrine ORM 3.4+ with DoctrineBundle 2.8+ or 3.x
-- A storage backend: Elasticsearch 8 or 9 (default), or any relational database supported by Doctrine DBAL
+- A storage backend: any relational database supported by Doctrine DBAL, or Elasticsearch 8 or 9 (default)
 
 Installation
 ------------
@@ -35,6 +35,14 @@ Installation
 
 Quick start
 -----------
+
+Store the logs in the database your application already uses, so you need no extra infrastructure:
+
+```yaml
+# config/packages/loggastic.yaml
+locastic_loggastic:
+    storage: doctrine
+```
 
 Mark an entity as loggable with the `Loggable` attribute and put the serialization group on every field you want to track:
 
@@ -58,7 +66,7 @@ class BlogPost
 }
 ```
 
-Initialize the storage (Elasticsearch indexes or database tables):
+Initialize the storage (database tables or Elasticsearch indexes):
 
 ```bash
 bin/console locastic:activity-logs:create-loggable-indexes
@@ -70,14 +78,12 @@ Every create, update and delete on `BlogPost` is now logged automatically. Read 
 $activityLogs = $activityLogProvider->getActivityLogsByClassAndId(BlogPost::class, $blogPost->getId());
 ```
 
-Logs are stored in Elasticsearch by default. Set `locastic_loggastic.storage: doctrine` to store them in your relational database instead (see the next section). The rest of this README covers each step in detail.
+Without the `storage` option, logs are stored in Elasticsearch, which is the default (see the next section). The rest of this README covers each step in detail.
 
 Choose your storage
 -------------------
 
-Activity logs are stored in **Elasticsearch** by default, which is a great fit for fast log browsing on high-traffic data. Requirements: Elasticsearch 8 or 9, and a PSR-18 HTTP client implementation for the Elasticsearch client (for example `composer require symfony/http-client nyholm/psr7`). Each loggable entity gets two indexes: `entity_name_activity_log` and `entity_name_current_data_tracker`.
-
-If you don't want to run an Elasticsearch cluster, store the logs in your existing **relational database** instead (PostgreSQL, MySQL, SQLite, or anything else supported by Doctrine DBAL):
+**Relational database (no extra infrastructure).** Store the logs in the database your application already uses (PostgreSQL, MySQL, SQLite, or anything else supported by Doctrine DBAL):
 
 ```yaml
 # config/packages/loggastic.yaml
@@ -86,6 +92,8 @@ locastic_loggastic:
 ```
 
 The Doctrine storage uses your default DBAL connection and keeps all activity logs in two shared tables (`loggastic_activity_log` and `loggastic_current_data_tracker`), with JSON columns for changes data. Timestamps are stored in UTC. No Elasticsearch dependency or configuration is needed.
+
+**Elasticsearch (the default).** Without the `storage` option, activity logs are stored in Elasticsearch, which is a great fit for fast log browsing on high-traffic data. Requirements: Elasticsearch 8 or 9, and a PSR-18 HTTP client implementation for the Elasticsearch client (for example `composer require symfony/http-client nyholm/psr7`). Each loggable entity gets two indexes: `entity_name_activity_log` and `entity_name_current_data_tracker`.
 
 ### Doctrine storage tables
 
@@ -205,11 +213,9 @@ class Tag
 }
 ```
 
-Note: You can also use **annotations, xml and yaml**! Examples coming soon.
-
 ### 3. Initialize the storage
 
-Create the Elasticsearch indexes or database tables for your loggable classes:
+Create the database tables or Elasticsearch indexes for your loggable classes:
 
 ```bash
 bin/console locastic:activity-logs:create-loggable-indexes
