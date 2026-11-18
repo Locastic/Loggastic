@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- README: the quick start and the storage section start with the Doctrine storage, which needs no extra infrastructure (Elasticsearch stays the default); the introduction names the bundle an activity log and audit trail bundle; the CI badge shows the GitHub Actions status
+- README: the quick start and the storage section start with the Doctrine storage, which needs no extra infrastructure (Elasticsearch stays the default); the introduction names the bundle an activity log and audit trail bundle; a GitHub Actions badge shows the test status
 - `audit` added to the Packagist keywords; the package description now names the audit trail
 
 ### Removed
