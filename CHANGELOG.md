@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- README: "How Loggastic compares" section with a comparison table against auditor-bundle (storage, logged fields, write path, related objects, test suites, log viewer, log cleanup)
+
 ### Changed
+- README: the Doctrine storage section no longer says that no Elasticsearch dependency is needed; the Elasticsearch PHP client is still a Composer dependency, only the server and the configuration are not needed
 - README: the quick start and the storage section start with the Doctrine storage, which needs no extra infrastructure (Elasticsearch stays the default); the introduction names the bundle an activity log and audit trail bundle; a GitHub Actions badge shows the test status
 - `audit` added to the Packagist keywords; the package description now names the audit trail
 

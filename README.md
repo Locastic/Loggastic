@@ -81,7 +81,22 @@ Every create, update and delete on `BlogPost` is now logged automatically. Read 
 $activityLogs = $activityLogProvider->getActivityLogsByClassAndId(BlogPost::class, $blogPost->getId());
 ```
 
-Without the `storage` option, logs are stored in Elasticsearch, which is the default (see the next section). The rest of this README covers each step in detail.
+Without the `storage` option, logs are stored in Elasticsearch, which is the default (see [Choose your storage](#choose-your-storage)). The rest of this README covers each step in detail.
+
+How Loggastic compares
+----------------------
+
+[auditor-bundle](https://github.com/DamienHarper/auditor-bundle) is the most installed audit bundle for Symfony. Both bundles log the changes to your Doctrine entities. They differ in these points (compared with auditor-bundle 7.2 in November 2026):
+
+| | Loggastic | auditor-bundle |
+|---|---|---|
+| Storage | Your relational database (two shared tables), Elasticsearch 8 or 9, or in memory for tests | Your relational database (one audit table for each audited entity) |
+| Logged fields | Only the fields that have the serialization group you select | All fields, except the fields you exclude |
+| How logs are written | As Symfony Messenger messages. Route them to an async transport to keep the writes out of the request | In the same database transaction as the entity change |
+| Changes to related objects | Logged on the parent object. Select related fields with serialization groups, or let a child object log to its parent (see [Handling relations](#handling-relations)) | Logged in the audit table of the related entity. Many-to-many links and unlinks are logged, and the changes from one flush share a transaction hash |
+| Test suites | `in_memory` storage, so tests need no log tables and no Elasticsearch | No in-memory storage. The documentation suggests SQLite for development and testing |
+| Web page to browse logs | Not included. See [Displaying activity logs](#4-displaying-activity-logs) for Twig and API Platform examples | Built-in viewer at `/audit` |
+| Delete old logs | Not included | `audit:clean` console command |
 
 Choose your storage
 -------------------
@@ -94,7 +109,7 @@ locastic_loggastic:
     storage: doctrine
 ```
 
-The Doctrine storage uses your default DBAL connection and keeps all activity logs in two shared tables (`loggastic_activity_log` and `loggastic_current_data_tracker`), with JSON columns for changes data. Timestamps are stored in UTC. No Elasticsearch dependency or configuration is needed.
+The Doctrine storage uses your default DBAL connection and keeps all activity logs in two shared tables (`loggastic_activity_log` and `loggastic_current_data_tracker`), with JSON columns for changes data. Timestamps are stored in UTC. No Elasticsearch server or configuration is needed. The Elasticsearch PHP client is still installed as a Composer dependency, but the bundle registers no Elasticsearch services.
 
 **Elasticsearch (the default).** Without the `storage` option, activity logs are stored in Elasticsearch, which is a great fit for fast log browsing on high-traffic data. Requirements: Elasticsearch 8 or 9, and a PSR-18 HTTP client implementation for the Elasticsearch client (for example `composer require symfony/http-client nyholm/psr7`). Each loggable entity gets two indexes: `entity_name_activity_log` and `entity_name_current_data_tracker`.
 
